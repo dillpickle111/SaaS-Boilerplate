@@ -1,43 +1,20 @@
-import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
+import Link from 'next/link';
 
-import { CTA } from '@/templates/CTA';
-import { DemoBanner } from '@/templates/DemoBanner';
-import { FAQ } from '@/templates/FAQ';
-import { Features } from '@/templates/Features';
-import { Footer } from '@/templates/Footer';
-import { Hero } from '@/templates/Hero';
-import { Navbar } from '@/templates/Navbar';
-import { Pricing } from '@/templates/Pricing';
-import { Sponsors } from '@/templates/Sponsors';
+import { Button } from '@/components/ui/button';
 
-export async function generateMetadata(props: { params: { locale: string } }) {
-  const t = await getTranslations({
-    locale: props.params.locale,
-    namespace: 'Index',
-  });
-
-  return {
-    title: t('meta_title'),
-    description: t('meta_description'),
-  };
-}
-
-const IndexPage = (props: { params: { locale: string } }) => {
-  unstable_setRequestLocale(props.params.locale);
-
+export default function LandingPage() {
   return (
-    <>
-      <DemoBanner />
-      <Navbar />
-      <Hero />
-      <Sponsors />
-      <Features />
-      <Pricing />
-      <FAQ />
-      <CTA />
-      <Footer />
-    </>
+    <div className="flex min-h-screen items-center justify-center bg-blue-50 p-4">
+      <div className="text-center">
+        <Link href="/app">
+          <Button
+            size="lg"
+            className="h-auto rounded-lg bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-lg hover:bg-blue-700"
+          >
+            Practice Now
+          </Button>
+        </Link>
+      </div>
+    </div>
   );
-};
-
-export default IndexPage;
+}

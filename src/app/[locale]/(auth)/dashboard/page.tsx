@@ -1,63 +1,30 @@
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
+import { DashboardSection } from '@/features/dashboard/DashboardSection';
 
-import { MessageState } from '@/features/dashboard/MessageState';
-import { TitleBar } from '@/features/dashboard/TitleBar';
-import { SponsorLogos } from '@/features/sponsors/SponsorLogos';
-
-const DashboardIndexPage = () => {
-  const t = useTranslations('DashboardIndex');
+export default async function DashboardPage() {
+  const t = await getTranslations('Dashboard');
 
   return (
-    <>
-      <TitleBar
-        title={t('title_bar')}
-        description={t('title_bar_description')}
-      />
-
-      <MessageState
-        icon={(
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M0 0h24v24H0z" stroke="none" />
-            <path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3M12 12l8-4.5M12 12v9M12 12L4 7.5" />
-          </svg>
-        )}
-        title={t('message_state_title')}
-        description={t.rich('message_state_description', {
-          code: chunks => (
-            <code className="bg-secondary text-secondary-foreground">
-              {chunks}
-            </code>
-          ),
-        })}
-        button={(
-          <>
-            <div className="mt-2 text-xs font-light text-muted-foreground">
-              {t.rich('message_state_alternative', {
-                url: () => (
-                  <a
-                    className="text-blue-500 hover:text-blue-600"
-                    href="https://nextjs-boilerplate.com/pro-saas-starter-kit"
-                  >
-                    Next.js Boilerplate SaaS
-                  </a>
-                ),
-              })}
-            </div>
-
-            <div className="mt-7">
-              <SponsorLogos />
-            </div>
-          </>
-        )}
-      />
-    </>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+            Welcome to Prepify
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Track your SAT preparation progress and access practice questions
+          </p>
+        </div>
+        
+        <DashboardSection 
+          title="Your SAT Progress"
+          description="Track your performance across all SAT sections"
+        >
+          <div className="text-center py-8">
+            <p className="text-gray-600">Dashboard content will be added here</p>
+          </div>
+        </DashboardSection>
+      </div>
+    </div>
   );
-};
-
-export default DashboardIndexPage;
+}

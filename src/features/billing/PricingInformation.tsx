@@ -2,50 +2,62 @@ import { useTranslations } from 'next-intl';
 
 import { PricingCard } from '@/features/billing/PricingCard';
 import { PricingFeature } from '@/features/billing/PricingFeature';
-import { PricingPlanList } from '@/utils/AppConfig';
 
 export const PricingInformation = (props: {
   buttonList: Record<string, React.ReactNode>;
 }) => {
   const t = useTranslations('PricingPlan');
 
+  // Prepify is completely free - no pricing tiers
+  const freePlan = {
+    id: 'free',
+    price: 0,
+    interval: 'month' as const,
+    features: {
+      questions: 1200,
+      categories: 3,
+      practiceModes: 3,
+      progressTracking: true,
+      detailedExplanations: true,
+      mobileFriendly: true,
+    },
+  };
+
   return (
-    <div className="grid grid-cols-1 gap-x-6 gap-y-8 md:grid-cols-3">
-      {Object.values(PricingPlanList).map(plan => (
+    <div className="flex justify-center">
+      <div className="max-w-md">
         <PricingCard
-          key={plan.id}
-          planId={plan.id}
-          price={plan.price}
-          interval={plan.interval}
-          button={props.buttonList[plan.id]}
+          key={freePlan.id}
+          planId={freePlan.id}
+          price={freePlan.price}
+          interval={freePlan.interval}
+          button={props.buttonList[freePlan.id]}
         >
           <PricingFeature>
-            {t('feature_team_member', {
-              number: plan.features.teamMember,
-            })}
+            {freePlan.features.questions.toLocaleString()}+ SAT Questions
           </PricingFeature>
 
           <PricingFeature>
-            {t('feature_website', {
-              number: plan.features.website,
-            })}
+            {freePlan.features.categories} Subject Categories
           </PricingFeature>
 
           <PricingFeature>
-            {t('feature_storage', {
-              number: plan.features.storage,
-            })}
+            {freePlan.features.practiceModes} Practice Modes
           </PricingFeature>
 
           <PricingFeature>
-            {t('feature_transfer', {
-              number: plan.features.transfer,
-            })}
+            Progress Tracking
           </PricingFeature>
 
-          <PricingFeature>{t('feature_email_support')}</PricingFeature>
+          <PricingFeature>
+            Detailed Explanations
+          </PricingFeature>
+
+          <PricingFeature>
+            Mobile Friendly
+          </PricingFeature>
         </PricingCard>
-      ))}
+      </div>
     </div>
   );
 };
