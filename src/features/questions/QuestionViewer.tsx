@@ -406,7 +406,7 @@ function AnswerOptions({
 
           {/* Horizontal strikethrough line across entire answer row */}
           {struckOutAnswers.includes(option.letter) && (
-            <div className="pointer-events-none absolute left-[-6px] right-[80px] top-1/2 z-10 h-[2px] rounded bg-gray-600 opacity-80" style={{ transform: 'translateY(-50%)' }} />
+            <div className="pointer-events-none absolute left-[-6px] right-[40px] top-1/2 z-10 h-[2px] rounded bg-gray-600 opacity-80" style={{ transform: 'translateY(-50%)' }} />
           )}
 
           {/* StrikeCircle outside AnswerOption */}
