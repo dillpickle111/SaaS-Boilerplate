@@ -1,10 +1,7 @@
-import { getTranslations } from 'next-intl/server';
 import { PracticeSessionSetup } from '@/features/practice/PracticeSessionSetup';
 import { PracticeStats } from '@/features/practice/PracticeStats';
 
 export default async function PracticePage() {
-  const t = await getTranslations('Practice');
-
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4 py-8">
@@ -16,8 +13,8 @@ export default async function PracticePage() {
             Set up a new practice session to improve your SAT skills
           </p>
         </div>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
           <div className="lg:col-span-3">
             <PracticeSessionSetup />
           </div>
@@ -28,4 +25,4 @@ export default async function PracticePage() {
       </div>
     </div>
   );
-} 
+}

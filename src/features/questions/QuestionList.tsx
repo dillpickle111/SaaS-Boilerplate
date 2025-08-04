@@ -1,19 +1,20 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Play } from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
 
-interface Question {
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+
+type Question = {
   id: string;
   number: string;
   category: string;
   section: string;
   difficulty: 'easy' | 'medium' | 'hard';
   questionText: string;
-}
+};
 
 const mockQuestions: Question[] = [
   {
@@ -78,7 +79,7 @@ export function QuestionList() {
   return (
     <div className="space-y-2">
       {/* List Header */}
-      <div className="grid grid-cols-12 gap-4 px-4 py-3 bg-gray-50 border-b font-medium text-sm text-gray-600">
+      <div className="grid grid-cols-12 gap-4 border-b bg-gray-50 px-4 py-3 text-sm font-medium text-gray-600">
         <div className="col-span-2">Question</div>
         <div className="col-span-6">Content</div>
         <div className="col-span-2">Section</div>
@@ -88,10 +89,10 @@ export function QuestionList() {
 
       {/* Question List */}
       <div className="space-y-1">
-        {questions.map((question) => (
+        {questions.map(question => (
           <div
             key={question.id}
-            className="grid grid-cols-12 gap-4 px-4 py-4 border-b hover:bg-gray-50 transition-colors"
+            className="grid grid-cols-12 gap-4 border-b p-4 transition-colors hover:bg-gray-50"
           >
             {/* Question Number */}
             <div className="col-span-2">
@@ -105,7 +106,7 @@ export function QuestionList() {
 
             {/* Question Content */}
             <div className="col-span-6">
-              <div className="text-sm text-gray-900 line-clamp-2">
+              <div className="line-clamp-2 text-sm text-gray-900">
                 {question.questionText}
               </div>
             </div>
@@ -119,8 +120,8 @@ export function QuestionList() {
 
             {/* Difficulty */}
             <div className="col-span-1">
-              <Badge 
-                className={`text-xs h-5 ${difficultyColors[question.difficulty]}`}
+              <Badge
+                className={`h-5 text-xs ${difficultyColors[question.difficulty]}`}
               >
                 {question.difficulty}
               </Badge>
@@ -132,9 +133,9 @@ export function QuestionList() {
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-8 w-8 p-0"
+                  className="size-8 p-0"
                 >
-                  <Play className="h-4 w-4 text-gray-600" />
+                  <Play className="size-4 text-gray-600" />
                 </Button>
               </Link>
             </div>
@@ -143,7 +144,7 @@ export function QuestionList() {
       </div>
 
       {/* Pagination */}
-      <div className="flex items-center justify-between px-4 py-4 border-t">
+      <div className="flex items-center justify-between border-t p-4">
         <div className="text-sm text-gray-500">
           Showing 1-6 of 3,000 questions
         </div>
@@ -165,4 +166,4 @@ export function QuestionList() {
       </div>
     </div>
   );
-} 
+}

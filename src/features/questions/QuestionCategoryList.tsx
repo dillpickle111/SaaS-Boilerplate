@@ -1,20 +1,18 @@
 'use client';
 
-import Link from 'next/link';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { 
-  Calculator, 
-  BookOpen, 
+import {
+  BookOpen,
+  Calculator,
   PenTool,
-  ArrowRight,
   Play,
   Target,
-  Clock,
-  TrendingUp
 } from 'lucide-react';
+import Link from 'next/link';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 
 const categories = [
   {
@@ -75,88 +73,103 @@ export function QuestionCategoryList() {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {categories.map((category) => (
-        <Card key={category.id} className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-blue-200">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+      {categories.map(category => (
+        <Card key={category.id} className="group border-2 transition-all duration-300 hover:border-blue-200 hover:shadow-xl">
           <CardHeader className="pb-4">
-            <div className="flex items-center justify-between mb-4">
-              <div className={`p-3 rounded-xl bg-gradient-to-r ${category.gradient} shadow-lg`}>
-                <category.icon className="h-6 w-6 text-white" />
+            <div className="mb-4 flex items-center justify-between">
+              <div className={`rounded-xl bg-gradient-to-r p-3 ${category.gradient} shadow-lg`}>
+                <category.icon className="size-6 text-white" />
               </div>
               <div className="text-right">
                 <div className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {category.completedCount}/{category.questionCount}
+                  {category.completedCount}
+                  /
+                  {category.questionCount}
                 </div>
                 <div className="text-sm text-muted-foreground">Completed</div>
               </div>
             </div>
-            
-            <CardTitle className="text-xl mb-2">{category.name}</CardTitle>
+
+            <CardTitle className="mb-2 text-xl">{category.name}</CardTitle>
             <CardDescription className="text-sm">{category.description}</CardDescription>
-            
-            <div className="flex items-center gap-2 mt-3">
+
+            <div className="mt-3 flex items-center gap-2">
               <Badge className={getDifficultyColor(category.difficulty)}>
                 {category.difficulty}
               </Badge>
               <Badge variant="outline" className="text-xs">
-                {category.accuracy}% accuracy
+                {category.accuracy}
+                % accuracy
               </Badge>
             </div>
           </CardHeader>
-          
+
           <CardContent className="space-y-4">
             {/* Progress Bar */}
             <div>
-              <div className="flex justify-between items-center mb-2">
+              <div className="mb-2 flex items-center justify-between">
                 <span className="text-sm font-medium">Progress</span>
-                <span className="text-sm text-muted-foreground">{category.progress}%</span>
+                <span className="text-sm text-muted-foreground">
+                  {category.progress}
+                  %
+                </span>
               </div>
-              <Progress 
-                value={category.progress} 
+              <Progress
+                value={category.progress}
                 className="h-2"
               />
             </div>
-            
+
             {/* Stats Grid */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="text-center p-2 rounded-lg bg-gray-50 dark:bg-gray-800">
-                <div className="text-lg font-bold text-blue-600">{category.accuracy}%</div>
+              <div className="rounded-lg bg-gray-50 p-2 text-center dark:bg-gray-800">
+                <div className="text-lg font-bold text-blue-600">
+                  {category.accuracy}
+                  %
+                </div>
                 <div className="text-xs text-muted-foreground">Accuracy</div>
               </div>
-              <div className="text-center p-2 rounded-lg bg-gray-50 dark:bg-gray-800">
-                <div className="text-lg font-bold text-green-600">{category.averageTime}m</div>
+              <div className="rounded-lg bg-gray-50 p-2 text-center dark:bg-gray-800">
+                <div className="text-lg font-bold text-green-600">
+                  {category.averageTime}
+                  m
+                </div>
                 <div className="text-xs text-muted-foreground">Avg Time</div>
               </div>
             </div>
-            
+
             {/* Topics */}
             <div>
-              <div className="text-sm font-medium mb-2">Key Topics</div>
+              <div className="mb-2 text-sm font-medium">Key Topics</div>
               <div className="flex flex-wrap gap-1">
-                {category.topics.slice(0, 3).map((topic) => (
+                {category.topics.slice(0, 3).map(topic => (
                   <Badge key={topic} variant="secondary" className="text-xs">
                     {topic}
                   </Badge>
                 ))}
                 {category.topics.length > 3 && (
                   <Badge variant="outline" className="text-xs">
-                    +{category.topics.length - 3} more
+                    +
+                    {category.topics.length - 3}
+                    {' '}
+                    more
                   </Badge>
                 )}
               </div>
             </div>
-            
+
             {/* Action Buttons */}
             <div className="flex gap-2 pt-2">
               <Link href={`/questions/${category.id}`} className="flex-1">
                 <Button variant="outline" className="w-full group-hover:border-blue-300">
-                  <Target className="h-4 w-4 mr-2" />
+                  <Target className="mr-2 size-4" />
                   Browse
                 </Button>
               </Link>
               <Link href={`/practice?category=${category.id}`} className="flex-1">
                 <Button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700">
-                  <Play className="h-4 w-4 mr-2" />
+                  <Play className="mr-2 size-4" />
                   Practice
                 </Button>
               </Link>
@@ -166,4 +179,4 @@ export function QuestionCategoryList() {
       ))}
     </div>
   );
-} 
+}

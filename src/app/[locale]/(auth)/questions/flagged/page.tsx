@@ -1,5 +1,5 @@
-import { QuestionFilters } from '@/features/questions/QuestionFilters';
 import { FlaggedQuestionsList } from '@/features/questions/FlaggedQuestionsList';
+import { QuestionFilters } from '@/features/questions/QuestionFilters';
 
 export default async function FlaggedQuestionsPage() {
   return (
@@ -25,4 +25,4 @@ export default async function FlaggedQuestionsPage() {
       </div>
     </div>
   );
-} 
+}

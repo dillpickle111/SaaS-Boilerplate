@@ -1,18 +1,19 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  Play,
-  Flag,
+import {
   Clock,
-  Target,
+  Flag,
+  Play,
   SortAsc,
-  SortDesc
+  SortDesc,
+  Target,
 } from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 
 type FlaggedQuestion = {
   id: string;
@@ -37,7 +38,7 @@ export function FlaggedQuestionsList() {
       difficulty: 'Hard',
       flaggedAt: '2024-01-15',
       lastAttempted: '2024-01-10',
-      attemptCount: 3
+      attemptCount: 3,
     },
     {
       id: '2',
@@ -46,7 +47,7 @@ export function FlaggedQuestionsList() {
       difficulty: 'Medium',
       flaggedAt: '2024-01-14',
       lastAttempted: '2024-01-12',
-      attemptCount: 2
+      attemptCount: 2,
     },
     {
       id: '3',
@@ -55,7 +56,7 @@ export function FlaggedQuestionsList() {
       difficulty: 'Easy',
       flaggedAt: '2024-01-13',
       lastAttempted: '2024-01-11',
-      attemptCount: 1
+      attemptCount: 1,
     },
     {
       id: '4',
@@ -64,7 +65,7 @@ export function FlaggedQuestionsList() {
       difficulty: 'Hard',
       flaggedAt: '2024-01-12',
       lastAttempted: '2024-01-09',
-      attemptCount: 4
+      attemptCount: 4,
     },
     {
       id: '5',
@@ -73,19 +74,19 @@ export function FlaggedQuestionsList() {
       difficulty: 'Medium',
       flaggedAt: '2024-01-11',
       lastAttempted: '2024-01-08',
-      attemptCount: 2
-    }
+      attemptCount: 2,
+    },
   ];
 
   const sortedQuestions = [...flaggedQuestions].sort((a, b) => {
-    let aValue = a[sortBy];
-    let bValue = b[sortBy];
-    
+    let aValue: string | number = a[sortBy];
+    let bValue: string | number = b[sortBy];
+
     if (sortBy === 'flaggedAt') {
       aValue = new Date(a.flaggedAt).getTime();
       bValue = new Date(b.flaggedAt).getTime();
     }
-    
+
     if (sortOrder === 'asc') {
       return aValue > bValue ? 1 : -1;
     } else {
@@ -108,14 +109,16 @@ export function FlaggedQuestionsList() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <h2 className="text-xl font-semibold text-gray-900">
-            {flaggedQuestions.length} Flagged Questions
+            {flaggedQuestions.length}
+            {' '}
+            Flagged Questions
           </h2>
           <div className="flex items-center gap-2">
             <span className="text-sm text-gray-600">Sort by:</span>
-            <select 
+            <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
-              className="text-sm border border-gray-300 rounded px-2 py-1"
+              onChange={e => setSortBy(e.target.value as any)}
+              className="rounded border border-gray-300 px-2 py-1 text-sm"
             >
               <option value="flaggedAt">Flagged Date</option>
               <option value="difficulty">Difficulty</option>
@@ -125,16 +128,16 @@ export function FlaggedQuestionsList() {
               variant="ghost"
               size="sm"
               onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-              className="h-8 w-8 p-0"
+              className="size-8 p-0"
             >
-              {sortOrder === 'asc' ? <SortAsc className="h-4 w-4" /> : <SortDesc className="h-4 w-4" />}
+              {sortOrder === 'asc' ? <SortAsc className="size-4" /> : <SortDesc className="size-4" />}
             </Button>
           </div>
         </div>
-        
+
         <Link href="/questions/practice?filter=flagged">
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-            <Play className="h-4 w-4 mr-2" />
+          <Button className="bg-blue-600 text-white hover:bg-blue-700">
+            <Play className="mr-2 size-4" />
             Practice All Flagged
           </Button>
         </Link>
@@ -142,12 +145,12 @@ export function FlaggedQuestionsList() {
 
       {/* Questions List */}
       <div className="space-y-4">
-        {sortedQuestions.map((question) => (
+        {sortedQuestions.map(question => (
           <Card key={question.id}>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
-                  <h3 className="font-medium text-gray-900 mb-2">
+                  <h3 className="mb-2 font-medium text-gray-900">
                     {question.title}
                   </h3>
                   <div className="flex items-center gap-4 text-sm text-gray-600">
@@ -160,22 +163,32 @@ export function FlaggedQuestionsList() {
                       </Badge>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Flag className="h-4 w-4 text-orange-500" />
-                      <span>Flagged {new Date(question.flaggedAt).toLocaleDateString()}</span>
+                      <Flag className="size-4 text-orange-500" />
+                      <span>
+                        Flagged
+                        {new Date(question.flaggedAt).toLocaleDateString()}
+                      </span>
                     </div>
                     {question.lastAttempted && (
                       <div className="flex items-center gap-1">
-                        <Clock className="h-4 w-4" />
-                        <span>Last attempted {new Date(question.lastAttempted).toLocaleDateString()}</span>
+                        <Clock className="size-4" />
+                        <span>
+                          Last attempted
+                          {new Date(question.lastAttempted).toLocaleDateString()}
+                        </span>
                       </div>
                     )}
                     <div className="flex items-center gap-1">
-                      <Target className="h-4 w-4" />
-                      <span>{question.attemptCount} attempts</span>
+                      <Target className="size-4" />
+                      <span>
+                        {question.attemptCount}
+                        {' '}
+                        attempts
+                      </span>
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-2">
                   <Link href={`/questions/${question.category.toLowerCase()}/${question.id}`}>
                     <Button variant="outline" size="sm">
@@ -190,4 +203,4 @@ export function FlaggedQuestionsList() {
       </div>
     </div>
   );
-} 
+}

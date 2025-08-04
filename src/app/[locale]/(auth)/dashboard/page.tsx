@@ -1,9 +1,6 @@
-import { getTranslations } from 'next-intl/server';
 import { DashboardSection } from '@/features/dashboard/DashboardSection';
 
 export default async function DashboardPage() {
-  const t = await getTranslations('Dashboard');
-
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4 py-8">
@@ -15,12 +12,12 @@ export default async function DashboardPage() {
             Track your SAT preparation progress and access practice questions
           </p>
         </div>
-        
-        <DashboardSection 
+
+        <DashboardSection
           title="Your SAT Progress"
           description="Track your performance across all SAT sections"
         >
-          <div className="text-center py-8">
+          <div className="py-8 text-center">
             <p className="text-gray-600">Dashboard content will be added here</p>
           </div>
         </DashboardSection>

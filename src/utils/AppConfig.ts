@@ -1,6 +1,4 @@
-import type { LocalePrefix } from 'node_modules/next-intl/dist/types/src/routing/types';
-
-const localePrefix: LocalePrefix = 'as-needed';
+const localePrefix = 'as-needed' as const;
 
 // Prepify Configuration - Ultimate FREE Digital SAT Question Bank
 export const AppConfig = {

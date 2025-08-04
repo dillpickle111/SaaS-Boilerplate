@@ -1,18 +1,18 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { 
-  TrendingUp,
+import {
+  Award,
+  BarChart3,
+  Calendar,
   Clock,
   Target,
-  Award,
-  Calendar,
-  Zap,
   Trophy,
-  BarChart3
+  Zap,
 } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 
 export function PracticeStats() {
   const stats = {
@@ -67,7 +67,7 @@ export function PracticeStats() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <BarChart3 className="h-5 w-5" />
+            <BarChart3 className="size-5" />
             Practice Overview
           </CardTitle>
         </CardHeader>
@@ -82,9 +82,12 @@ export function PracticeStats() {
               <div className="text-xs text-muted-foreground">Questions</div>
             </div>
           </div>
-          
+
           <div className="text-center">
-            <div className="text-3xl font-bold text-purple-600">{stats.averageAccuracy}%</div>
+            <div className="text-3xl font-bold text-purple-600">
+              {stats.averageAccuracy}
+              %
+            </div>
             <div className="text-sm text-muted-foreground">Average Accuracy</div>
           </div>
         </CardContent>
@@ -94,28 +97,32 @@ export function PracticeStats() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Target className="h-5 w-5" />
+            <Target className="size-5" />
             Weekly Goal
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
             <div>
-              <div className="flex justify-between items-center mb-2">
+              <div className="mb-2 flex items-center justify-between">
                 <span className="text-sm font-medium">Questions This Week</span>
                 <span className="text-sm text-muted-foreground">
-                  {stats.weeklyProgress}/{stats.weeklyGoal}
+                  {stats.weeklyProgress}
+                  /
+                  {stats.weeklyGoal}
                 </span>
               </div>
-              <Progress 
-                value={(stats.weeklyProgress / stats.weeklyGoal) * 100} 
+              <Progress
+                value={(stats.weeklyProgress / stats.weeklyGoal) * 100}
                 className="h-2"
               />
             </div>
-            
+
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Calendar className="h-4 w-4" />
-              {stats.weeklyGoal - stats.weeklyProgress} questions remaining
+              <Calendar className="size-4" />
+              {stats.weeklyGoal - stats.weeklyProgress}
+              {' '}
+              questions remaining
             </div>
           </div>
         </CardContent>
@@ -125,16 +132,20 @@ export function PracticeStats() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Zap className="h-5 w-5" />
+            <Zap className="size-5" />
             Study Streak
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-center space-y-2">
+          <div className="space-y-2 text-center">
             <div className="text-3xl font-bold text-orange-600">{stats.currentStreak}</div>
             <div className="text-sm text-muted-foreground">Current streak</div>
             <div className="text-xs text-muted-foreground">
-              Best: {stats.bestStreak} days
+              Best:
+              {' '}
+              {stats.bestStreak}
+              {' '}
+              days
             </div>
             <Badge variant="secondary" className="mt-2">
               Keep going! 🔥
@@ -147,25 +158,34 @@ export function PracticeStats() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Clock className="h-5 w-5" />
+            <Clock className="size-5" />
             Recent Sessions
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
             {recentSessions.map((session, index) => (
-              <div key={index} className="flex items-center gap-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-800">
-                <div className="w-2 h-2 rounded-full bg-green-500" />
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm font-medium truncate">
-                    {session.type} Practice
+              <div key={index} className="flex items-center gap-3 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
+                <div className="size-2 rounded-full bg-green-500" />
+                <div className="min-w-0 flex-1">
+                  <div className="truncate text-sm font-medium">
+                    {session.type}
+                    {' '}
+                    Practice
                   </div>
                   <div className="text-xs text-muted-foreground">
-                    {session.questions} questions • {session.time} • {session.date}
+                    {session.questions}
+                    {' '}
+                    questions •
+                    {session.time}
+                    {' '}
+                    •
+                    {session.date}
                   </div>
                 </div>
                 <Badge variant="outline" className="text-xs">
-                  {session.accuracy}%
+                  {session.accuracy}
+                  %
                 </Badge>
               </div>
             ))}
@@ -177,14 +197,14 @@ export function PracticeStats() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Trophy className="h-5 w-5" />
+            <Trophy className="size-5" />
             Achievements
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-2">
             {achievements.map((achievement, index) => (
-              <div key={index} className="flex items-center gap-3 p-2 rounded-lg">
+              <div key={index} className="flex items-center gap-3 rounded-lg p-2">
                 <div className={`text-lg ${achievement.unlocked ? 'opacity-100' : 'opacity-30'}`}>
                   {achievement.icon}
                 </div>
@@ -208,26 +228,26 @@ export function PracticeStats() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Award className="h-5 w-5" />
+            <Award className="size-5" />
             Study Tips
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-          <div className="text-sm p-2 rounded-lg bg-blue-50 dark:bg-blue-950">
+          <div className="rounded-lg bg-blue-50 p-2 text-sm dark:bg-blue-950">
             <div className="font-medium text-blue-900 dark:text-blue-100">Focus on Weak Areas</div>
-            <div className="text-xs text-blue-700 dark:text-blue-300 mt-1">
+            <div className="mt-1 text-xs text-blue-700 dark:text-blue-300">
               Review questions you got wrong to improve faster
             </div>
           </div>
-          <div className="text-sm p-2 rounded-lg bg-green-50 dark:bg-green-950">
+          <div className="rounded-lg bg-green-50 p-2 text-sm dark:bg-green-950">
             <div className="font-medium text-green-900 dark:text-green-100">Practice Daily</div>
-            <div className="text-xs text-green-700 dark:text-green-300 mt-1">
+            <div className="mt-1 text-xs text-green-700 dark:text-green-300">
               Even 10 minutes a day can make a big difference
             </div>
           </div>
-          <div className="text-sm p-2 rounded-lg bg-purple-50 dark:bg-purple-950">
+          <div className="rounded-lg bg-purple-50 p-2 text-sm dark:bg-purple-950">
             <div className="font-medium text-purple-900 dark:text-purple-100">Time Yourself</div>
-            <div className="text-xs text-purple-700 dark:text-purple-300 mt-1">
+            <div className="mt-1 text-xs text-purple-700 dark:text-purple-300">
               Practice under timed conditions to build speed
             </div>
           </div>
@@ -235,4 +255,4 @@ export function PracticeStats() {
       </Card>
     </div>
   );
-} 
+}

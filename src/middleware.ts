@@ -1,7 +1,6 @@
-import {
-  type NextFetchEvent,
-  type NextRequest,
-  NextResponse,
+import type {
+  NextFetchEvent,
+  NextRequest,
 } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 
@@ -16,7 +15,7 @@ const intlMiddleware = createMiddleware({
 // Temporarily disable authentication protection
 export default function middleware(
   request: NextRequest,
-  event: NextFetchEvent,
+  _event: NextFetchEvent,
 ) {
   // Just run the intl middleware for now
   return intlMiddleware(request);

@@ -1,14 +1,14 @@
 import {
   bigint,
+  boolean,
+  index,
+  integer,
+  json,
   pgTable,
   serial,
   text,
   timestamp,
   uniqueIndex,
-  integer,
-  boolean,
-  json,
-  index,
 } from 'drizzle-orm/pg-core';
 
 // Prepify Database Schema - SAT Question Bank

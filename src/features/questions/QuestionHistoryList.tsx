@@ -1,20 +1,20 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
-import { 
-  Play,
+import {
   CheckCircle,
-  XCircle,
   Clock,
-  Target,
   SortAsc,
   SortDesc,
-  TrendingUp
+  Target,
+  TrendingUp,
+  XCircle,
 } from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 
 type CompletedQuestion = {
   id: string;
@@ -46,7 +46,7 @@ export function QuestionHistoryList() {
       isCorrect: true,
       attemptCount: 1,
       userAnswer: '2',
-      correctAnswer: '2'
+      correctAnswer: '2',
     },
     {
       id: '2',
@@ -58,7 +58,7 @@ export function QuestionHistoryList() {
       isCorrect: false,
       attemptCount: 2,
       userAnswer: '3/17',
-      correctAnswer: '3/17'
+      correctAnswer: '3/17',
     },
     {
       id: '3',
@@ -70,7 +70,7 @@ export function QuestionHistoryList() {
       isCorrect: true,
       attemptCount: 1,
       userAnswer: 'B',
-      correctAnswer: 'B'
+      correctAnswer: 'B',
     },
     {
       id: '4',
@@ -82,7 +82,7 @@ export function QuestionHistoryList() {
       isCorrect: false,
       attemptCount: 3,
       userAnswer: '45°',
-      correctAnswer: '60°'
+      correctAnswer: '60°',
     },
     {
       id: '5',
@@ -94,28 +94,32 @@ export function QuestionHistoryList() {
       isCorrect: true,
       attemptCount: 1,
       userAnswer: 'x² + 5x + 6',
-      correctAnswer: 'x² + 5x + 6'
-    }
+      correctAnswer: 'x² + 5x + 6',
+    },
   ];
 
-  const filteredQuestions = completedQuestions.filter(question => {
-    if (filterCorrect === 'correct') return question.isCorrect;
-    if (filterCorrect === 'incorrect') return !question.isCorrect;
+  const filteredQuestions = completedQuestions.filter((question) => {
+    if (filterCorrect === 'correct') {
+      return question.isCorrect;
+    }
+    if (filterCorrect === 'incorrect') {
+      return !question.isCorrect;
+    }
     return true;
   });
 
   const sortedQuestions = [...filteredQuestions].sort((a, b) => {
-    let aValue = a[sortBy];
-    let bValue = b[sortBy];
-    
+    let aValue: string | number = a[sortBy];
+    let bValue: string | number = b[sortBy];
+
     if (sortBy === 'completedAt') {
       aValue = new Date(a.completedAt).getTime();
       bValue = new Date(b.completedAt).getTime();
     } else if (sortBy === 'timeSpent') {
-      aValue = parseInt(a.timeSpent.replace(':', ''));
-      bValue = parseInt(b.timeSpent.replace(':', ''));
+      aValue = Number.parseInt(a.timeSpent.replace(':', ''));
+      bValue = Number.parseInt(b.timeSpent.replace(':', ''));
     }
-    
+
     if (sortOrder === 'asc') {
       return aValue > bValue ? 1 : -1;
     } else {
@@ -142,33 +146,42 @@ export function QuestionHistoryList() {
         <div className="flex items-center gap-6">
           <div>
             <h2 className="text-xl font-semibold text-gray-900">
-              {completedQuestions.length} Completed Questions
+              {completedQuestions.length}
+              {' '}
+              Completed Questions
             </h2>
             <p className="text-sm text-gray-600">
-              {accuracy}% accuracy • {correctCount} correct • {completedQuestions.length - correctCount} incorrect
+              {accuracy}
+              % accuracy •
+              {correctCount}
+              {' '}
+              correct •
+              {completedQuestions.length - correctCount}
+              {' '}
+              incorrect
             </p>
           </div>
-          
+
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <span className="text-sm text-gray-600">Filter:</span>
-              <select 
+              <select
                 value={filterCorrect}
-                onChange={(e) => setFilterCorrect(e.target.value as any)}
-                className="text-sm border border-gray-300 rounded px-2 py-1"
+                onChange={e => setFilterCorrect(e.target.value as any)}
+                className="rounded border border-gray-300 px-2 py-1 text-sm"
               >
                 <option value="all">All Questions</option>
                 <option value="correct">Correct Only</option>
                 <option value="incorrect">Incorrect Only</option>
               </select>
             </div>
-            
+
             <div className="flex items-center gap-2">
               <span className="text-sm text-gray-600">Sort by:</span>
-              <select 
+              <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
-                className="text-sm border border-gray-300 rounded px-2 py-1"
+                onChange={e => setSortBy(e.target.value as any)}
+                className="rounded border border-gray-300 px-2 py-1 text-sm"
               >
                 <option value="completedAt">Completed Date</option>
                 <option value="difficulty">Difficulty</option>
@@ -179,17 +192,17 @@ export function QuestionHistoryList() {
                 variant="ghost"
                 size="sm"
                 onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-                className="h-8 w-8 p-0"
+                className="size-8 p-0"
               >
-                {sortOrder === 'asc' ? <SortAsc className="h-4 w-4" /> : <SortDesc className="h-4 w-4" />}
+                {sortOrder === 'asc' ? <SortAsc className="size-4" /> : <SortDesc className="size-4" />}
               </Button>
             </div>
           </div>
         </div>
-        
+
         <Link href="/questions/practice?filter=incorrect">
-          <Button className="bg-orange-600 hover:bg-orange-700 text-white">
-            <TrendingUp className="h-4 w-4 mr-2" />
+          <Button className="bg-orange-600 text-white hover:bg-orange-700">
+            <TrendingUp className="mr-2 size-4" />
             Review Mistakes
           </Button>
         </Link>
@@ -197,20 +210,22 @@ export function QuestionHistoryList() {
 
       {/* Questions List */}
       <div className="space-y-4">
-        {sortedQuestions.map((question) => (
+        {sortedQuestions.map(question => (
           <Card key={question.id}>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="mb-2 flex items-center gap-2">
                     <h3 className="font-medium text-gray-900">
                       {question.title}
                     </h3>
-                    {question.isCorrect ? (
-                      <CheckCircle className="h-5 w-5 text-green-500" />
-                    ) : (
-                      <XCircle className="h-5 w-5 text-red-500" />
-                    )}
+                    {question.isCorrect
+                      ? (
+                          <CheckCircle className="size-5 text-green-500" />
+                        )
+                      : (
+                          <XCircle className="size-5 text-red-500" />
+                        )}
                   </div>
                   <div className="flex items-center gap-4 text-sm text-gray-600">
                     <div className="flex items-center gap-2">
@@ -222,23 +237,40 @@ export function QuestionHistoryList() {
                       </Badge>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
-                      <span>Completed {new Date(question.completedAt).toLocaleDateString()}</span>
+                      <Clock className="size-4" />
+                      <span>
+                        Completed
+                        {new Date(question.completedAt).toLocaleDateString()}
+                      </span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Target className="h-4 w-4" />
-                      <span>{question.timeSpent} • {question.attemptCount} attempts</span>
+                      <Target className="size-4" />
+                      <span>
+                        {question.timeSpent}
+                        {' '}
+                        •
+                        {' '}
+                        {question.attemptCount}
+                        {' '}
+                        attempts
+                      </span>
                     </div>
                     {!question.isCorrect && (
                       <div className="flex items-center gap-1 text-red-600">
-                        <span>Your answer: {question.userAnswer}</span>
+                        <span>
+                          Your answer:
+                          {question.userAnswer}
+                        </span>
                         <span>•</span>
-                        <span>Correct: {question.correctAnswer}</span>
+                        <span>
+                          Correct:
+                          {question.correctAnswer}
+                        </span>
                       </div>
                     )}
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-2">
                   <Link href={`/questions/${question.category.toLowerCase()}/${question.id}`}>
                     <Button variant="outline" size="sm">
@@ -253,4 +285,4 @@ export function QuestionHistoryList() {
       </div>
     </div>
   );
-} 
+}

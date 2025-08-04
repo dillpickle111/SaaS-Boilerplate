@@ -1,16 +1,17 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { 
-  TrendingUp,
-  Target,
-  Clock,
+import {
   Award,
   Calendar,
-  Zap
+  Clock,
+  Target,
+  TrendingUp,
+  Zap,
 } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 
 export function QuickStats() {
   const stats = {
@@ -48,8 +49,12 @@ export function QuickStats() {
   ];
 
   const getAccuracyColor = (accuracy: number) => {
-    if (accuracy >= 80) return 'text-green-600';
-    if (accuracy >= 60) return 'text-yellow-600';
+    if (accuracy >= 80) {
+      return 'text-green-600';
+    }
+    if (accuracy >= 60) {
+      return 'text-yellow-600';
+    }
     return 'text-red-600';
   };
 
@@ -59,24 +64,25 @@ export function QuickStats() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5" />
+            <TrendingUp className="size-5" />
             Your Progress
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <div className="flex justify-between items-center mb-2">
+            <div className="mb-2 flex items-center justify-between">
               <span className="text-sm font-medium">Overall Completion</span>
               <span className="text-sm text-muted-foreground">
-                {Math.round((stats.completedQuestions / stats.totalQuestions) * 100)}%
+                {Math.round((stats.completedQuestions / stats.totalQuestions) * 100)}
+                %
               </span>
             </div>
-            <Progress 
-              value={(stats.completedQuestions / stats.totalQuestions) * 100} 
+            <Progress
+              value={(stats.completedQuestions / stats.totalQuestions) * 100}
               className="h-2"
             />
           </div>
-          
+
           <div className="grid grid-cols-2 gap-4">
             <div className="text-center">
               <div className="text-2xl font-bold text-blue-600">{stats.completedQuestions}</div>
@@ -84,7 +90,8 @@ export function QuickStats() {
             </div>
             <div className="text-center">
               <div className={`text-2xl font-bold ${getAccuracyColor(stats.accuracy)}`}>
-                {stats.accuracy}%
+                {stats.accuracy}
+                %
               </div>
               <div className="text-xs text-muted-foreground">Accuracy</div>
             </div>
@@ -96,28 +103,32 @@ export function QuickStats() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Target className="h-5 w-5" />
+            <Target className="size-5" />
             Weekly Goal
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
             <div>
-              <div className="flex justify-between items-center mb-2">
+              <div className="mb-2 flex items-center justify-between">
                 <span className="text-sm font-medium">Questions This Week</span>
                 <span className="text-sm text-muted-foreground">
-                  {stats.weeklyProgress}/{stats.weeklyGoal}
+                  {stats.weeklyProgress}
+                  /
+                  {stats.weeklyGoal}
                 </span>
               </div>
-              <Progress 
-                value={(stats.weeklyProgress / stats.weeklyGoal) * 100} 
+              <Progress
+                value={(stats.weeklyProgress / stats.weeklyGoal) * 100}
                 className="h-2"
               />
             </div>
-            
+
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Calendar className="h-4 w-4" />
-              {stats.weeklyGoal - stats.weeklyProgress} questions remaining
+              <Calendar className="size-4" />
+              {stats.weeklyGoal - stats.weeklyProgress}
+              {' '}
+              questions remaining
             </div>
           </div>
         </CardContent>
@@ -127,7 +138,7 @@ export function QuickStats() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Zap className="h-5 w-5" />
+            <Zap className="size-5" />
             Study Streak
           </CardTitle>
         </CardHeader>
@@ -146,24 +157,29 @@ export function QuickStats() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Clock className="h-5 w-5" />
+            <Clock className="size-5" />
             Recent Activity
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
             {recentActivity.map((activity, index) => (
-              <div key={index} className="flex items-center gap-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-800">
-                <div className={`w-2 h-2 rounded-full ${
-                  activity.correct === true ? 'bg-green-500' : 
-                  activity.correct === false ? 'bg-red-500' : 'bg-blue-500'
-                }`} />
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm font-medium truncate">
+              <div key={index} className="flex items-center gap-3 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
+                <div className={`size-2 rounded-full ${
+                  activity.correct === true
+                    ? 'bg-green-500'
+                    : activity.correct === false ? 'bg-red-500' : 'bg-blue-500'
+                }`}
+                />
+                <div className="min-w-0 flex-1">
+                  <div className="truncate text-sm font-medium">
                     {activity.question}
                   </div>
                   <div className="text-xs text-muted-foreground">
-                    {activity.subject} • {activity.time}
+                    {activity.subject}
+                    {' '}
+                    •
+                    {activity.time}
                   </div>
                 </div>
                 {activity.correct !== null && (
@@ -181,20 +197,20 @@ export function QuickStats() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Award className="h-5 w-5" />
+            <Award className="size-5" />
             Quick Actions
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-          <button className="w-full text-left p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+          <button className="w-full rounded-lg p-2 text-left transition-colors hover:bg-gray-100 dark:hover:bg-gray-800">
             <div className="text-sm font-medium">Continue Practice</div>
             <div className="text-xs text-muted-foreground">Resume where you left off</div>
           </button>
-          <button className="w-full text-left p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+          <button className="w-full rounded-lg p-2 text-left transition-colors hover:bg-gray-100 dark:hover:bg-gray-800">
             <div className="text-sm font-medium">Review Mistakes</div>
             <div className="text-xs text-muted-foreground">Focus on weak areas</div>
           </button>
-          <button className="w-full text-left p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+          <button className="w-full rounded-lg p-2 text-left transition-colors hover:bg-gray-100 dark:hover:bg-gray-800">
             <div className="text-sm font-medium">Take a Quiz</div>
             <div className="text-xs text-muted-foreground">Test your knowledge</div>
           </button>
@@ -202,4 +218,4 @@ export function QuickStats() {
       </Card>
     </div>
   );
-} 
+}

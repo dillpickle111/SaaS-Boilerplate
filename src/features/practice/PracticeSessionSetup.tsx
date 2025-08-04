@@ -1,18 +1,19 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { 
-  Calculator, 
-  BookOpen, 
-  PenTool,
+import {
+  BookOpen,
+  Calculator,
   Clock,
+  PenTool,
+  Play,
   Target,
-  Play
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const categories = [
   {
@@ -72,8 +73,10 @@ export function PracticeSessionSetup() {
   const [questionCount, setQuestionCount] = useState(10);
 
   const handleStartSession = () => {
-    if (!selectedCategory || !selectedSessionType) return;
-    
+    if (!selectedCategory || !selectedSessionType) {
+      return;
+    }
+
     // In a real app, this would create a session in the database
     const sessionId = Math.floor(Math.random() * 10000);
     router.push(`/practice/session/${sessionId}`);
@@ -83,22 +86,22 @@ export function PracticeSessionSetup() {
     <div className="space-y-8">
       {/* Category Selection */}
       <div>
-        <h2 className="text-xl font-semibold mb-4">Choose a Category</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {categories.map((category) => (
-            <Card 
+        <h2 className="mb-4 text-xl font-semibold">Choose a Category</h2>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {categories.map(category => (
+            <Card
               key={category.id}
               className={`cursor-pointer transition-all ${
-                selectedCategory === category.id 
-                  ? 'ring-2 ring-blue-500 shadow-lg' 
+                selectedCategory === category.id
+                  ? 'shadow-lg ring-2 ring-blue-500'
                   : 'hover:shadow-md'
               }`}
               onClick={() => setSelectedCategory(category.id)}
             >
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <div className={`p-3 rounded-lg ${category.color}`}>
-                    <category.icon className="h-6 w-6 text-white" />
+                  <div className={`rounded-lg p-3 ${category.color}`}>
+                    <category.icon className="size-6 text-white" />
                   </div>
                   <div className="text-right">
                     <div className="text-2xl font-bold">{category.questionCount}</div>
@@ -115,22 +118,22 @@ export function PracticeSessionSetup() {
 
       {/* Session Type Selection */}
       <div>
-        <h2 className="text-xl font-semibold mb-4">Choose Session Type</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {sessionTypes.map((sessionType) => (
-            <Card 
+        <h2 className="mb-4 text-xl font-semibold">Choose Session Type</h2>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {sessionTypes.map(sessionType => (
+            <Card
               key={sessionType.id}
               className={`cursor-pointer transition-all ${
-                selectedSessionType === sessionType.id 
-                  ? 'ring-2 ring-blue-500 shadow-lg' 
+                selectedSessionType === sessionType.id
+                  ? 'shadow-lg ring-2 ring-blue-500'
                   : 'hover:shadow-md'
               }`}
               onClick={() => setSelectedSessionType(sessionType.id)}
             >
               <CardHeader>
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800">
-                    <sessionType.icon className="h-5 w-5" />
+                  <div className="rounded-lg bg-gray-100 p-2 dark:bg-gray-800">
+                    <sessionType.icon className="size-5" />
                   </div>
                   <div>
                     <CardTitle className="text-lg">{sessionType.name}</CardTitle>
@@ -145,16 +148,18 @@ export function PracticeSessionSetup() {
 
       {/* Question Count Selection */}
       <div>
-        <h2 className="text-xl font-semibold mb-4">Number of Questions</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[5, 10, 20, 50].map((count) => (
+        <h2 className="mb-4 text-xl font-semibold">Number of Questions</h2>
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          {[5, 10, 20, 50].map(count => (
             <Button
               key={count}
               variant={questionCount === count ? 'default' : 'outline'}
               className="h-16 text-lg"
               onClick={() => setQuestionCount(count)}
             >
-              {count} Questions
+              {count}
+              {' '}
+              Questions
             </Button>
           ))}
         </div>
@@ -162,10 +167,10 @@ export function PracticeSessionSetup() {
 
       {/* Session Summary */}
       {selectedCategory && selectedSessionType && (
-        <Card className="bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
+        <Card className="border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Play className="h-5 w-5" />
+              <Play className="size-5" />
               Session Summary
             </CardTitle>
           </CardHeader>
@@ -191,23 +196,25 @@ export function PracticeSessionSetup() {
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium">Time Limit:</span>
                   <Badge variant="secondary">
-                    {sessionTypes.find(s => s.id === selectedSessionType)?.timeLimit} min/question
+                    {sessionTypes.find(s => s.id === selectedSessionType)?.timeLimit}
+                    {' '}
+                    min/question
                   </Badge>
                 </div>
               )}
             </div>
-            
-            <Button 
+
+            <Button
               onClick={handleStartSession}
-              className="w-full mt-6"
+              className="mt-6 w-full"
               size="lg"
             >
               Start Practice Session
-              <Play className="ml-2 h-4 w-4" />
+              <Play className="ml-2 size-4" />
             </Button>
           </CardContent>
         </Card>
       )}
     </div>
   );
-} 
+}

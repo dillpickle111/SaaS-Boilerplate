@@ -127,121 +127,7 @@ function QuestionText({ question }: { question: string }) {
   );
 }
 
-// Letter badge component - separate from answer option
-function LetterBadge({
-  letter,
-  isSelected = false,
-  isStruckOut = false,
-}: {
-  letter: string;
-  isSelected?: boolean;
-  isStruckOut?: boolean;
-}) {
-  const getBadgeColor = () => {
-    if (isStruckOut) {
-      return {
-        bg: '#f3f4f6', // bg-gray-200
-        text: '#6b7280', // text-gray-500
-        border: '#d1d5db', // border-gray-300
-      };
-    }
-    if (isSelected) {
-      return {
-        bg: '#2563eb', // bg-blue-600
-        text: '#ffffff', // text-white
-        border: '#2563eb', // border-blue-600
-      };
-    }
-    return {
-      bg: '#ffffff', // bg-white
-      text: '#111827', // text-gray-900
-      border: '#000000', // border-black
-    };
-  };
 
-  const colors = getBadgeColor();
-
-  return (
-    <div className="relative shrink-0">
-      <div
-        className="flex size-[30px] items-center justify-center rounded-full border transition-all duration-300"
-        style={{
-          backgroundColor: colors.bg,
-          borderColor: colors.border,
-        }}
-      >
-        <span
-          className="font-['SF_Pro',_sans-serif] text-[16px] font-semibold transition-all duration-300"
-          style={{ color: colors.text }}
-        >
-          {letter}
-        </span>
-      </div>
-    </div>
-  );
-}
-
-// Strike circle component - separate from answer option
-function StrikeCircle({
-  letter,
-  isStruckOut = false,
-  onClick,
-}: {
-  letter: string;
-  isStruckOut?: boolean;
-  onClick?: () => void;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className="shrink-0 rounded p-1 transition-colors hover:bg-black/5"
-      aria-label={isStruckOut ? `Undo strike for option ${letter}` : `Strike option ${letter}`}
-    >
-      <div className="relative size-[30px]">
-        <svg
-          className="size-full"
-          viewBox="0 0 30 30"
-          fill="none"
-        >
-          <circle
-            cx="15"
-            cy="15"
-            r="14.5"
-            fill="white"
-            stroke="#6b7280"
-            strokeWidth="1"
-          />
-        </svg>
-        <div className="absolute inset-0 flex items-center justify-center">
-          {isStruckOut
-            ? (
-                // Undo icon when struck out
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z"
-                    stroke="#6b7280"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M9 12L15 12M9 12L12 9M9 12L12 15"
-                    stroke="#6b7280"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              )
-            : (
-                // Letter when not struck out
-                <span className="font-['SF_Pro',_sans-serif] text-[16px] font-semibold text-gray-500">
-                  {letter}
-                </span>
-              )}
-        </div>
-      </div>
-    </button>
-  );
-}
 
 // Option circle component from Figma Make
 function OptionCircle({ letter, isSelected = false }: { letter: string; isSelected?: boolean }) {
@@ -406,7 +292,7 @@ function AnswerOptions({
 
           {/* Horizontal strikethrough line across entire answer row */}
           {struckOutAnswers.includes(option.letter) && (
-            <div className="pointer-events-none absolute left-[-6px] right-[40px] top-1/2 z-10 h-[2px] rounded bg-gray-600 opacity-80" style={{ transform: 'translateY(-50%)' }} />
+            <div className="pointer-events-none absolute left-[-6px] right-[34px] top-1/2 z-10 h-[2px] rounded bg-gray-600 opacity-80" style={{ transform: 'translateY(-50%)' }} />
           )}
 
           {/* StrikeCircle outside AnswerOption */}
@@ -578,7 +464,7 @@ const mockQuestions: Record<string, Question> = {
 };
 
 export function QuestionViewer({
-  category,
+  category: _category,
   questionId,
 }: {
   category: string;

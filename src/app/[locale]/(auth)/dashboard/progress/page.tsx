@@ -1,20 +1,15 @@
-import { useTranslations } from 'next-intl';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
-import { 
-  TrendingUp, 
-  Clock, 
-  Target, 
+import {
+  BarChart3,
   CheckCircle,
-  XCircle,
-  Calendar,
-  BarChart3
+  Clock,
+  Target,
+  TrendingUp,
 } from 'lucide-react';
 
-const DashboardProgressPage = () => {
-  const t = useTranslations('DashboardProgress');
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 
+const DashboardProgressPage = () => {
   // Mock data - in real app this would come from the database
   const progressData = {
     totalQuestions: 1247,
@@ -93,16 +88,20 @@ const DashboardProgressPage = () => {
       </div>
 
       {/* Overview Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Questions Answered</CardTitle>
-            <CheckCircle className="h-4 w-4 text-muted-foreground" />
+            <CheckCircle className="size-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{progressData.questionsAnswered}</div>
             <p className="text-xs text-muted-foreground">
-              of {progressData.totalQuestions} total
+              of
+              {' '}
+              {progressData.totalQuestions}
+              {' '}
+              total
             </p>
           </CardContent>
         </Card>
@@ -110,12 +109,17 @@ const DashboardProgressPage = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Accuracy Rate</CardTitle>
-            <Target className="h-4 w-4 text-muted-foreground" />
+            <Target className="size-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{progressData.accuracy}%</div>
+            <div className="text-2xl font-bold">
+              {progressData.accuracy}
+              %
+            </div>
             <p className="text-xs text-muted-foreground">
-              {progressData.correctAnswers} correct answers
+              {progressData.correctAnswers}
+              {' '}
+              correct answers
             </p>
           </CardContent>
         </Card>
@@ -123,12 +127,17 @@ const DashboardProgressPage = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Study Time</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
+            <Clock className="size-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{progressData.totalTime}h</div>
+            <div className="text-2xl font-bold">
+              {progressData.totalTime}
+              h
+            </div>
             <p className="text-xs text-muted-foreground">
-              {progressData.averageTimePerQuestion} min/question
+              {progressData.averageTimePerQuestion}
+              {' '}
+              min/question
             </p>
           </CardContent>
         </Card>
@@ -136,7 +145,7 @@ const DashboardProgressPage = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Current Streak</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <TrendingUp className="size-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{progressData.currentStreak}</div>
@@ -148,7 +157,7 @@ const DashboardProgressPage = () => {
       </div>
 
       {/* Category Progress */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle>Category Progress</CardTitle>
@@ -157,20 +166,27 @@ const DashboardProgressPage = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {categoryProgress.map((category) => (
+            {categoryProgress.map(category => (
               <div key={category.name}>
-                <div className="flex justify-between items-center mb-2">
+                <div className="mb-2 flex items-center justify-between">
                   <span className="text-sm font-medium">{category.name}</span>
                   <span className="text-sm text-muted-foreground">
-                    {category.completed}/{category.total} ({Math.round((category.completed / category.total) * 100)}%)
+                    {category.completed}
+                    /
+                    {category.total}
+                    {' '}
+                    (
+                    {Math.round((category.completed / category.total) * 100)}
+                    %)
                   </span>
                 </div>
                 <Progress value={(category.completed / category.total) * 100} className="h-2" />
-                <div className="flex justify-between items-center mt-1">
+                <div className="mt-1 flex items-center justify-between">
                   <span className="text-xs text-muted-foreground">
-                    {category.accuracy}% accuracy
+                    {category.accuracy}
+                    % accuracy
                   </span>
-                  <div className={`w-3 h-3 rounded-full ${category.color}`} />
+                  <div className={`size-3 rounded-full ${category.color}`} />
                 </div>
               </div>
             ))}
@@ -186,21 +202,29 @@ const DashboardProgressPage = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {recentSessions.map((session) => (
-                <div key={session.id} className="flex items-center justify-between p-3 border rounded-lg">
+              {recentSessions.map(session => (
+                <div key={session.id} className="flex items-center justify-between rounded-lg border p-3">
                   <div className="flex items-center space-x-3">
-                    <div className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800">
-                      <BarChart3 className="h-4 w-4" />
+                    <div className="rounded-lg bg-gray-100 p-2 dark:bg-gray-800">
+                      <BarChart3 className="size-4" />
                     </div>
                     <div>
                       <div className="font-medium">{session.category}</div>
                       <div className="text-sm text-muted-foreground">
-                        {session.type} • {session.questions} questions
+                        {session.type}
+                        {' '}
+                        •
+                        {session.questions}
+                        {' '}
+                        questions
                       </div>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="font-medium">{session.score}%</div>
+                    <div className="font-medium">
+                      {session.score}
+                      %
+                    </div>
                     <div className="text-sm text-muted-foreground">{session.time}</div>
                   </div>
                 </div>
@@ -219,9 +243,9 @@ const DashboardProgressPage = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="h-64 flex items-center justify-center text-muted-foreground">
+          <div className="flex h-64 items-center justify-center text-muted-foreground">
             <div className="text-center">
-              <TrendingUp className="h-12 w-12 mx-auto mb-4 opacity-50" />
+              <TrendingUp className="mx-auto mb-4 size-12 opacity-50" />
               <p>Performance charts coming soon</p>
             </div>
           </div>
@@ -231,4 +255,4 @@ const DashboardProgressPage = () => {
   );
 };
 
-export default DashboardProgressPage; 
+export default DashboardProgressPage;

@@ -8,7 +8,7 @@
 
 ## 🎯 Project Overview
 
-**Root Domain**: prepify.xyz (hosted on Framer for marketing/landing pages)  
+**Root Domain**: prepify.xyz (hosted on Framer for marketing/landing pages)
 **Core App**: This repository powers the SaaS web application with user authentication, question bank, and practice sessions.
 
 ### Architecture

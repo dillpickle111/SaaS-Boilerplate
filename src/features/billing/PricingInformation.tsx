@@ -1,13 +1,9 @@
-import { useTranslations } from 'next-intl';
-
 import { PricingCard } from '@/features/billing/PricingCard';
 import { PricingFeature } from '@/features/billing/PricingFeature';
 
 export const PricingInformation = (props: {
   buttonList: Record<string, React.ReactNode>;
 }) => {
-  const t = useTranslations('PricingPlan');
-
   // Prepify is completely free - no pricing tiers
   const freePlan = {
     id: 'free',
@@ -34,15 +30,20 @@ export const PricingInformation = (props: {
           button={props.buttonList[freePlan.id]}
         >
           <PricingFeature>
-            {freePlan.features.questions.toLocaleString()}+ SAT Questions
+            {freePlan.features.questions.toLocaleString()}
+            + SAT Questions
           </PricingFeature>
 
           <PricingFeature>
-            {freePlan.features.categories} Subject Categories
+            {freePlan.features.categories}
+            {' '}
+            Subject Categories
           </PricingFeature>
 
           <PricingFeature>
-            {freePlan.features.practiceModes} Practice Modes
+            {freePlan.features.practiceModes}
+            {' '}
+            Practice Modes
           </PricingFeature>
 
           <PricingFeature>

@@ -19,4 +19,3 @@ const SignInPage = (props: { params: { locale: string } }) => (
 );
 
 export default SignInPage;
-

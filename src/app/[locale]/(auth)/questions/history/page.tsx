@@ -25,4 +25,4 @@ export default async function QuestionHistoryPage() {
       </div>
     </div>
   );
-} 
+}
