@@ -3,6 +3,7 @@
 import { enUS, frFR } from '@clerk/localizations';
 import { ClerkProvider } from '@clerk/nextjs';
 
+import { Navbar } from '@/components/Navbar';
 import { AppConfig } from '@/utils/AppConfig';
 
 export default function AuthLayout(props: {
@@ -36,7 +37,12 @@ export default function AuthLayout(props: {
       signUpFallbackRedirectUrl={dashboardUrl}
       afterSignOutUrl={afterSignOutUrl}
     >
-      {props.children}
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <Navbar />
+        <main className="pt-16">
+          {props.children}
+        </main>
+      </div>
     </ClerkProvider>
   );
 }
