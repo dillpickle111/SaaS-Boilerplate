@@ -39,7 +39,7 @@ export default async function AppPage() {
             <BookOpen className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">3,000+</div>
+            <div className="text-2xl font-bold">2,017</div>
             <p className="text-xs text-muted-foreground">
               Digital SAT questions available
             </p>
@@ -52,9 +52,9 @@ export default async function AppPage() {
             <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">3</div>
+            <div className="text-2xl font-bold">1</div>
             <p className="text-xs text-muted-foreground">
-              Math, Reading, Writing
+              Math (Reading & Writing coming soon)
             </p>
           </CardContent>
         </Card>
