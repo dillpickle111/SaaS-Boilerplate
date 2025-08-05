@@ -444,94 +444,99 @@ export function EnhancedQuestionBank() {
           </div>
         </div>
 
-        {/* Fixed Active Filters Bar - Always visible when filters are active */}
-        {!isPracticeMode && hasActiveFilters && (
+        {/* Fixed Active Filters Bar - Always present to prevent layout shifts */}
+        {!isPracticeMode && (
           <div className="mb-6 h-16 flex items-center">
-            <Card className="w-full">
-              <CardContent className="pt-4 pb-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-sm font-medium text-gray-700">Active Filters:</span>
-                    <div className="flex flex-wrap gap-2">
-                      {filters.modules.map(module => (
-                        <Badge 
-                          key={`module-${module}`} 
-                          variant="secondary"
-                          className="flex items-center space-x-1 animate-in slide-in-from-left-1"
-                        >
-                          <span>{getModuleLabel(module)}</span>
-                          <button
-                            onClick={() => clearFilter('modules', module)}
-                            className="ml-1 hover:bg-gray-200 rounded-full p-0.5 transition-colors"
-                          >
-                            <X className="h-3 w-3" />
-                          </button>
-                        </Badge>
-                      ))}
-                      {filters.difficulties.map(difficulty => {
-                        const option = difficultyOptions.find(opt => opt.value === difficulty);
-                        return (
+            {hasActiveFilters ? (
+              <Card className="w-full">
+                <CardContent className="pt-4 pb-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-sm font-medium text-gray-700">Active Filters:</span>
+                      <div className="flex flex-wrap gap-2">
+                        {filters.modules.map(module => (
                           <Badge 
-                            key={`difficulty-${difficulty}`} 
-                            variant="outline"
-                            className={`flex items-center space-x-1 animate-in slide-in-from-left-1 ${option?.color}`}
-                          >
-                            <span>{getDifficultyLabel(difficulty)}</span>
-                            <button
-                              onClick={() => clearFilter('difficulties', difficulty)}
-                              className="ml-1 hover:bg-gray-200 rounded-full p-0.5 transition-colors"
-                            >
-                              <X className="h-3 w-3" />
-                            </button>
-                          </Badge>
-                        );
-                      })}
-                      {filters.skills.map(skill => {
-                        const skillInfo = skills.find(s => s.code === skill);
-                        return (
-                          <Badge 
-                            key={`skill-${skill}`} 
+                            key={`module-${module}`} 
                             variant="secondary"
                             className="flex items-center space-x-1 animate-in slide-in-from-left-1"
                           >
-                            <span>{skillInfo?.description || skill}</span>
+                            <span>{getModuleLabel(module)}</span>
                             <button
-                              onClick={() => clearFilter('skills', skill)}
+                              onClick={() => clearFilter('modules', module)}
                               className="ml-1 hover:bg-gray-200 rounded-full p-0.5 transition-colors"
                             >
                               <X className="h-3 w-3" />
                             </button>
                           </Badge>
-                        );
-                      })}
-                      {filters.versions.map(version => (
-                        <Badge 
-                          key={`version-${version}`} 
-                          variant="secondary"
-                          className="flex items-center space-x-1 animate-in slide-in-from-left-1"
-                        >
-                          <span>{version}</span>
-                          <button
-                            onClick={() => clearFilter('versions', version)}
-                            className="ml-1 hover:bg-gray-200 rounded-full p-0.5 transition-colors"
+                        ))}
+                        {filters.difficulties.map(difficulty => {
+                          const option = difficultyOptions.find(opt => opt.value === difficulty);
+                          return (
+                            <Badge 
+                              key={`difficulty-${difficulty}`} 
+                              variant="outline"
+                              className={`flex items-center space-x-1 animate-in slide-in-from-left-1 ${option?.color}`}
+                            >
+                              <span>{getDifficultyLabel(difficulty)}</span>
+                              <button
+                                onClick={() => clearFilter('difficulties', difficulty)}
+                                className="ml-1 hover:bg-gray-200 rounded-full p-0.5 transition-colors"
+                              >
+                                <X className="h-3 w-3" />
+                              </button>
+                            </Badge>
+                          );
+                        })}
+                        {filters.skills.map(skill => {
+                          const skillInfo = skills.find(s => s.code === skill);
+                          return (
+                            <Badge 
+                              key={`skill-${skill}`} 
+                              variant="secondary"
+                              className="flex items-center space-x-1 animate-in slide-in-from-left-1"
+                            >
+                              <span>{skillInfo?.description || skill}</span>
+                              <button
+                                onClick={() => clearFilter('skills', skill)}
+                                className="ml-1 hover:bg-gray-200 rounded-full p-0.5 transition-colors"
+                              >
+                                <X className="h-3 w-3" />
+                              </button>
+                            </Badge>
+                          );
+                        })}
+                        {filters.versions.map(version => (
+                          <Badge 
+                            key={`version-${version}`} 
+                            variant="secondary"
+                            className="flex items-center space-x-1 animate-in slide-in-from-left-1"
                           >
-                            <X className="h-3 w-3" />
-                          </button>
-                        </Badge>
-                      ))}
+                            <span>{version}</span>
+                            <button
+                              onClick={() => clearFilter('versions', version)}
+                              className="ml-1 hover:bg-gray-200 rounded-full p-0.5 transition-colors"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                          </Badge>
+                        ))}
+                      </div>
                     </div>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={clearAllFilters}
+                      className="animate-in slide-in-from-right-1"
+                    >
+                      Clear All
+                    </Button>
                   </div>
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={clearAllFilters}
-                    className="animate-in slide-in-from-right-1"
-                  >
-                    Clear All
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            ) : (
+              // Empty space to maintain consistent layout
+              <div className="w-full h-16" />
+            )}
           </div>
         )}
 
