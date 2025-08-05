@@ -1,39 +1,35 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  Shuffle, 
-  Eye, 
-  EyeOff,
+import {
+  ArrowLeft,
   CheckCircle,
-  XCircle,
-  Flag,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Clock,
+  Eye,
+  EyeOff,
   Filter,
+  Flag,
   Play,
   X,
-  ChevronDown,
-  ChevronUp,
-  Check,
-  Plus,
-  ArrowLeft,
-  Settings
+  XCircle,
 } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { Checkbox } from '@/components/ui/checkbox';
-import { getQuestions, getQuestionStats, getAvailableSkills } from '@/libs/questions';
+import { Progress } from '@/components/ui/progress';
+import { getAvailableSkills, getQuestions, getQuestionStats } from '@/libs/questions';
 
-interface Question {
+type Question = {
   id: string;
   question_id: string;
   module: string;
@@ -46,30 +42,30 @@ interface Question {
     correct_answer?: string;
     explanation?: string;
   };
-}
+};
 
-interface QuestionStatus {
+type QuestionStatus = {
   [questionId: string]: {
     status: 'unattempted' | 'correct' | 'incorrect' | 'review';
     timeSpent?: number;
     attempts?: number;
     selectedAnswer?: string;
   };
-}
+};
 
-interface FilterState {
+type FilterState = {
   modules: string[];
   difficulties: string[];
   skills: string[];
   versions: string[];
-}
+};
 
-interface FilterCounts {
+type FilterCounts = {
   modules: { [key: string]: number };
   difficulties: { [key: string]: number };
   skills: { [key: string]: number };
   versions: { [key: string]: number };
-}
+};
 
 export function UnifiedQuestionBank() {
   // State for filtering and discovery
@@ -78,7 +74,7 @@ export function UnifiedQuestionBank() {
   const [stats, setStats] = useState<any>(null);
   const [skills, setSkills] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
   // State for practice session
   const [isPracticeMode, setIsPracticeMode] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -87,37 +83,37 @@ export function UnifiedQuestionBank() {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
   const [showExplanation, setShowExplanation] = useState(false);
-  
+
   // UI state
   const [showFilters, setShowFilters] = useState(true);
   const [showMetadata, setShowMetadata] = useState(true);
   const [showNavigation, setShowNavigation] = useState(true);
-  
+
   // Filter state - now using arrays for multi-select
   const [filters, setFilters] = useState<FilterState>({
     modules: [],
     difficulties: [],
     skills: [],
-    versions: []
+    versions: [],
   });
 
   // Available filter options
   const moduleOptions = [
     { value: 'math', label: 'Math' },
     { value: 'reading', label: 'Reading' },
-    { value: 'writing', label: 'Writing' }
+    { value: 'writing', label: 'Writing' },
   ];
 
   const difficultyOptions = [
     { value: 'E', label: 'Easy', color: 'bg-green-100 text-green-800 border-green-200' },
     { value: 'M', label: 'Medium', color: 'bg-orange-100 text-orange-800 border-orange-200' },
-    { value: 'H', label: 'Hard', color: 'bg-red-100 text-red-800 border-red-200' }
+    { value: 'H', label: 'Hard', color: 'bg-red-100 text-red-800 border-red-200' },
   ];
 
   const versionOptions = [
     { value: '2023', label: '2023' },
     { value: '2024', label: '2024' },
-    { value: '2025', label: '2025' }
+    { value: '2025', label: '2025' },
   ];
 
   // Calculate filter counts in real-time
@@ -126,18 +122,18 @@ export function UnifiedQuestionBank() {
       modules: {},
       difficulties: {},
       skills: {},
-      versions: {}
+      versions: {},
     };
 
     // Apply current filters except the one being counted
-    allQuestions.forEach(question => {
+    allQuestions.forEach((question) => {
       // Check if question passes current filters (excluding the filter being counted)
-      
+
       // Count modules
       const moduleFilters = filters.modules.filter(m => m !== question.module);
       const difficultyFilters = filters.difficulties.filter(d => d !== question.difficulty);
       const skillFilters = filters.skills.filter(s => s !== question.skill_cd);
-      
+
       if (moduleFilters.length === 0 && difficultyFilters.length === 0 && skillFilters.length === 0) {
         counts.modules[question.module] = (counts.modules[question.module] || 0) + 1;
         counts.difficulties[question.difficulty] = (counts.difficulties[question.difficulty] || 0) + 1;
@@ -145,7 +141,7 @@ export function UnifiedQuestionBank() {
       } else {
         // Apply other filters
         let passesFilters = true;
-        
+
         if (moduleFilters.length > 0 && !moduleFilters.includes(question.module)) {
           passesFilters = false;
         }
@@ -155,7 +151,7 @@ export function UnifiedQuestionBank() {
         if (skillFilters.length > 0 && !skillFilters.includes(question.skill_cd)) {
           passesFilters = false;
         }
-        
+
         if (passesFilters) {
           counts.modules[question.module] = (counts.modules[question.module] || 0) + 1;
           counts.difficulties[question.difficulty] = (counts.difficulties[question.difficulty] || 0) + 1;
@@ -174,9 +170,9 @@ export function UnifiedQuestionBank() {
         const [questionStats, availableSkills, allQuestionsData] = await Promise.all([
           getQuestionStats(),
           getAvailableSkills(),
-          getQuestions({ limit: 1000 }) // Load more questions for practice
+          getQuestions({ limit: 1000 }), // Load more questions for practice
         ]);
-        
+
         setStats(questionStats);
         setSkills(availableSkills);
         setAllQuestions(allQuestionsData);
@@ -233,9 +229,9 @@ export function UnifiedQuestionBank() {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'correct': return <CheckCircle className="h-3 w-3 text-white" />;
-      case 'incorrect': return <XCircle className="h-3 w-3 text-white" />;
-      case 'review': return <Flag className="h-3 w-3 text-white" />;
+      case 'correct': return <CheckCircle className="size-3 text-white" />;
+      case 'incorrect': return <XCircle className="size-3 text-white" />;
+      case 'review': return <Flag className="size-3 text-white" />;
       default: return null;
     }
   };
@@ -247,8 +243,10 @@ export function UnifiedQuestionBank() {
   };
 
   const handleStartPractice = () => {
-    if (filteredQuestions.length === 0) return;
-    
+    if (filteredQuestions.length === 0) {
+      return;
+    }
+
     setIsPracticeMode(true);
     setCurrentQuestionIndex(0);
     setTimer(0);
@@ -278,11 +276,13 @@ export function UnifiedQuestionBank() {
   };
 
   const handleCheckAnswer = () => {
-    if (!currentQuestion || !selectedAnswer) return;
-    
+    if (!currentQuestion || !selectedAnswer) {
+      return;
+    }
+
     const isCorrect = selectedAnswer === currentQuestion.content.correct_answer;
     const newStatus = isCorrect ? 'correct' : 'incorrect';
-    
+
     setQuestionStatus(prev => ({
       ...prev,
       [currentQuestion.question_id]: {
@@ -290,10 +290,10 @@ export function UnifiedQuestionBank() {
         status: newStatus,
         selectedAnswer,
         timeSpent: timer,
-        attempts: (prev[currentQuestion.question_id]?.attempts || 0) + 1
-      }
+        attempts: (prev[currentQuestion.question_id]?.attempts || 0) + 1,
+      },
     }));
-    
+
     setShowExplanation(true);
   };
 
@@ -314,16 +314,16 @@ export function UnifiedQuestionBank() {
   };
 
   const handleFilterChange = (filterType: keyof FilterState, value: string, checked: boolean) => {
-    setFilters(prev => {
+    setFilters((prev) => {
       const currentArray = prev[filterType];
       let newArray: string[];
-      
+
       if (checked) {
         newArray = [...currentArray, value];
       } else {
         newArray = currentArray.filter(item => item !== value);
       }
-      
+
       return { ...prev, [filterType]: newArray };
     });
   };
@@ -331,7 +331,7 @@ export function UnifiedQuestionBank() {
   const clearFilter = (filterType: keyof FilterState, value: string) => {
     setFilters(prev => ({
       ...prev,
-      [filterType]: prev[filterType].filter(item => item !== value)
+      [filterType]: prev[filterType].filter(item => item !== value),
     }));
   };
 
@@ -340,31 +340,31 @@ export function UnifiedQuestionBank() {
       modules: [],
       difficulties: [],
       skills: [],
-      versions: []
+      versions: [],
     });
   };
 
   // Apply filters whenever filter state changes
   useEffect(() => {
     let filtered = allQuestions;
-    
+
     if (filters.modules.length > 0) {
       filtered = filtered.filter(q => filters.modules.includes(q.module));
     }
-    
+
     if (filters.difficulties.length > 0) {
       filtered = filtered.filter(q => filters.difficulties.includes(q.difficulty));
     }
-    
+
     if (filters.skills.length > 0) {
       filtered = filtered.filter(q => filters.skills.includes(q.skill_cd));
     }
-    
+
     // Note: Version filtering would need to be implemented based on your data structure
     // For now, we'll skip version filtering
-    
+
     setFilteredQuestions(filtered);
-    
+
     // Reset practice mode if filters change
     if (isPracticeMode) {
       setIsPracticeMode(false);
@@ -378,9 +378,9 @@ export function UnifiedQuestionBank() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="mx-auto mb-4 size-12 animate-spin rounded-full border-b-2 border-blue-600"></div>
           <p>Loading question bank...</p>
         </div>
       </div>
@@ -392,54 +392,59 @@ export function UnifiedQuestionBank() {
       <div className="container mx-auto px-4 py-6">
         {/* Header */}
         <div className="mb-6">
-          <div className="flex items-center justify-between mb-4">
+          <div className="mb-4 flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
                 {isPracticeMode ? 'Practice Session' : 'Question Bank'}
               </h1>
               <p className="text-gray-600">
-                {isPracticeMode 
-                  ? `Question ${currentQuestionIndex + 1} of ${totalQuestions}` 
-                  : 'Filter and practice SAT questions'
-                }
+                {isPracticeMode
+                  ? `Question ${currentQuestionIndex + 1} of ${totalQuestions}`
+                  : 'Filter and practice SAT questions'}
               </p>
             </div>
             <div className="flex items-center space-x-2">
               {isPracticeMode && (
                 <>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     size="sm"
                     onClick={() => setShowMetadata(!showMetadata)}
                   >
-                    {showMetadata ? <EyeOff className="h-4 w-4 mr-2" /> : <Eye className="h-4 w-4 mr-2" />}
-                    {showMetadata ? 'Hide' : 'Show'} Metadata
+                    {showMetadata ? <EyeOff className="mr-2 size-4" /> : <Eye className="mr-2 size-4" />}
+                    {showMetadata ? 'Hide' : 'Show'}
+                    {' '}
+                    Metadata
                   </Button>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     size="sm"
                     onClick={() => setShowNavigation(!showNavigation)}
                   >
-                    {showNavigation ? 'Hide' : 'Show'} Navigation
+                    {showNavigation ? 'Hide' : 'Show'}
+                    {' '}
+                    Navigation
                   </Button>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     size="sm"
                     onClick={handleEndPractice}
                   >
-                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    <ArrowLeft className="mr-2 size-4" />
                     End Practice
                   </Button>
                 </>
               )}
               {!isPracticeMode && (
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   size="sm"
                   onClick={() => setShowFilters(!showFilters)}
                 >
-                  <Filter className="h-4 w-4 mr-2" />
-                  {showFilters ? 'Hide' : 'Show'} Filters
+                  <Filter className="mr-2 size-4" />
+                  {showFilters ? 'Hide' : 'Show'}
+                  {' '}
+                  Filters
                 </Button>
               )}
             </div>
@@ -448,83 +453,83 @@ export function UnifiedQuestionBank() {
 
         {/* Fixed Active Filters Bar - Always visible when filters are active */}
         {!isPracticeMode && hasActiveFilters && (
-          <div className="mb-6 h-16 flex items-center">
+          <div className="mb-6 flex h-16 items-center">
             <Card className="w-full">
-              <CardContent className="pt-4 pb-4">
+              <CardContent className="py-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <span className="text-sm font-medium text-gray-700">Active Filters:</span>
                     <div className="flex flex-wrap gap-2">
                       {filters.modules.map(module => (
-                        <Badge 
-                          key={`module-${module}`} 
+                        <Badge
+                          key={`module-${module}`}
                           variant="secondary"
                           className="flex items-center space-x-1 animate-in slide-in-from-left-1"
                         >
                           <span>{getModuleLabel(module)}</span>
                           <button
                             onClick={() => clearFilter('modules', module)}
-                            className="ml-1 hover:bg-gray-200 rounded-full p-0.5 transition-colors"
+                            className="ml-1 rounded-full p-0.5 transition-colors hover:bg-gray-200"
                           >
-                            <X className="h-3 w-3" />
+                            <X className="size-3" />
                           </button>
                         </Badge>
                       ))}
-                      {filters.difficulties.map(difficulty => {
+                      {filters.difficulties.map((difficulty) => {
                         const option = difficultyOptions.find(opt => opt.value === difficulty);
                         return (
-                          <Badge 
-                            key={`difficulty-${difficulty}`} 
+                          <Badge
+                            key={`difficulty-${difficulty}`}
                             variant="outline"
                             className={`flex items-center space-x-1 animate-in slide-in-from-left-1 ${option?.color}`}
                           >
                             <span>{getDifficultyLabel(difficulty)}</span>
                             <button
                               onClick={() => clearFilter('difficulties', difficulty)}
-                              className="ml-1 hover:bg-gray-200 rounded-full p-0.5 transition-colors"
+                              className="ml-1 rounded-full p-0.5 transition-colors hover:bg-gray-200"
                             >
-                              <X className="h-3 w-3" />
+                              <X className="size-3" />
                             </button>
                           </Badge>
                         );
                       })}
-                      {filters.skills.map(skill => {
+                      {filters.skills.map((skill) => {
                         const skillInfo = skills.find(s => s.code === skill);
                         return (
-                          <Badge 
-                            key={`skill-${skill}`} 
+                          <Badge
+                            key={`skill-${skill}`}
                             variant="secondary"
                             className="flex items-center space-x-1 animate-in slide-in-from-left-1"
                           >
                             <span>{skillInfo?.description || skill}</span>
                             <button
                               onClick={() => clearFilter('skills', skill)}
-                              className="ml-1 hover:bg-gray-200 rounded-full p-0.5 transition-colors"
+                              className="ml-1 rounded-full p-0.5 transition-colors hover:bg-gray-200"
                             >
-                              <X className="h-3 w-3" />
+                              <X className="size-3" />
                             </button>
                           </Badge>
                         );
                       })}
                       {filters.versions.map(version => (
-                        <Badge 
-                          key={`version-${version}`} 
+                        <Badge
+                          key={`version-${version}`}
                           variant="secondary"
                           className="flex items-center space-x-1 animate-in slide-in-from-left-1"
                         >
                           <span>{version}</span>
                           <button
                             onClick={() => clearFilter('versions', version)}
-                            className="ml-1 hover:bg-gray-200 rounded-full p-0.5 transition-colors"
+                            className="ml-1 rounded-full p-0.5 transition-colors hover:bg-gray-200"
                           >
-                            <X className="h-3 w-3" />
+                            <X className="size-3" />
                           </button>
                         </Badge>
                       ))}
                     </div>
                   </div>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     size="sm"
                     onClick={clearAllFilters}
                     className="animate-in slide-in-from-right-1"
@@ -543,8 +548,8 @@ export function UnifiedQuestionBank() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle>Filters</CardTitle>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   size="sm"
                   onClick={clearAllFilters}
                 >
@@ -553,26 +558,25 @@ export function UnifiedQuestionBank() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
                 {/* Module Filter */}
                 <div>
-                  <label className="text-sm font-medium mb-3 block">Subject</label>
+                  <label className="mb-3 block text-sm font-medium">Subject</label>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         className="w-full justify-between"
                       >
-                        {filters.modules.length === 0 
-                          ? 'All Subjects' 
-                          : `${filters.modules.length} selected`
-                        }
-                        <ChevronDown className="h-4 w-4" />
+                        {filters.modules.length === 0
+                          ? 'All Subjects'
+                          : `${filters.modules.length} selected`}
+                        <ChevronDown className="size-4" />
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-56">
                       <div className="space-y-2">
-                        {moduleOptions.map(option => {
+                        {moduleOptions.map((option) => {
                           const count = filterCounts.modules[option.value] || 0;
                           const isDisabled = count === 0;
                           return (
@@ -580,18 +584,21 @@ export function UnifiedQuestionBank() {
                               <Checkbox
                                 id={`module-${option.value}`}
                                 checked={filters.modules.includes(option.value)}
-                                onCheckedChange={(checked) => 
-                                  handleFilterChange('modules', option.value, checked as boolean)
-                                }
+                                onCheckedChange={checked =>
+                                  handleFilterChange('modules', option.value, checked as boolean)}
                                 disabled={isDisabled}
                               />
-                              <label 
+                              <label
                                 htmlFor={`module-${option.value}`}
                                 className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed ${
                                   isDisabled ? 'opacity-50' : ''
                                 }`}
                               >
-                                {option.label} ({count})
+                                {option.label}
+                                {' '}
+                                (
+                                {count}
+                                )
                               </label>
                             </div>
                           );
@@ -603,23 +610,22 @@ export function UnifiedQuestionBank() {
 
                 {/* Difficulty Filter */}
                 <div>
-                  <label className="text-sm font-medium mb-3 block">Difficulty</label>
+                  <label className="mb-3 block text-sm font-medium">Difficulty</label>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         className="w-full justify-between"
                       >
-                        {filters.difficulties.length === 0 
-                          ? 'All Difficulties' 
-                          : `${filters.difficulties.length} selected`
-                        }
-                        <ChevronDown className="h-4 w-4" />
+                        {filters.difficulties.length === 0
+                          ? 'All Difficulties'
+                          : `${filters.difficulties.length} selected`}
+                        <ChevronDown className="size-4" />
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-56">
                       <div className="space-y-2">
-                        {difficultyOptions.map(option => {
+                        {difficultyOptions.map((option) => {
                           const count = filterCounts.difficulties[option.value] || 0;
                           const isDisabled = count === 0;
                           return (
@@ -627,18 +633,21 @@ export function UnifiedQuestionBank() {
                               <Checkbox
                                 id={`difficulty-${option.value}`}
                                 checked={filters.difficulties.includes(option.value)}
-                                onCheckedChange={(checked) => 
-                                  handleFilterChange('difficulties', option.value, checked as boolean)
-                                }
+                                onCheckedChange={checked =>
+                                  handleFilterChange('difficulties', option.value, checked as boolean)}
                                 disabled={isDisabled}
                               />
-                              <label 
+                              <label
                                 htmlFor={`difficulty-${option.value}`}
                                 className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed ${
                                   isDisabled ? 'opacity-50' : ''
                                 }`}
                               >
-                                {option.label} ({count})
+                                {option.label}
+                                {' '}
+                                (
+                                {count}
+                                )
                               </label>
                             </div>
                           );
@@ -650,23 +659,22 @@ export function UnifiedQuestionBank() {
 
                 {/* Skill Filter */}
                 <div>
-                  <label className="text-sm font-medium mb-3 block">Skill</label>
+                  <label className="mb-3 block text-sm font-medium">Skill</label>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         className="w-full justify-between"
                       >
-                        {filters.skills.length === 0 
-                          ? 'All Skills' 
-                          : `${filters.skills.length} selected`
-                        }
-                        <ChevronDown className="h-4 w-4" />
+                        {filters.skills.length === 0
+                          ? 'All Skills'
+                          : `${filters.skills.length} selected`}
+                        <ChevronDown className="size-4" />
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-80 max-h-60 overflow-y-auto">
+                    <PopoverContent className="max-h-60 w-80 overflow-y-auto">
                       <div className="space-y-2">
-                        {skills.map(skill => {
+                        {skills.map((skill) => {
                           const count = filterCounts.skills[skill.code] || 0;
                           const isDisabled = count === 0;
                           return (
@@ -674,18 +682,21 @@ export function UnifiedQuestionBank() {
                               <Checkbox
                                 id={`skill-${skill.code}`}
                                 checked={filters.skills.includes(skill.code)}
-                                onCheckedChange={(checked) => 
-                                  handleFilterChange('skills', skill.code, checked as boolean)
-                                }
+                                onCheckedChange={checked =>
+                                  handleFilterChange('skills', skill.code, checked as boolean)}
                                 disabled={isDisabled}
                               />
-                              <label 
+                              <label
                                 htmlFor={`skill-${skill.code}`}
                                 className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed ${
                                   isDisabled ? 'opacity-50' : ''
                                 }`}
                               >
-                                {skill.description} ({count})
+                                {skill.description}
+                                {' '}
+                                (
+                                {count}
+                                )
                               </label>
                             </div>
                           );
@@ -697,18 +708,17 @@ export function UnifiedQuestionBank() {
 
                 {/* Version Filter */}
                 <div>
-                  <label className="text-sm font-medium mb-3 block">Version</label>
+                  <label className="mb-3 block text-sm font-medium">Version</label>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         className="w-full justify-between"
                       >
-                        {filters.versions.length === 0 
-                          ? 'All Versions' 
-                          : `${filters.versions.length} selected`
-                        }
-                        <ChevronDown className="h-4 w-4" />
+                        {filters.versions.length === 0
+                          ? 'All Versions'
+                          : `${filters.versions.length} selected`}
+                        <ChevronDown className="size-4" />
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-56">
@@ -718,11 +728,10 @@ export function UnifiedQuestionBank() {
                             <Checkbox
                               id={`version-${option.value}`}
                               checked={filters.versions.includes(option.value)}
-                              onCheckedChange={(checked) => 
-                                handleFilterChange('versions', option.value, checked as boolean)
-                              }
+                              onCheckedChange={checked =>
+                                handleFilterChange('versions', option.value, checked as boolean)}
                             />
-                            <label 
+                            <label
                               htmlFor={`version-${option.value}`}
                               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                             >
@@ -742,20 +751,28 @@ export function UnifiedQuestionBank() {
         {/* Stats Section */}
         {!isPracticeMode && (
           <div className="mb-6">
-            <div className="text-sm text-gray-600 mb-2">
-              Showing {filteredQuestions.length} of {allQuestions.length} questions
+            <div className="mb-2 text-sm text-gray-600">
+              Showing
+              {' '}
+              {filteredQuestions.length}
+              {' '}
+              of
+              {' '}
+              {allQuestions.length}
+              {' '}
+              questions
             </div>
-            
+
             {filteredQuestions.length === 0 ? (
               <Card>
                 <CardContent className="pt-6">
-                  <div className="text-center py-8">
-                    <div className="text-gray-400 mb-4">
-                      <Filter className="h-12 w-12 mx-auto" />
+                  <div className="py-8 text-center">
+                    <div className="mb-4 text-gray-400">
+                      <Filter className="mx-auto size-12" />
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">No questions found</h3>
-                    <p className="text-gray-600 mb-4">Try selecting different filters to find questions.</p>
-                    <Button 
+                    <h3 className="mb-2 text-lg font-semibold text-gray-900">No questions found</h3>
+                    <p className="mb-4 text-gray-600">Try selecting different filters to find questions.</p>
+                    <Button
                       variant="outline"
                       onClick={clearAllFilters}
                     >
@@ -766,14 +783,14 @@ export function UnifiedQuestionBank() {
               </Card>
             ) : (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
                   <Card>
                     <CardContent className="pt-6">
                       <div className="text-2xl font-bold text-blue-600">{filteredQuestions.length}</div>
                       <p className="text-xs text-muted-foreground">Total Questions</p>
                     </CardContent>
                   </Card>
-                  
+
                   <Card>
                     <CardContent className="pt-6">
                       <div className="text-2xl font-bold text-green-600">
@@ -782,7 +799,7 @@ export function UnifiedQuestionBank() {
                       <p className="text-xs text-muted-foreground">Completed</p>
                     </CardContent>
                   </Card>
-                  
+
                   <Card>
                     <CardContent className="pt-6">
                       <div className="text-2xl font-bold text-orange-600">
@@ -797,16 +814,18 @@ export function UnifiedQuestionBank() {
                 <Card>
                   <CardContent className="pt-6">
                     <div className="text-center">
-                      <h3 className="text-lg font-semibold mb-2">Ready to Practice?</h3>
-                      <p className="text-gray-600 mb-4">
-                        {filteredQuestions.length} questions match your current filters
+                      <h3 className="mb-2 text-lg font-semibold">Ready to Practice?</h3>
+                      <p className="mb-4 text-gray-600">
+                        {filteredQuestions.length}
+                        {' '}
+                        questions match your current filters
                       </p>
-                      <Button 
-                        size="lg" 
+                      <Button
+                        size="lg"
                         onClick={handleStartPractice}
-                        className="bg-blue-600 hover:bg-blue-700 transition-colors"
+                        className="bg-blue-600 transition-colors hover:bg-blue-700"
                       >
-                        <Play className="h-4 w-4 mr-2" />
+                        <Play className="mr-2 size-4" />
                         Start Practice
                       </Button>
                     </div>
@@ -824,18 +843,26 @@ export function UnifiedQuestionBank() {
             {showMetadata && (
               <Card className="mb-6">
                 <CardContent className="pt-6">
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                  <div className="grid grid-cols-2 gap-4 text-sm md:grid-cols-4">
                     <div>
-                      <span className="font-medium">Total Questions:</span> {totalQuestions}
+                      <span className="font-medium">Total Questions:</span>
+                      {' '}
+                      {totalQuestions}
                     </div>
                     <div>
-                      <span className="font-medium">Current Section:</span> {getModuleLabel(currentQuestion.module)}
+                      <span className="font-medium">Current Section:</span>
+                      {' '}
+                      {getModuleLabel(currentQuestion.module)}
                     </div>
                     <div>
-                      <span className="font-medium">Difficulty:</span> {getDifficultyLabel(currentQuestion.difficulty)}
+                      <span className="font-medium">Difficulty:</span>
+                      {' '}
+                      {getDifficultyLabel(currentQuestion.difficulty)}
                     </div>
                     <div>
-                      <span className="font-medium">Skill:</span> {currentQuestion.skill_desc}
+                      <span className="font-medium">Skill:</span>
+                      {' '}
+                      {currentQuestion.skill_desc}
                     </div>
                   </div>
                 </CardContent>
@@ -847,15 +874,18 @@ export function UnifiedQuestionBank() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
-                    <Badge variant="secondary">Question {currentQuestionIndex + 1}</Badge>
+                    <Badge variant="secondary">
+                      Question
+                      {currentQuestionIndex + 1}
+                    </Badge>
                     <div className="flex items-center space-x-2">
-                      <Clock className="h-4 w-4 text-gray-500" />
+                      <Clock className="size-4 text-gray-500" />
                       <span className="text-sm font-medium">{formatTime(timer)}</span>
                     </div>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Button variant="outline" size="sm">
-                      <Flag className="h-4 w-4 mr-2" />
+                      <Flag className="mr-2 size-4" />
                       Mark for Review
                     </Button>
                   </div>
@@ -864,33 +894,33 @@ export function UnifiedQuestionBank() {
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-lg font-medium mb-2">Question:</h3>
+                    <h3 className="mb-2 text-lg font-medium">Question:</h3>
                     <p className="text-gray-700">{currentQuestion.content.question}</p>
                   </div>
-                  
+
                   {currentQuestion.content.options && (
                     <div>
-                      <h4 className="font-medium mb-2">Options:</h4>
+                      <h4 className="mb-2 font-medium">Options:</h4>
                       <div className="space-y-2">
                         {currentQuestion.content.options.map((option, index) => {
                           const letter = String.fromCharCode(65 + index); // A, B, C, D...
                           const isSelected = selectedAnswer === letter;
                           const isCorrect = letter === currentQuestion.content.correct_answer;
                           const isRevealed = showExplanation;
-                          
+
                           return (
                             <div key={index} className="flex items-center space-x-2">
-                              <input 
-                                type="radio" 
-                                name="answer" 
+                              <input
+                                type="radio"
+                                name="answer"
                                 id={`option-${index}`}
                                 checked={isSelected}
                                 onChange={() => handleAnswerSelect(letter)}
                                 disabled={isRevealed}
                               />
-                              <label 
-                                htmlFor={`option-${index}`} 
-                                className={`text-sm flex-1 p-2 rounded border transition-colors ${
+                              <label
+                                htmlFor={`option-${index}`}
+                                className={`flex-1 rounded border p-2 text-sm transition-colors ${
                                   isSelected ? 'border-blue-500 bg-blue-50' : 'border-gray-200'
                                 } ${
                                   isRevealed && isCorrect ? 'border-green-500 bg-green-50' : ''
@@ -898,7 +928,9 @@ export function UnifiedQuestionBank() {
                                   isRevealed && isSelected && !isCorrect ? 'border-red-500 bg-red-50' : ''
                                 }`}
                               >
-                                {letter}: {option}
+                                {letter}
+                                :
+                                {option}
                               </label>
                             </div>
                           );
@@ -909,40 +941,42 @@ export function UnifiedQuestionBank() {
 
                   <div className="flex items-center justify-between pt-4">
                     <div className="text-sm text-gray-600">
-                      Question ID: {currentQuestion.question_id}
+                      Question ID:
+                      {' '}
+                      {currentQuestion.question_id}
                     </div>
                     <div className="flex space-x-2">
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         size="sm"
                         onClick={handlePreviousQuestion}
                         disabled={currentQuestionIndex === 0}
                       >
-                        <ChevronLeft className="h-4 w-4 mr-2" />
+                        <ChevronLeft className="mr-2 size-4" />
                         Previous
                       </Button>
-                      <Button 
+                      <Button
                         size="sm"
                         onClick={handleCheckAnswer}
                         disabled={!selectedAnswer || showExplanation}
                       >
                         Check
                       </Button>
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         size="sm"
                         onClick={handleNextQuestion}
                         disabled={currentQuestionIndex === totalQuestions - 1}
                       >
                         Next
-                        <ChevronRight className="h-4 w-4 ml-2" />
+                        <ChevronRight className="ml-2 size-4" />
                       </Button>
                     </div>
                   </div>
 
                   {showExplanation && currentQuestion.content.explanation && (
-                    <div className="mt-4 p-4 bg-blue-50 rounded-lg animate-in slide-in-from-bottom-2">
-                      <h4 className="font-medium mb-2">Explanation:</h4>
+                    <div className="mt-4 rounded-lg bg-blue-50 p-4 animate-in slide-in-from-bottom-2">
+                      <h4 className="mb-2 font-medium">Explanation:</h4>
                       <p className="text-sm text-gray-700">{currentQuestion.content.explanation}</p>
                     </div>
                   )}
@@ -957,53 +991,55 @@ export function UnifiedQuestionBank() {
                   <div className="flex items-center justify-between">
                     <h3 className="text-lg font-semibold">Question Navigation</h3>
                     <div className="text-sm text-gray-600">
-                      {currentQuestionIndex + 1}/{totalQuestions}
+                      {currentQuestionIndex + 1}
+                      /
+                      {totalQuestions}
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
                   {/* Legend */}
-                  <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-                    <h4 className="font-medium mb-2">Glossary:</h4>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
+                  <div className="mb-4 rounded-lg bg-gray-50 p-3">
+                    <h4 className="mb-2 font-medium">Glossary:</h4>
+                    <div className="grid grid-cols-2 gap-2 text-sm md:grid-cols-4">
                       <div className="flex items-center space-x-2">
-                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                        <div className="size-3 rounded-full bg-green-500"></div>
                         <span>Correct</span>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                        <div className="size-3 rounded-full bg-red-500"></div>
                         <span>Incorrect</span>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                        <div className="size-3 rounded-full bg-yellow-500"></div>
                         <span>Marked for Review</span>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
+                        <div className="size-3 rounded-full bg-gray-300"></div>
                         <span>Unattempted</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Question Grid */}
-                  <div className="grid grid-cols-10 md:grid-cols-15 lg:grid-cols-20 gap-1">
+                  <div className="md:grid-cols-15 lg:grid-cols-20 grid grid-cols-10 gap-1">
                     {filteredQuestions.map((question, index) => {
                       const status = questionStatus[question.question_id]?.status || 'unattempted';
                       const isCurrent = index === currentQuestionIndex;
-                      
+
                       return (
                         <Button
                           key={question.question_id}
-                          variant={isCurrent ? "default" : "outline"}
+                          variant={isCurrent ? 'default' : 'outline'}
                           size="sm"
-                          className={`h-8 w-8 p-0 relative transition-all ${
-                            isCurrent ? 'bg-blue-600 text-white scale-110' : ''
+                          className={`relative size-8 p-0 transition-all ${
+                            isCurrent ? 'scale-110 bg-blue-600 text-white' : ''
                           }`}
                           onClick={() => handleQuestionClick(index)}
                         >
                           <span className="text-xs">{index + 1}</span>
                           {status !== 'unattempted' && (
-                            <div className={`absolute -top-1 -right-1 w-2 h-2 rounded-full ${getStatusColor(status)}`}>
+                            <div className={`absolute -right-1 -top-1 size-2 rounded-full ${getStatusColor(status)}`}>
                               {getStatusIcon(status)}
                             </div>
                           )}
@@ -1014,9 +1050,12 @@ export function UnifiedQuestionBank() {
 
                   {/* Progress */}
                   <div className="mt-4">
-                    <div className="flex justify-between text-sm text-gray-600 mb-2">
+                    <div className="mb-2 flex justify-between text-sm text-gray-600">
                       <span>Progress</span>
-                      <span>{Math.round(((currentQuestionIndex + 1) / totalQuestions) * 100)}%</span>
+                      <span>
+                        {Math.round(((currentQuestionIndex + 1) / totalQuestions) * 100)}
+                        %
+                      </span>
                     </div>
                     <Progress value={(currentQuestionIndex + 1) / totalQuestions * 100} className="h-2" />
                   </div>
@@ -1028,4 +1067,4 @@ export function UnifiedQuestionBank() {
       </div>
     </div>
   );
-} 
+}

@@ -1,48 +1,22 @@
-'use client';
-
-import { enUS, frFR } from '@clerk/localizations';
-import { ClerkProvider } from '@clerk/nextjs';
-
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
 import { Navbar } from '@/components/Navbar';
-import { AppConfig } from '@/utils/AppConfig';
+import { ClientLayout } from './ClientLayout';
 
-export default function AuthLayout(props: {
+export default async function AuthenticatedLayout({
+  children,
+  params: { locale },
+}: {
   children: React.ReactNode;
   params: { locale: string };
 }) {
-  let clerkLocale = enUS;
-  let signInUrl = '/sign-in';
-  let signUpUrl = '/sign-up';
-  let dashboardUrl = '/dashboard';
-  let afterSignOutUrl = '/';
-
-  if (props.params.locale === 'fr') {
-    clerkLocale = frFR;
-  }
-
-  if (props.params.locale !== AppConfig.defaultLocale) {
-    signInUrl = `/${props.params.locale}${signInUrl}`;
-    signUpUrl = `/${props.params.locale}${signUpUrl}`;
-    dashboardUrl = `/${props.params.locale}${dashboardUrl}`;
-    afterSignOutUrl = `/${props.params.locale}${afterSignOutUrl}`;
-  }
+  const messages = await getMessages();
 
   return (
-    <ClerkProvider
-      // PRO: Dark mode support for Clerk
-      localization={clerkLocale}
-      signInUrl={signInUrl}
-      signUpUrl={signUpUrl}
-      signInFallbackRedirectUrl={dashboardUrl}
-      signUpFallbackRedirectUrl={dashboardUrl}
-      afterSignOutUrl={afterSignOutUrl}
-    >
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <Navbar />
-        <main className="pt-16">
-          {props.children}
-        </main>
-      </div>
-    </ClerkProvider>
+    <NextIntlClientProvider messages={messages}>
+      <ClientLayout>
+        {children}
+      </ClientLayout>
+    </NextIntlClientProvider>
   );
 }
