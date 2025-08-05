@@ -1,39 +1,36 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  Shuffle, 
-  Eye, 
-  EyeOff,
+import { useEffect, useMemo, useState } from 'react';
+
+import {
+  ArrowLeft,
   CheckCircle,
-  XCircle,
-  Flag,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Clock,
+  Eye,
+  EyeOff,
   Filter,
+  Flag,
   Play,
   X,
-  ChevronDown,
-  ChevronUp,
-  Check,
-  Plus,
-  ArrowLeft,
-  Settings
+  XCircle,
 } from 'lucide-react';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { Checkbox } from '@/components/ui/checkbox';
-import { getQuestions, getQuestionStats, getAvailableSkills } from '@/libs/questions';
 
-interface Question {
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Progress } from '@/components/ui/progress';
+import { getAvailableSkills, getQuestions, getQuestionStats } from '@/libs/questions';
+
+type Question = {
   id: string;
   question_id: string;
   module: string;
@@ -46,39 +43,39 @@ interface Question {
     correct_answer?: string;
     explanation?: string;
   };
-}
+};
 
-interface QuestionStatus {
+type QuestionStatus = {
   [questionId: string]: {
     status: 'unattempted' | 'correct' | 'incorrect' | 'review';
     timeSpent?: number;
     attempts?: number;
     selectedAnswer?: string;
   };
-}
+};
 
-interface FilterState {
+type FilterState = {
   modules: string[];
   difficulties: string[];
   skills: string[];
   versions: string[];
-}
+};
 
-interface FilterCounts {
+type FilterCounts = {
   modules: { [key: string]: number };
   difficulties: { [key: string]: number };
   skills: { [key: string]: number };
   versions: { [key: string]: number };
-}
+};
 
 export function EnhancedQuestionBank() {
   // State for filtering and discovery
   const [allQuestions, setAllQuestions] = useState<Question[]>([]);
   const [filteredQuestions, setFilteredQuestions] = useState<Question[]>([]);
-  const [stats, setStats] = useState<any>(null);
+  const [_stats, setStats] = useState<any>(null);
   const [skills, setSkills] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
   // State for practice session
   const [isPracticeMode, setIsPracticeMode] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -87,18 +84,18 @@ export function EnhancedQuestionBank() {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
   const [showExplanation, setShowExplanation] = useState(false);
-  
+
   // UI state
   const [showFilters, setShowFilters] = useState(true);
   const [showMetadata, setShowMetadata] = useState(true);
   const [showNavigation, setShowNavigation] = useState(true);
-  
+
   // Filter state - now using arrays for multi-select
   const [filters, setFilters] = useState<FilterState>({
     modules: [],
     difficulties: [],
     skills: [],
-    versions: []
+    versions: [],
   });
 
   // Available filter options
@@ -560,8 +557,8 @@ export function EnhancedQuestionBank() {
                 {/* Module Filter */}
                 <div>
                   <label className="text-sm font-medium mb-3 block">Subject</label>
-                  <Popover>
-                    <PopoverTrigger asChild>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
                       <Button 
                         variant="outline" 
                         className="w-full justify-between"
@@ -572,43 +569,35 @@ export function EnhancedQuestionBank() {
                         }
                         <ChevronDown className="h-4 w-4" />
                       </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-56">
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56">
                       <div className="space-y-2">
                         {moduleOptions.map(option => {
                           const count = filterCounts.modules[option.value] || 0;
                           const isDisabled = count === 0;
                           return (
-                            <div key={option.value} className="flex items-center space-x-2">
-                              <Checkbox
-                                id={`module-${option.value}`}
-                                checked={filters.modules.includes(option.value)}
-                                onCheckedChange={(checked) => 
-                                  handleFilterChange('modules', option.value, checked as boolean)
-                                }
-                                disabled={isDisabled}
-                              />
-                              <label 
-                                htmlFor={`module-${option.value}`}
-                                className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed ${
-                                  isDisabled ? 'opacity-50' : ''
-                                }`}
-                              >
-                                {option.label} ({count})
-                              </label>
-                            </div>
+                            <DropdownMenuCheckboxItem
+                              key={option.value}
+                              checked={filters.modules.includes(option.value)}
+                              onCheckedChange={(checked) => 
+                                handleFilterChange('modules', option.value, checked as boolean)
+                              }
+                              disabled={isDisabled}
+                            >
+                              <span>{option.label} ({count})</span>
+                            </DropdownMenuCheckboxItem>
                           );
                         })}
                       </div>
-                    </PopoverContent>
-                  </Popover>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
 
                 {/* Difficulty Filter */}
                 <div>
                   <label className="text-sm font-medium mb-3 block">Difficulty</label>
-                  <Popover>
-                    <PopoverTrigger asChild>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
                       <Button 
                         variant="outline" 
                         className="w-full justify-between"
@@ -619,43 +608,35 @@ export function EnhancedQuestionBank() {
                         }
                         <ChevronDown className="h-4 w-4" />
                       </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-56">
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56">
                       <div className="space-y-2">
                         {difficultyOptions.map(option => {
                           const count = filterCounts.difficulties[option.value] || 0;
                           const isDisabled = count === 0;
                           return (
-                            <div key={option.value} className="flex items-center space-x-2">
-                              <Checkbox
-                                id={`difficulty-${option.value}`}
-                                checked={filters.difficulties.includes(option.value)}
-                                onCheckedChange={(checked) => 
-                                  handleFilterChange('difficulties', option.value, checked as boolean)
-                                }
-                                disabled={isDisabled}
-                              />
-                              <label 
-                                htmlFor={`difficulty-${option.value}`}
-                                className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed ${
-                                  isDisabled ? 'opacity-50' : ''
-                                }`}
-                              >
-                                {option.label} ({count})
-                              </label>
-                            </div>
+                            <DropdownMenuCheckboxItem
+                              key={option.value}
+                              checked={filters.difficulties.includes(option.value)}
+                              onCheckedChange={(checked) => 
+                                handleFilterChange('difficulties', option.value, checked as boolean)
+                              }
+                              disabled={isDisabled}
+                            >
+                              <span>{option.label} ({count})</span>
+                            </DropdownMenuCheckboxItem>
                           );
                         })}
                       </div>
-                    </PopoverContent>
-                  </Popover>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
 
                 {/* Skill Filter */}
                 <div>
                   <label className="text-sm font-medium mb-3 block">Skill</label>
-                  <Popover>
-                    <PopoverTrigger asChild>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
                       <Button 
                         variant="outline" 
                         className="w-full justify-between"
@@ -666,43 +647,35 @@ export function EnhancedQuestionBank() {
                         }
                         <ChevronDown className="h-4 w-4" />
                       </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-80 max-h-60 overflow-y-auto">
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-80 max-h-60 overflow-y-auto">
                       <div className="space-y-2">
                         {skills.map(skill => {
                           const count = filterCounts.skills[skill.code] || 0;
                           const isDisabled = count === 0;
                           return (
-                            <div key={skill.code} className="flex items-center space-x-2">
-                              <Checkbox
-                                id={`skill-${skill.code}`}
-                                checked={filters.skills.includes(skill.code)}
-                                onCheckedChange={(checked) => 
-                                  handleFilterChange('skills', skill.code, checked as boolean)
-                                }
-                                disabled={isDisabled}
-                              />
-                              <label 
-                                htmlFor={`skill-${skill.code}`}
-                                className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed ${
-                                  isDisabled ? 'opacity-50' : ''
-                                }`}
-                              >
-                                {skill.description} ({count})
-                              </label>
-                            </div>
+                            <DropdownMenuCheckboxItem
+                              key={skill.code}
+                              checked={filters.skills.includes(skill.code)}
+                              onCheckedChange={(checked) => 
+                                handleFilterChange('skills', skill.code, checked as boolean)
+                              }
+                              disabled={isDisabled}
+                            >
+                              <span>{skill.description} ({count})</span>
+                            </DropdownMenuCheckboxItem>
                           );
                         })}
                       </div>
-                    </PopoverContent>
-                  </Popover>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
 
                 {/* Version Filter */}
                 <div>
                   <label className="text-sm font-medium mb-3 block">Version</label>
-                  <Popover>
-                    <PopoverTrigger asChild>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
                       <Button 
                         variant="outline" 
                         className="w-full justify-between"
@@ -713,29 +686,23 @@ export function EnhancedQuestionBank() {
                         }
                         <ChevronDown className="h-4 w-4" />
                       </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-56">
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56">
                       <div className="space-y-2">
                         {versionOptions.map(option => (
-                          <div key={option.value} className="flex items-center space-x-2">
-                            <Checkbox
-                              id={`version-${option.value}`}
-                              checked={filters.versions.includes(option.value)}
-                              onCheckedChange={(checked) => 
-                                handleFilterChange('versions', option.value, checked as boolean)
-                              }
-                            />
-                            <label 
-                              htmlFor={`version-${option.value}`}
-                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                            >
-                              {option.label}
-                            </label>
-                          </div>
+                          <DropdownMenuCheckboxItem
+                            key={option.value}
+                            checked={filters.versions.includes(option.value)}
+                            onCheckedChange={(checked) => 
+                              handleFilterChange('versions', option.value, checked as boolean)
+                            }
+                          >
+                            <span>{option.label}</span>
+                          </DropdownMenuCheckboxItem>
                         ))}
                       </div>
-                    </PopoverContent>
-                  </Popover>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               </div>
             </CardContent>
