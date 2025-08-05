@@ -7,19 +7,22 @@ require('dotenv').config({ path: '.env.local' });
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
   console.error('❌ Missing Supabase environment variables');
   console.log('Please add to your .env.local:');
   console.log('NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url');
   console.log('NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key');
+  console.log('SUPABASE_SERVICE_ROLE_KEY=your_service_role_key (for import)');
   process.exit(1);
 }
 
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Use service role key for import (bypasses RLS)
+const supabase = createClient(supabaseUrl, supabaseServiceKey || supabaseAnonKey);
 
 // Path to the OnePrep questions JSON file
-const questionsPath = path.join(__dirname, '../sat-question-bank-analysis/data/cb-digital-questions.json');
+const questionsPath = path.join(__dirname, '../../sat-question-bank-analysis/data/cb-digital-questions.json');
 
 async function importQuestions() {
   try {
