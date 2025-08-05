@@ -1,5 +1,6 @@
-import { QuestionGrid } from '@/features/practice/QuestionGrid';
+import { redirect } from 'next/navigation';
 
 export default async function PracticePage() {
-  return <QuestionGrid />;
+  // Redirect to the unified questions page
+  redirect('/questions');
 }
