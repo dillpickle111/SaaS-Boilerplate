@@ -2,7 +2,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { BookOpen, Target, TrendingUp, Users } from 'lucide-react';
 import Link from 'next/link';
-import { TestSupabase } from '@/components/TestSupabase';
 
 export default async function AppPage() {
   return (
@@ -86,10 +85,7 @@ export default async function AppPage() {
         </Card>
       </div>
 
-      {/* Supabase Test */}
-      <div className="mb-8">
-        <TestSupabase />
-      </div>
+
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
