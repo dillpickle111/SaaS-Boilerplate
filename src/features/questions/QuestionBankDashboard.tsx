@@ -13,7 +13,6 @@ import {
   TrendingUp, 
   Filter,
   CheckCircle,
-  Flag,
   XCircle
 } from 'lucide-react';
 import { getQuestionStats, getAvailableSkills } from '@/libs/questions';
@@ -34,8 +33,6 @@ export function QuestionBankDashboard() {
   const [stats, setStats] = useState<QuestionStats | null>(null);
   const [skills, setSkills] = useState<Skill[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedModule, setSelectedModule] = useState<'all' | 'math' | 'reading' | 'writing'>('all');
-  const [selectedDifficulty, setSelectedDifficulty] = useState<'all' | 'E' | 'M' | 'H'>('all');
 
   useEffect(() => {
     async function loadData() {

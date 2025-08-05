@@ -71,7 +71,6 @@ export function UnifiedQuestionBank() {
   // State for filtering and discovery
   const [allQuestions, setAllQuestions] = useState<Question[]>([]);
   const [filteredQuestions, setFilteredQuestions] = useState<Question[]>([]);
-  const [stats, setStats] = useState<any>(null);
   const [skills, setSkills] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -167,13 +166,12 @@ export function UnifiedQuestionBank() {
     async function loadData() {
       try {
         setLoading(true);
-        const [questionStats, availableSkills, allQuestionsData] = await Promise.all([
+        const [_questionStats, availableSkills, allQuestionsData] = await Promise.all([
           getQuestionStats(),
           getAvailableSkills(),
           getQuestions({ limit: 1000 }), // Load more questions for practice
         ]);
 
-        setStats(questionStats);
         setSkills(availableSkills);
         setAllQuestions(allQuestionsData);
         setFilteredQuestions(allQuestionsData);

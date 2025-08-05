@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -43,7 +43,7 @@ interface QuestionStatus {
 export function QuestionGrid() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [questionStatus, setQuestionStatus] = useState<QuestionStatus>({});
+  const [questionStatus] = useState<QuestionStatus>({});
   const [loading, setLoading] = useState(true);
   const [showMetadata, setShowMetadata] = useState(true);
   const [showNavigation, setShowNavigation] = useState(true);

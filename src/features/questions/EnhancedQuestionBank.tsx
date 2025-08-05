@@ -1,33 +1,379 @@
 'use client';
 
-import {
-  ArrowLeft,
-  CheckCircle,
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  Clock,
-  Eye,
-  EyeOff,
-  Filter,
-  Flag,
-  Play,
-  X,
-  XCircle,
-} from 'lucide-react';
+import { ChevronDown, ChevronLeft, ChevronRight, Flag, Play, X } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Progress } from '@/components/ui/progress';
 import { getAvailableSkills, getQuestions, getQuestionStats } from '@/libs/questions';
+
+// QuestionViewerWrapper component that adapts the original QuestionViewer to work with our data structure
+function QuestionViewerWrapper({
+  question,
+  currentQuestionIndex,
+  totalQuestions,
+  selectedAnswer,
+  showExplanation,
+  timer,
+  onAnswerSelect,
+  onCheckAnswer,
+  onNextQuestion,
+  onPreviousQuestion,
+  onFlagToggle,
+  isFlagged,
+}: {
+  question: any;
+  currentQuestionIndex: number;
+  totalQuestions: number;
+  selectedAnswer: string;
+  showExplanation: boolean;
+  timer: number;
+  onAnswerSelect: (answer: string) => void;
+  onCheckAnswer: () => void;
+  onNextQuestion: () => void;
+  onPreviousQuestion: () => void;
+  onFlagToggle: (questionId: string, isFlagged: boolean) => void;
+  isFlagged: boolean;
+}) {
+  const [isStrikeActive, setIsStrikeActive] = useState(false);
+  const [isTimerVisible, setIsTimerVisible] = useState(true);
+  const [struckOutAnswers, setStruckOutAnswers] = useState<string[]>([]);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const handleFlagClick = () => {
+    onFlagToggle(question.question_id, !isFlagged);
+  };
+
+  const handleStrikeClick = () => {
+    setIsStrikeActive(!isStrikeActive);
+    if (isStrikeActive) {
+      setStruckOutAnswers([]);
+    }
+  };
+
+  const handleTimerClick = () => {
+    setIsTimerVisible(!isTimerVisible);
+  };
+
+  const handleAnswerClick = (letter: string) => {
+    if (isStrikeActive) {
+      onAnswerSelect(letter);
+      if (struckOutAnswers.includes(letter)) {
+        setStruckOutAnswers(prev => prev.filter(l => l !== letter));
+      }
+    } else {
+      onAnswerSelect(letter);
+    }
+  };
+
+  const handleStrikeToggle = (letter: string) => {
+    setStruckOutAnswers(prev =>
+      prev.includes(letter)
+        ? prev.filter(l => l !== letter)
+        : [...prev, letter],
+    );
+  };
+
+  // Convert options to the format expected by QuestionViewer
+  const options = question.content.options?.map((option: string, index: number) => ({
+    letter: String.fromCharCode(65 + index),
+    text: option,
+  })) || [];
+
+  const correctAnswerLetter = question.content.options && question.content.options.includes(question.content.correct_answer || '')
+    ? String.fromCharCode(65 + question.content.options.indexOf(question.content.correct_answer || ''))
+    : undefined;
+
+  return (
+    <div className="mx-auto w-full max-w-[875px] rounded-2xl border bg-white p-4 shadow-sm">
+      {/* Header */}
+      <div className="mb-4 flex h-[39px] items-center justify-between rounded-lg bg-[#e4e6e6] px-3">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleFlagClick}
+            className="rounded p-1 transition-colors hover:bg-black/5"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              className="flex items-center justify-center"
+            >
+              <path
+                d="M4 2H16V18L10 14L4 18V2Z"
+                stroke={isFlagged ? '#fbbf24' : '#6b7280'}
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill={isFlagged ? '#fbbf24' : 'none'}
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {isTimerVisible && (
+            <span className="font-['SF_Pro',_sans-serif] text-sm font-semibold text-gray-700">
+              {formatTime(timer)}
+            </span>
+          )}
+          <button
+            onClick={handleTimerClick}
+            className={`rounded p-1 transition-colors hover:bg-black/5 ${isTimerVisible ? 'bg-green-100' : ''}`}
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <circle
+                cx="10"
+                cy="11"
+                r="7"
+                stroke={isTimerVisible ? '#10b981' : '#6b7280'}
+                strokeWidth="1.5"
+              />
+              <path
+                d="M10 7V11L13 13"
+                stroke={isTimerVisible ? '#10b981' : '#6b7280'}
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+              <path
+                d="M7 3H13"
+                stroke={isTimerVisible ? '#10b981' : '#6b7280'}
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
+          <button
+            onClick={handleStrikeClick}
+            className={`rounded p-1 transition-colors hover:bg-black/5 ${isStrikeActive ? 'bg-blue-100' : ''}`}
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path
+                d="M3 10H17M8 6C8 4.89543 8.89543 4 10 4C11.1046 4 12 4.89543 12 6M8 14C8 15.1046 8.89543 16 10 16C11.1046 16 12 15.1046 12 14"
+                stroke={isStrikeActive ? '#0f60ff' : '#6b7280'}
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Question Text */}
+      <div className="mb-6 px-1">
+        <div
+          className="font-['Noto_Serif_TC',_serif] text-[18px] font-semibold leading-[27px] tracking-[-0.36px] text-black"
+          dangerouslySetInnerHTML={{ __html: question.content.question }}
+        />
+      </div>
+
+      {/* Answer Options */}
+      <div className="mb-6 space-y-2">
+        {options.map((option: any) => (
+          <div key={option.letter} className="relative flex items-center gap-3">
+            <button
+              onClick={() => handleAnswerClick(option.letter)}
+              disabled={false}
+              className={`flex h-[59px] w-full items-center gap-4 rounded-[10px] border px-3 transition-all duration-300 ${
+                !showExplanation ? 'hover:border-[#0f60ff] hover:shadow-md' : ''
+              }`}
+              style={{
+                backgroundColor: struckOutAnswers.includes(option.letter)
+                  ? '#f3f4f6'
+                  : showExplanation && correctAnswerLetter === option.letter
+                    ? '#f0f9f4'
+                    : showExplanation && selectedAnswer === option.letter && correctAnswerLetter !== option.letter
+                      ? '#fef2f2'
+                      : '#ffffff',
+                borderColor: struckOutAnswers.includes(option.letter)
+                  ? '#d1d5db'
+                  : showExplanation && correctAnswerLetter === option.letter
+                    ? '#00aa6e'
+                    : showExplanation && selectedAnswer === option.letter && correctAnswerLetter !== option.letter
+                      ? '#d4183d'
+                      : selectedAnswer === option.letter
+                        ? '#0f60ff'
+                        : '#000000',
+              }}
+            >
+              {/* Option Circle */}
+              <div className="relative size-[30px] shrink-0">
+                <svg className="size-full" viewBox="0 0 30 30" fill="none">
+                  <circle
+                    cx="15"
+                    cy="15"
+                    r="14.5"
+                    fill={selectedAnswer === option.letter ? '#0f60ff' : 'white'}
+                    stroke="black"
+                    strokeWidth="1"
+                  />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span
+                    className={`font-['SF_Pro',_sans-serif] text-[16px] font-semibold ${
+                      selectedAnswer === option.letter ? 'text-white' : 'text-[#0f60ff]'
+                    }`}
+                  >
+                    {option.letter}
+                  </span>
+                </div>
+              </div>
+
+              {/* Answer Text */}
+              <div className="relative flex min-w-0 flex-1 items-center transition-all duration-300">
+                <div
+                  className={`text-left font-['Noto_Serif_TC',_serif] text-[17px] font-bold tracking-[-0.51px] transition-all duration-300`}
+                  style={{
+                    color: struckOutAnswers.includes(option.letter) ? '#6b7280' : '#000000',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                  dangerouslySetInnerHTML={{ __html: option.text }}
+                />
+              </div>
+            </button>
+
+            {/* Horizontal strikethrough line */}
+            {struckOutAnswers.includes(option.letter) && (
+              <div className="pointer-events-none absolute left-[-6px] right-[34px] top-1/2 z-10 h-[2px] rounded bg-gray-600 opacity-80" style={{ transform: 'translateY(-50%)' }} />
+            )}
+
+            {/* Strike Circle */}
+            {isStrikeActive && (
+              <div className="shrink-0">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleStrikeToggle(option.letter);
+                  }}
+                  className="relative size-[30px] transition-all duration-200 hover:scale-110"
+                >
+                  <svg className="size-full transition-all duration-200" viewBox="0 0 30 30" fill="none">
+                    <circle
+                      cx="15"
+                      cy="15"
+                      r="14.5"
+                      fill="white"
+                      stroke="#6b7280"
+                      strokeWidth="1"
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    {struckOutAnswers.includes(option.letter)
+                      ? (
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path
+                              d="M3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z"
+                              fill="#1f2937"
+                              stroke="#1f2937"
+                              strokeWidth="1.5"
+                            />
+                            <path
+                              d="M9 12L15 12M9 12L12 9M9 12L12 15"
+                              stroke="white"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        )
+                      : (
+                          <div className="relative">
+                            <span className="font-['SF_Pro',_sans-serif] text-[16px] font-semibold text-gray-500">
+                              {option.letter}
+                            </span>
+                            <div className="pointer-events-none absolute inset-0 flex items-center">
+                              <div className="-mx-2 h-[2px] w-[40px] bg-gray-600"></div>
+                            </div>
+                          </div>
+                        )}
+                  </div>
+                </button>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Action Buttons */}
+      <div className="mb-4 flex gap-3">
+        <button
+          onClick={onCheckAnswer}
+          className="h-8 rounded-[7px] bg-[#ff00d3] px-[13px] transition-colors duration-200 hover:bg-[#e600c1]"
+        >
+          <span className="font-['SF_Pro',_sans-serif] text-[14px] font-semibold text-white">
+            Explanation
+          </span>
+        </button>
+
+        <button
+          onClick={onCheckAnswer}
+          className="h-8 rounded-[7px] bg-[#0f60ff] px-[13px] transition-colors duration-200 hover:bg-[#0d52d9] disabled:opacity-50"
+          disabled={!selectedAnswer || showExplanation}
+        >
+          <span className="font-['SF_Pro',_sans-serif] text-[14px] font-semibold text-white">
+            Check
+          </span>
+        </button>
+      </div>
+
+      {/* Navigation Buttons */}
+      <div className="flex items-center justify-between pt-4">
+        <div className="text-sm text-gray-600">
+          Question
+          {' '}
+          {currentQuestionIndex + 1}
+          {' '}
+          of
+          {' '}
+          {totalQuestions}
+        </div>
+        <div className="flex space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onPreviousQuestion}
+            disabled={currentQuestionIndex === 0}
+          >
+            <ChevronLeft className="mr-2 size-4" />
+            Previous
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onNextQuestion}
+            disabled={currentQuestionIndex === totalQuestions - 1}
+          >
+            Next
+            <ChevronRight className="ml-2 size-4" />
+          </Button>
+        </div>
+      </div>
+
+      {/* Explanation section */}
+      {showExplanation && question.content.explanation && (
+        <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-4">
+          <h3 className="mb-2 font-semibold text-blue-900">Explanation</h3>
+          <div
+            className="leading-relaxed text-blue-800"
+            dangerouslySetInnerHTML={{ __html: question.content.explanation }}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
 
 type Question = {
   id: string;
@@ -83,6 +429,7 @@ export function EnhancedQuestionBank() {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
   const [showExplanation, setShowExplanation] = useState(false);
+  const [flaggedQuestions, setFlaggedQuestions] = useState<{ [questionId: string]: boolean }>({});
 
   // UI state
   const [showFilters, setShowFilters] = useState(true);
@@ -165,11 +512,13 @@ export function EnhancedQuestionBank() {
     async function loadData() {
       try {
         setLoading(true);
-        const [questionStats, availableSkills, allQuestionsData] = await Promise.all([
-          getQuestionStats(),
-          getAvailableSkills(),
-          getQuestions({ limit: 1000 }), // Load more questions for practice
-        ]);
+
+        // Load data sequentially to debug
+        const allQuestionsData = await getQuestions({ limit: 1000 });
+
+        const questionStats = await getQuestionStats();
+
+        const availableSkills = await getAvailableSkills();
 
         setStats(questionStats);
         setSkills(availableSkills);
@@ -206,9 +555,9 @@ export function EnhancedQuestionBank() {
           ...currentQuestion.content,
           // Use rationale as question if question is empty
           question:
-            currentQuestion.content.question ||
-            (currentQuestion.content as any).rationale ||
-            'Question content not available',
+            currentQuestion.content.question
+            || (currentQuestion.content as any).rationale
+            || 'Question content not available',
           // Handle correct_answer being an array
           correct_answer: Array.isArray(currentQuestion.content.correct_answer)
             ? (currentQuestion.content.correct_answer as string[])[0] || ''
@@ -220,9 +569,9 @@ export function EnhancedQuestionBank() {
               : ['A', 'B', 'C', 'D'],
           // Use rationale as explanation if explanation is empty
           explanation:
-            currentQuestion.content.explanation ||
-            (currentQuestion.content as any).rationale ||
-            '',
+            currentQuestion.content.explanation
+            || (currentQuestion.content as any).rationale
+            || '',
         },
       }
     : null;
@@ -256,30 +605,20 @@ export function EnhancedQuestionBank() {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'correct': return <CheckCircle className="size-3 text-white" />;
-      case 'incorrect': return <XCircle className="size-3 text-white" />;
+      case 'correct': return <Flag className="size-3 text-white" />;
+      case 'incorrect': return <X className="size-3 text-white" />;
       case 'review': return <Flag className="size-3 text-white" />;
       default: return null;
     }
   };
 
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
-
   const handleStartPractice = () => {
-    if (filteredQuestions.length === 0) {
-      return;
-    }
-
     setIsPracticeMode(true);
     setCurrentQuestionIndex(0);
-    setTimer(0);
-    setIsTimerRunning(true);
     setSelectedAnswer('');
     setShowExplanation(false);
+    setTimer(0);
+    setIsTimerRunning(true);
   };
 
   const handleEndPractice = () => {
@@ -340,6 +679,22 @@ export function EnhancedQuestionBank() {
     }
   };
 
+  const handleFlagToggle = (questionId: string, isFlagged: boolean) => {
+    setFlaggedQuestions(prev => ({
+      ...prev,
+      [questionId]: isFlagged,
+    }));
+
+    // Update questionStatus to reflect flagged state
+    setQuestionStatus(prev => ({
+      ...prev,
+      [questionId]: {
+        ...prev[questionId],
+        status: isFlagged ? 'review' : 'unattempted',
+      },
+    }));
+  };
+
   const handleFilterChange = (filterType: keyof FilterState, value: string, checked: boolean) => {
     setFilters((prev) => {
       const currentArray = prev[filterType];
@@ -392,14 +747,15 @@ export function EnhancedQuestionBank() {
 
     setFilteredQuestions(filtered);
 
-    // Reset practice mode if filters change
-    if (isPracticeMode) {
+    // Only reset practice mode if filters change while in practice mode
+    // Don't reset if this is just the initial load or if practice mode is being started
+    if (isPracticeMode && (filters.modules.length > 0 || filters.difficulties.length > 0 || filters.skills.length > 0 || filters.versions.length > 0)) {
       setIsPracticeMode(false);
       setCurrentQuestionIndex(0);
       setTimer(0);
       setIsTimerRunning(false);
     }
-  }, [filters, allQuestions, isPracticeMode]);
+  }, [filters, allQuestions]); // Removed isPracticeMode from dependencies
 
   const hasActiveFilters = filters.modules.length > 0 || filters.difficulties.length > 0 || filters.skills.length > 0 || filters.versions.length > 0;
 
@@ -438,7 +794,7 @@ export function EnhancedQuestionBank() {
                     size="sm"
                     onClick={() => setShowMetadata(!showMetadata)}
                   >
-                    {showMetadata ? <EyeOff className="mr-2 size-4" /> : <Eye className="mr-2 size-4" />}
+                    {showMetadata ? <X className="mr-2 size-4" /> : <Flag className="mr-2 size-4" />}
                     {showMetadata ? 'Hide' : 'Show'}
                     {' '}
                     Metadata
@@ -457,7 +813,7 @@ export function EnhancedQuestionBank() {
                     size="sm"
                     onClick={handleEndPractice}
                   >
-                    <ArrowLeft className="mr-2 size-4" />
+                    <ChevronLeft className="mr-2 size-4" />
                     End Practice
                   </Button>
                 </>
@@ -468,8 +824,8 @@ export function EnhancedQuestionBank() {
                   size="sm"
                   onClick={() => setShowFilters(!showFilters)}
                 >
-                  <Filter className="mr-2 size-4" />
-                  {showFilters ? 'Hide' : 'Show'}
+                  {/* <Filter className="mr-2 size-4" /> */}
+                  {/* {showFilters ? 'Hide' : 'Show'} */}
                   {' '}
                   Filters
                 </Button>
@@ -483,7 +839,7 @@ export function EnhancedQuestionBank() {
           <Card className="mb-6">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle>Filters</CardTitle>
+                <h3 className="text-lg font-semibold">Filters</h3>
                 <Button
                   variant="outline"
                   size="sm"
@@ -776,7 +1132,7 @@ export function EnhancedQuestionBank() {
                 <CardContent className="pt-6">
                   <div className="py-8 text-center">
                     <div className="mb-4 text-gray-400">
-                      <Filter className="mx-auto size-12" />
+                      {/* <Filter className="mx-auto size-12" /> */}
                     </div>
                     <h3 className="mb-2 text-lg font-semibold text-gray-900">No questions found</h3>
                     <p className="mb-4 text-gray-600">Try selecting different filters to find questions.</p>
@@ -877,120 +1233,25 @@ export function EnhancedQuestionBank() {
               </Card>
             )}
 
-            {/* Current Question */}
-            <Card className="mb-6">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <Badge variant="secondary">
-                      Question
-                      {currentQuestionIndex + 1}
-                    </Badge>
-                    <div className="flex items-center space-x-2">
-                      <Clock className="size-4 text-gray-500" />
-                      <span className="text-sm font-medium">{formatTime(timer)}</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Button variant="outline" size="sm">
-                      <Flag className="mr-2 size-4" />
-                      Mark for Review
-                    </Button>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="mb-2 text-lg font-medium">Question:</h3>
-                    <p className="text-gray-700">{transformedQuestion.content.question}</p>
-                  </div>
-
-                  {transformedQuestion.content.options && (
-                    <div>
-                      <h4 className="mb-2 font-medium">Options:</h4>
-                      <div className="space-y-2">
-                        {transformedQuestion.content.options.map((option, index) => {
-                          const letter = String.fromCharCode(65 + index); // A, B, C, D...
-                          const isSelected = selectedAnswer === letter;
-                          const isCorrect = letter === transformedQuestion.content.correct_answer;
-                          const isRevealed = showExplanation;
-
-                          return (
-                            <div key={index} className="flex items-center space-x-2">
-                              <input
-                                type="radio"
-                                name="answer"
-                                id={`option-${index}`}
-                                checked={isSelected}
-                                onChange={() => handleAnswerSelect(letter)}
-                                disabled={isRevealed}
-                              />
-                              <label
-                                htmlFor={`option-${index}`}
-                                className={`flex-1 rounded border p-2 text-sm transition-colors ${
-                                  isSelected ? 'border-blue-500 bg-blue-50' : 'border-gray-200'
-                                } ${
-                                  isRevealed && isCorrect ? 'border-green-500 bg-green-50' : ''
-                                } ${
-                                  isRevealed && isSelected && !isCorrect ? 'border-red-500 bg-red-50' : ''
-                                }`}
-                              >
-                                {letter}
-                                :
-                                {option}
-                              </label>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="flex items-center justify-between pt-4">
-                    <div className="text-sm text-gray-600">
-                      Question ID:
-                      {' '}
-                      {transformedQuestion.question_id}
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={handlePreviousQuestion}
-                        disabled={currentQuestionIndex === 0}
-                      >
-                        <ChevronLeft className="mr-2 size-4" />
-                        Previous
-                      </Button>
-                      <Button
-                        size="sm"
-                        onClick={handleCheckAnswer}
-                        disabled={!selectedAnswer || showExplanation}
-                      >
-                        Check
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={handleNextQuestion}
-                        disabled={currentQuestionIndex === totalQuestions - 1}
-                      >
-                        Next
-                        <ChevronRight className="ml-2 size-4" />
-                      </Button>
-                    </div>
-                  </div>
-
-                  {showExplanation && transformedQuestion.content.explanation && (
-                    <div className="mt-4 rounded-lg bg-blue-50 p-4 animate-in slide-in-from-bottom-2">
-                      <h4 className="mb-2 font-medium">Explanation:</h4>
-                      <p className="text-sm text-gray-700">{transformedQuestion.content.explanation}</p>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+            {/* Original QuestionViewer Component */}
+            <div className="mb-6">
+              <QuestionViewerWrapper
+                question={transformedQuestion}
+                currentQuestionIndex={currentQuestionIndex}
+                totalQuestions={totalQuestions}
+                selectedAnswer={selectedAnswer}
+                showExplanation={showExplanation}
+                timer={timer}
+                onAnswerSelect={handleAnswerSelect}
+                onCheckAnswer={handleCheckAnswer}
+                onNextQuestion={handleNextQuestion}
+                onPreviousQuestion={handlePreviousQuestion}
+                onFlagToggle={(questionId, isFlagged) => {
+                  handleFlagToggle(questionId, isFlagged);
+                }}
+                isFlagged={flaggedQuestions[transformedQuestion.question_id] || false}
+              />
+            </div>
 
             {/* Question Navigation Grid */}
             {showNavigation && (
@@ -1034,6 +1295,7 @@ export function EnhancedQuestionBank() {
                     {filteredQuestions.map((question, index) => {
                       const status = questionStatus[question.question_id]?.status || 'unattempted';
                       const isCurrent = index === currentQuestionIndex;
+                      const isFlagged = flaggedQuestions[question.question_id] || false;
 
                       return (
                         <Button
@@ -1049,6 +1311,11 @@ export function EnhancedQuestionBank() {
                           {status !== 'unattempted' && (
                             <div className={`absolute -right-1 -top-1 size-2 rounded-full ${getStatusColor(status)}`}>
                               {getStatusIcon(status)}
+                            </div>
+                          )}
+                          {isFlagged && status === 'unattempted' && (
+                            <div className="absolute -right-1 -top-1 size-2 rounded-full bg-yellow-500">
+                              <Flag className="size-3 text-white" />
                             </div>
                           )}
                         </Button>
