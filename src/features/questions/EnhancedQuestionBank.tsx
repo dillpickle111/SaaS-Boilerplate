@@ -71,7 +71,7 @@ interface FilterCounts {
   versions: { [key: string]: number };
 }
 
-export function UnifiedQuestionBank() {
+export function EnhancedQuestionBank() {
   // State for filtering and discovery
   const [allQuestions, setAllQuestions] = useState<Question[]>([]);
   const [filteredQuestions, setFilteredQuestions] = useState<Question[]>([]);
@@ -131,8 +131,6 @@ export function UnifiedQuestionBank() {
 
     // Apply current filters except the one being counted
     allQuestions.forEach(question => {
-      // Check if question passes current filters (excluding the filter being counted)
-      
       // Count modules
       const moduleFilters = filters.modules.filter(m => m !== question.module);
       const difficultyFilters = filters.difficulties.filter(d => d !== question.difficulty);

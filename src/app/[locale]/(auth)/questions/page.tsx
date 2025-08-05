@@ -1,5 +1,5 @@
-import { UnifiedQuestionBank } from '@/features/questions/UnifiedQuestionBank';
+import { EnhancedQuestionBank } from '@/features/questions/EnhancedQuestionBank';
 
-export default async function QuestionsPage() {
-  return <UnifiedQuestionBank />;
+export default function QuestionsPage() {
+  return <EnhancedQuestionBank />;
 }
