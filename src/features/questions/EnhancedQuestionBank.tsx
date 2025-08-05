@@ -98,6 +98,7 @@ function QuestionViewerWrapper({
       <div className="mb-4 flex h-[39px] items-center justify-between rounded-lg bg-[#e4e6e6] px-3">
         <div className="flex items-center gap-2">
           <button
+            type="button"
             onClick={handleFlagClick}
             className="rounded p-1 transition-colors hover:bg-black/5"
           >
@@ -127,6 +128,7 @@ function QuestionViewerWrapper({
             </span>
           )}
           <button
+            type="button"
             onClick={handleTimerClick}
             className={`rounded p-1 transition-colors hover:bg-black/5 ${isTimerVisible ? 'bg-green-100' : ''}`}
           >
@@ -153,6 +155,7 @@ function QuestionViewerWrapper({
             </svg>
           </button>
           <button
+            type="button"
             onClick={handleStrikeClick}
             className={`rounded p-1 transition-colors hover:bg-black/5 ${isStrikeActive ? 'bg-blue-100' : ''}`}
           >
@@ -182,6 +185,7 @@ function QuestionViewerWrapper({
         {options.map((option: any) => (
           <div key={option.letter} className="relative flex items-center gap-3">
             <button
+              type="button"
               onClick={() => handleAnswerClick(option.letter)}
               disabled={false}
               className={`flex h-[59px] w-full items-center gap-4 rounded-[10px] border px-3 transition-all duration-300 ${
@@ -253,6 +257,7 @@ function QuestionViewerWrapper({
             {isStrikeActive && (
               <div className="shrink-0">
                 <button
+                  type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleStrikeToggle(option.letter);
