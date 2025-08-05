@@ -17,7 +17,7 @@ export function Navbar() {
   const navigation = [
     { name: 'Home', href: '/app' },
     { name: 'Question Bank', href: '/questions' },
-    { name: 'Practice', href: '/practice' },
+    { name: 'Practice Grid', href: '/practice' },
     { name: 'Progress', href: '/dashboard/progress' },
   ];
 
