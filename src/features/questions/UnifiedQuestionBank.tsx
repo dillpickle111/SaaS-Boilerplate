@@ -19,8 +19,16 @@ import {
   Play,
   X,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Check,
+  Plus
 } from 'lucide-react';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { Checkbox } from '@/components/ui/checkbox';
 import { getQuestions, getQuestionStats, getAvailableSkills } from '@/libs/questions';
 
 interface Question {
@@ -48,10 +56,10 @@ interface QuestionStatus {
 }
 
 interface FilterState {
-  module: string;
-  difficulty: string;
-  skill: string;
-  version: string;
+  modules: string[];
+  difficulties: string[];
+  skills: string[];
+  versions: string[];
 }
 
 export function UnifiedQuestionBank() {
@@ -76,13 +84,32 @@ export function UnifiedQuestionBank() {
   const [showMetadata, setShowMetadata] = useState(true);
   const [showNavigation, setShowNavigation] = useState(true);
   
-  // Filter state
+  // Filter state - now using arrays for multi-select
   const [filters, setFilters] = useState<FilterState>({
-    module: 'all',
-    difficulty: 'all',
-    skill: 'all',
-    version: 'all'
+    modules: [],
+    difficulties: [],
+    skills: [],
+    versions: []
   });
+
+  // Available filter options
+  const moduleOptions = [
+    { value: 'math', label: 'Math' },
+    { value: 'reading', label: 'Reading' },
+    { value: 'writing', label: 'Writing' }
+  ];
+
+  const difficultyOptions = [
+    { value: 'E', label: 'Easy', color: 'bg-green-100 text-green-800 border-green-200' },
+    { value: 'M', label: 'Medium', color: 'bg-orange-100 text-orange-800 border-orange-200' },
+    { value: 'H', label: 'Hard', color: 'bg-red-100 text-red-800 border-red-200' }
+  ];
+
+  const versionOptions = [
+    { value: '2023', label: '2023' },
+    { value: '2024', label: '2024' },
+    { value: '2025', label: '2025' }
+  ];
 
   useEffect(() => {
     async function loadData() {
@@ -164,6 +191,8 @@ export function UnifiedQuestionBank() {
   };
 
   const handleStartPractice = () => {
+    if (filteredQuestions.length === 0) return;
+    
     setIsPracticeMode(true);
     setCurrentQuestionIndex(0);
     setTimer(0);
@@ -228,24 +257,55 @@ export function UnifiedQuestionBank() {
     }
   };
 
-  const handleFilterChange = (filterType: keyof FilterState, value: string) => {
-    const newFilters = { ...filters, [filterType]: value };
-    setFilters(newFilters);
-    
-    // Apply filters
+  const handleFilterChange = (filterType: keyof FilterState, value: string, checked: boolean) => {
+    setFilters(prev => {
+      const currentArray = prev[filterType];
+      let newArray: string[];
+      
+      if (checked) {
+        newArray = [...currentArray, value];
+      } else {
+        newArray = currentArray.filter(item => item !== value);
+      }
+      
+      return { ...prev, [filterType]: newArray };
+    });
+  };
+
+  const clearFilter = (filterType: keyof FilterState, value: string) => {
+    setFilters(prev => ({
+      ...prev,
+      [filterType]: prev[filterType].filter(item => item !== value)
+    }));
+  };
+
+  const clearAllFilters = () => {
+    setFilters({
+      modules: [],
+      difficulties: [],
+      skills: [],
+      versions: []
+    });
+  };
+
+  // Apply filters whenever filter state changes
+  useEffect(() => {
     let filtered = allQuestions;
     
-    if (newFilters.module !== 'all') {
-      filtered = filtered.filter(q => q.module === newFilters.module);
+    if (filters.modules.length > 0) {
+      filtered = filtered.filter(q => filters.modules.includes(q.module));
     }
     
-    if (newFilters.difficulty !== 'all') {
-      filtered = filtered.filter(q => q.difficulty === newFilters.difficulty);
+    if (filters.difficulties.length > 0) {
+      filtered = filtered.filter(q => filters.difficulties.includes(q.difficulty));
     }
     
-    if (newFilters.skill !== 'all') {
-      filtered = filtered.filter(q => q.skill_cd === newFilters.skill);
+    if (filters.skills.length > 0) {
+      filtered = filtered.filter(q => filters.skills.includes(q.skill_cd));
     }
+    
+    // Note: Version filtering would need to be implemented based on your data structure
+    // For now, we'll skip version filtering
     
     setFilteredQuestions(filtered);
     
@@ -256,7 +316,9 @@ export function UnifiedQuestionBank() {
       setTimer(0);
       setIsTimerRunning(false);
     }
-  };
+  }, [filters, allQuestions, isPracticeMode]);
+
+  const hasActiveFilters = filters.modules.length > 0 || filters.difficulties.length > 0 || filters.skills.length > 0 || filters.versions.length > 0;
 
   if (loading) {
     return (
@@ -328,6 +390,92 @@ export function UnifiedQuestionBank() {
           </div>
         </div>
 
+        {/* Filter Summary Chips */}
+        {!isPracticeMode && hasActiveFilters && (
+          <Card className="mb-6">
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-medium text-gray-700">Active Filters</h3>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={clearAllFilters}
+                >
+                  Clear All
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {filters.modules.map(module => (
+                  <Badge 
+                    key={`module-${module}`} 
+                    variant="secondary"
+                    className="flex items-center space-x-1"
+                  >
+                    <span>{getModuleLabel(module)}</span>
+                    <button
+                      onClick={() => clearFilter('modules', module)}
+                      className="ml-1 hover:bg-gray-200 rounded-full p-0.5"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </Badge>
+                ))}
+                {filters.difficulties.map(difficulty => {
+                  const option = difficultyOptions.find(opt => opt.value === difficulty);
+                  return (
+                    <Badge 
+                      key={`difficulty-${difficulty}`} 
+                      variant="outline"
+                      className={`flex items-center space-x-1 ${option?.color}`}
+                    >
+                      <span>{getDifficultyLabel(difficulty)}</span>
+                      <button
+                        onClick={() => clearFilter('difficulties', difficulty)}
+                        className="ml-1 hover:bg-gray-200 rounded-full p-0.5"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </Badge>
+                  );
+                })}
+                {filters.skills.map(skill => {
+                  const skillInfo = skills.find(s => s.code === skill);
+                  return (
+                    <Badge 
+                      key={`skill-${skill}`} 
+                      variant="secondary"
+                      className="flex items-center space-x-1"
+                    >
+                      <span>{skillInfo?.description || skill}</span>
+                      <button
+                        onClick={() => clearFilter('skills', skill)}
+                        className="ml-1 hover:bg-gray-200 rounded-full p-0.5"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </Badge>
+                  );
+                })}
+                {filters.versions.map(version => (
+                  <Badge 
+                    key={`version-${version}`} 
+                    variant="secondary"
+                    className="flex items-center space-x-1"
+                  >
+                    <span>{version}</span>
+                    <button
+                      onClick={() => clearFilter('versions', version)}
+                      className="ml-1 hover:bg-gray-200 rounded-full p-0.5"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </Badge>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Filters Section */}
         {!isPracticeMode && showFilters && (
           <Card className="mb-6">
@@ -337,97 +485,172 @@ export function UnifiedQuestionBank() {
                 <Button 
                   variant="outline" 
                   size="sm"
-                  onClick={() => setFilters({
-                    module: 'all',
-                    difficulty: 'all',
-                    skill: 'all',
-                    version: 'all'
-                  })}
+                  onClick={clearAllFilters}
                 >
                   Reset Filters
                 </Button>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 {/* Module Filter */}
                 <div>
-                  <label className="text-sm font-medium mb-2 block">Subject</label>
-                  <div className="space-y-2">
-                    {['all', 'math', 'reading', 'writing'].map(module => (
-                      <Button
-                        key={module}
-                        variant={filters.module === module ? "default" : "outline"}
-                        size="sm"
-                        className="w-full justify-start"
-                        onClick={() => handleFilterChange('module', module)}
+                  <label className="text-sm font-medium mb-3 block">Subject</label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-between"
                       >
-                        {module === 'all' ? 'All Subjects' : getModuleLabel(module)}
+                        {filters.modules.length === 0 
+                          ? 'All Subjects' 
+                          : `${filters.modules.length} selected`
+                        }
+                        <ChevronDown className="h-4 w-4" />
                       </Button>
-                    ))}
-                  </div>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-56">
+                      <div className="space-y-2">
+                        {moduleOptions.map(option => (
+                          <div key={option.value} className="flex items-center space-x-2">
+                            <Checkbox
+                              id={`module-${option.value}`}
+                              checked={filters.modules.includes(option.value)}
+                              onCheckedChange={(checked) => 
+                                handleFilterChange('modules', option.value, checked as boolean)
+                              }
+                            />
+                            <label 
+                              htmlFor={`module-${option.value}`}
+                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                              {option.label}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                 </div>
 
                 {/* Difficulty Filter */}
                 <div>
-                  <label className="text-sm font-medium mb-2 block">Difficulty</label>
-                  <div className="space-y-2">
-                    {['all', 'E', 'M', 'H'].map(difficulty => (
-                      <Button
-                        key={difficulty}
-                        variant={filters.difficulty === difficulty ? "default" : "outline"}
-                        size="sm"
-                        className="w-full justify-start"
-                        onClick={() => handleFilterChange('difficulty', difficulty)}
+                  <label className="text-sm font-medium mb-3 block">Difficulty</label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-between"
                       >
-                        {difficulty === 'all' ? 'All Difficulties' : getDifficultyLabel(difficulty)}
+                        {filters.difficulties.length === 0 
+                          ? 'All Difficulties' 
+                          : `${filters.difficulties.length} selected`
+                        }
+                        <ChevronDown className="h-4 w-4" />
                       </Button>
-                    ))}
-                  </div>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-56">
+                      <div className="space-y-2">
+                        {difficultyOptions.map(option => (
+                          <div key={option.value} className="flex items-center space-x-2">
+                            <Checkbox
+                              id={`difficulty-${option.value}`}
+                              checked={filters.difficulties.includes(option.value)}
+                              onCheckedChange={(checked) => 
+                                handleFilterChange('difficulties', option.value, checked as boolean)
+                              }
+                            />
+                            <label 
+                              htmlFor={`difficulty-${option.value}`}
+                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                              {option.label}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                 </div>
 
                 {/* Skill Filter */}
                 <div>
-                  <label className="text-sm font-medium mb-2 block">Skill</label>
-                  <div className="space-y-2 max-h-32 overflow-y-auto">
-                    <Button
-                      variant={filters.skill === 'all' ? "default" : "outline"}
-                      size="sm"
-                      className="w-full justify-start"
-                      onClick={() => handleFilterChange('skill', 'all')}
-                    >
-                      All Skills
-                    </Button>
-                    {skills.slice(0, 10).map(skill => (
-                      <Button
-                        key={skill.code}
-                        variant={filters.skill === skill.code ? "default" : "outline"}
-                        size="sm"
-                        className="w-full justify-start text-xs"
-                        onClick={() => handleFilterChange('skill', skill.code)}
+                  <label className="text-sm font-medium mb-3 block">Skill</label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-between"
                       >
-                        {skill.description}
+                        {filters.skills.length === 0 
+                          ? 'All Skills' 
+                          : `${filters.skills.length} selected`
+                        }
+                        <ChevronDown className="h-4 w-4" />
                       </Button>
-                    ))}
-                  </div>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80 max-h-60 overflow-y-auto">
+                      <div className="space-y-2">
+                        {skills.map(skill => (
+                          <div key={skill.code} className="flex items-center space-x-2">
+                            <Checkbox
+                              id={`skill-${skill.code}`}
+                              checked={filters.skills.includes(skill.code)}
+                              onCheckedChange={(checked) => 
+                                handleFilterChange('skills', skill.code, checked as boolean)
+                              }
+                            />
+                            <label 
+                              htmlFor={`skill-${skill.code}`}
+                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                              {skill.description}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                 </div>
 
                 {/* Version Filter */}
                 <div>
-                  <label className="text-sm font-medium mb-2 block">Version</label>
-                  <div className="space-y-2">
-                    {['all', '2023', '2024', '2025'].map(version => (
-                      <Button
-                        key={version}
-                        variant={filters.version === version ? "default" : "outline"}
-                        size="sm"
-                        className="w-full justify-start"
-                        onClick={() => handleFilterChange('version', version)}
+                  <label className="text-sm font-medium mb-3 block">Version</label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-between"
                       >
-                        {version === 'all' ? 'All Versions' : version}
+                        {filters.versions.length === 0 
+                          ? 'All Versions' 
+                          : `${filters.versions.length} selected`
+                        }
+                        <ChevronDown className="h-4 w-4" />
                       </Button>
-                    ))}
-                  </div>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-56">
+                      <div className="space-y-2">
+                        {versionOptions.map(option => (
+                          <div key={option.value} className="flex items-center space-x-2">
+                            <Checkbox
+                              id={`version-${option.value}`}
+                              checked={filters.versions.includes(option.value)}
+                              onCheckedChange={(checked) => 
+                                handleFilterChange('versions', option.value, checked as boolean)
+                              }
+                            />
+                            <label 
+                              htmlFor={`version-${option.value}`}
+                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                              {option.label}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                 </div>
               </div>
             </CardContent>
@@ -441,53 +664,73 @@ export function UnifiedQuestionBank() {
               Showing {filteredQuestions.length} of {allQuestions.length} questions
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            {filteredQuestions.length === 0 ? (
               <Card>
                 <CardContent className="pt-6">
-                  <div className="text-2xl font-bold text-blue-600">{filteredQuestions.length}</div>
-                  <p className="text-xs text-muted-foreground">Total Questions</p>
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="text-2xl font-bold text-green-600">
-                    {Object.values(questionStatus).filter(s => s.status === 'correct').length}
-                  </div>
-                  <p className="text-xs text-muted-foreground">Completed</p>
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="text-2xl font-bold text-orange-600">
-                    {Object.values(questionStatus).filter(s => s.status === 'review').length}
-                  </div>
-                  <p className="text-xs text-muted-foreground">Flagged</p>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Start Practice Button */}
-            {filteredQuestions.length > 0 && (
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="text-center">
-                    <h3 className="text-lg font-semibold mb-2">Ready to Practice?</h3>
-                    <p className="text-gray-600 mb-4">
-                      {filteredQuestions.length} questions match your current filters
-                    </p>
+                  <div className="text-center py-8">
+                    <div className="text-gray-400 mb-4">
+                      <Filter className="h-12 w-12 mx-auto" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">No questions found</h3>
+                    <p className="text-gray-600 mb-4">Try selecting different filters to find questions.</p>
                     <Button 
-                      size="lg" 
-                      onClick={handleStartPractice}
-                      className="bg-blue-600 hover:bg-blue-700"
+                      variant="outline"
+                      onClick={clearAllFilters}
                     >
-                      <Play className="h-4 w-4 mr-2" />
-                      Start Practice
+                      Clear All Filters
                     </Button>
                   </div>
                 </CardContent>
               </Card>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <div className="text-2xl font-bold text-blue-600">{filteredQuestions.length}</div>
+                      <p className="text-xs text-muted-foreground">Total Questions</p>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card>
+                    <CardContent className="pt-6">
+                      <div className="text-2xl font-bold text-green-600">
+                        {Object.values(questionStatus).filter(s => s.status === 'correct').length}
+                      </div>
+                      <p className="text-xs text-muted-foreground">Completed</p>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card>
+                    <CardContent className="pt-6">
+                      <div className="text-2xl font-bold text-orange-600">
+                        {Object.values(questionStatus).filter(s => s.status === 'review').length}
+                      </div>
+                      <p className="text-xs text-muted-foreground">Flagged</p>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Start Practice Button */}
+                <Card>
+                  <CardContent className="pt-6">
+                    <div className="text-center">
+                      <h3 className="text-lg font-semibold mb-2">Ready to Practice?</h3>
+                      <p className="text-gray-600 mb-4">
+                        {filteredQuestions.length} questions match your current filters
+                      </p>
+                      <Button 
+                        size="lg" 
+                        onClick={handleStartPractice}
+                        className="bg-blue-600 hover:bg-blue-700"
+                      >
+                        <Play className="h-4 w-4 mr-2" />
+                        Start Practice
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </>
             )}
           </div>
         )}
