@@ -1,0 +1,4 @@
+ID: 3cdbf026 Answer Correct Answer: A Rationale Choice A is correct. The value of k can be found using the slope-intercept form of a linear equation, , where m is the slope and b is the y-coordinate of the y-intercept. The equation can be rewritten in the form . One of the given points, , is the y-intercept. Thus, the y-coordinate of the y-intercept must be equal to . Multiplying both sides by k gives . Dividing both sides by gives . Choices B, C, and D are incorrect and may result from errors made rewriting the given equation. Question Difficulty: Hard
+
+
+

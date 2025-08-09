@@ -1,0 +1,13 @@
+WINDOW
+ID: 6f626ae5 "To You" is an 1856 poem by Walt Whitman. In the poem, Whitman suggests that readers, whom he addresses directly, have not fully understood themselves, writing, ______ Which quotation from "To You" most effectively illustrates the claim? "You have not known what you are, you have slumber'd upon yourself / all your life, / Your eyelids have been the same as A. closed most of the time." B. "These immense meadows, these interminable rivers, you are immense / and interminable as they." "I should have made my way straight to you long ago, / I should have blabb'd nothing but you, I shou
+
+TOKENS
+[["A", 372, 375], ["B", 401, 404], ["C", 616, 619], ["D", 639, 642]]
+
+CHOICES
+[
+  "closed most of the time.\"",
+  "\"These immense meadows, these interminable rivers, you are immense / and interminable as they.\" \"I should have made my way straight to you long ago, / I should have blabb'd nothing but you, I should have chanted",
+  "nothing / but you.\"",
+  "\"I will leave all and come and make the hymns of you, / None has understood you, but I understand you.\""
+]

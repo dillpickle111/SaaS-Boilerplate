@@ -1,0 +1,13 @@
+WINDOW
+ID: 1a2b29c9 The following text is adapted from María Cristina Mena's 1914 short story "The Vine-Leaf." It is a saying in the capital of Mexico that Dr. Malsufrido carries more family secrets under his hat than any archbishop. The doctor's hat is, appropriately enough, uncommonly capacious, rising very high, and sinking so low that it seems to be supported by his ears and eyebrows, and it has a furry look, as if it had been brushed the wrong way, which is perhaps what happens to it if it is ever brushed at all. When the doctor takes it off, the family secrets do not fly out like a flock of par
+
+TOKENS
+[["A", 777, 780], ["B", 846, 849], ["C", 908, 911], ["D", 964, 967]]
+
+CHOICES
+[
+  "Many have come to tolerate him despite his disheveled appearance.",
+  "Few feel concerned that he will divulge their confidences.",
+  "Some dislike how freely he discusses his own family.",
+  "Most would be unimpressed by him were it not for his professional expertise."
+]

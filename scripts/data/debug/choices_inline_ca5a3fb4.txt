@@ -1,0 +1,13 @@
+WINDOW
+ID: ca5a3fb4 The practice of logging (cutting down trees for commercial and other uses) is often thought to be at odds with forest conservation (the work of preserving forests). However, a massive study in forest management and preservation spanning 700,000 hectares in Oregon's Malheur National Forest calls that view into question. So far, results of the study suggest that forest plots that have undergone limited logging (the careful removal of a controlled number of trees) may be more robust than plots that haven't been logged at all. These results, in turn, suggest that ______ Which choice m
+
+TOKENS
+[["A", 634, 637], ["B", 716, 719], ["C", 795, 798], ["D", 885, 888]]
+
+CHOICES
+[
+  "logging may be useful for maintaining healthy forests, provided it is limited.",
+  "other forest management strategies are more effective than limited logging.",
+  "as time passes, it will be difficult to know whether limited logging has any benefits.",
+  "the best way to support forest health may be to leave large forests entirely untouched."
+]

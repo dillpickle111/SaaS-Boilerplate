@@ -1,0 +1,13 @@
+WINDOW
+ID: 60c6b64d Male túngara frogs make complex calls to attract mates, but their calls also attract frog-biting midges, insects that feed on the frogs' blood. Researchers Ximena Bernal and Priyanka de Silva wondered if the calls alone are sufficient for midges to locate the frogs or if midges use carbon dioxide emitted by frogs as an additional cue to their prey's whereabouts, like mosquitoes do. In an experiment, the researchers placed two midge traps in a túngara frog breeding area. One trap played recordings of túngara frog calls and the other released carbon dioxide along with playing the ca
+
+TOKENS
+[["A", 940, 943], ["B", 1089, 1092], ["C", 1109, 1112], ["D", 1350, 1353]]
+
+CHOICES
+[
+  "released carbon dioxide. Midges entered the trap that released carbon dioxide and played calls only during or immediately after periods of carbon",
+  "dioxide release.",
+  "More midges were found in the trap that only played calls than in the trap that played calls and released carbon dioxide. The trap that released carbon dioxide and played calls attracted few midges when carbon dioxide concentrations were",
+  "low but attracted many midges when carbon dioxide concentrations were high."
+]

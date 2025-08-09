@@ -1,0 +1,13 @@
+WINDOW
+ID: 66c47028 In 1934 physicist Eugene Wigner posited the existence of a crystal consisting entirely of electrons in a honeycomb-like structure. The so-called Wigner crystal remained largely conjecture, however, until Feng Wang and colleagues announced in 2021 that they had captured an image of one. The researchers trapped electrons between two semiconductors and then cooled the apparatus, causing the electrons to settle into a crystalline structure. By inserting an ultrathin sheet of graphene above the crystal, the researchers obtained an impression-the first visual confirmation of the Wigner 
+
+TOKENS
+[["A", 661, 664], ["B", 767, 770], ["C", 872, 875], ["D", 974, 977]]
+
+CHOICES
+[
+  "Researchers have obtained the most definitive evidence to date of the existence of the Wigner crystal.",
+  "Researchers have identified an innovative new method for working with unusual crystalline structures.",
+  "Graphene is the most important of the components required to capture an image of a Wigner crystal.",
+  "It's difficult to acquire an image of a Wigner crystal because of the crystal's honeycomb structure."
+]

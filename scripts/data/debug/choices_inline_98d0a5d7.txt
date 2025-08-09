@@ -1,0 +1,13 @@
+WINDOW
+ID: 98d0a5d7 Almost all works of fiction contain references to the progression of time, including the time of day when events in a story take place. In a 2020 study, Allen Kim, Charuta Pethe, and Steven Skiena claim that an observable pattern in such references reflects a shift in human behavior prompted by the spread of electric lighting in the late nineteenth century. The researchers drew this conclusion from an analysis of more than 50,000 novels spanning many centuries and cultures, using software to recognize and tally both specific time references-that is, clock phrases, such as 7 a.m. o
+
+TOKENS
+[["A", 923, 926], ["B", 1054, 1057], ["C", 1192, 1195], ["D", 1239, 1242]]
+
+CHOICES
+[
+  "1800 do. Novels published after 1880 contain significantly more references to activities occurring after 10 p.m. than do novels",
+  "from earlier periods. Among novels published in the nineteenth century, implied time references become steadily more common than clock",
+  "phrases as publication dates approach 1900.",
+  "The time references of noon (12 p.m.) and midnight (12 a.m.) are used with roughly the same frequency in the novels."
+]

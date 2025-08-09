@@ -1,0 +1,13 @@
+WINDOW
+ID: d5b9ed0d Participants' Responses to Three (1-9; higher values = more positive) Review Conditions 7 Participants' mean rating 6 5 4 3 2 1 0 iew uct d f rev pr o o ed ess ew fuln revi lp He ward o det u t tit A no anger (control) high anger low anger To understand how expressions of anger in reviews of products affect readers of those reviews, business scholar Dezhi Yin and colleagues measured study participants' responses to three versions of the same negative review-a control review expressing no anger, a review expressing a high degree of anger, and a review expressing a low degree of ang
+
+TOKENS
+[["A", 1049, 1052], ["B", 1251, 1254], ["C", 1596, 1599], ["D", 1773, 1776]]
+
+CHOICES
+[
+  "of the reviewed product regardless of which type of review participants had seen. Compared with participants who saw the control review, participants who saw the low-anger review rated the review as",
+  "slightly more helpful, whereas participants who saw the high-anger review rated the review as less helpful. Participants who saw the low-anger review rated the review as slightly more helpful than participants who saw the control review did, but participants' attitude toward the reviewed product was slightly worse when participants saw the",
+  "low-anger review than when they saw the no-anger review. Compared with participants who saw the low-anger review, participants who saw the high-anger review rated the review",
+  "as less helpful and had a less positive attitude toward the reviewed product."
+]

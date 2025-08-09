@@ -1,0 +1,1 @@
+ID: e3cf671f The function is defined by , where is a constant, and . What is the value of ? 

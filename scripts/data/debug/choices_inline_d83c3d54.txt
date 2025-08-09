@@ -1,0 +1,13 @@
+WINDOW
+ID: d83c3d54 Characteristics of the Banks of the Provo River Downstream of the Jordanelle Dam 140,000 Area (square meters) 120,000 100,000 80,000 60,000 40,000 20,000 0 1987 1993 2006 Year grass cover bare soil forest cover The Jordanelle Dam was built on the Provo River in Utah in 1992. Earth scientist Adriana E. Martinez and colleagues tracked changes to the environment on the banks of the river downstream of the dam, including how much grass and forest cover were present. They concluded that the dam changed the flow of the river in ways that benefited grass plants but didn't benefit trees. 
+
+TOKENS
+[["A", 814, 817], ["B", 971, 974], ["C", 1098, 1101], ["D", 1158, 1161]]
+
+CHOICES
+[
+  "approximately 75,000 square meters. There was more grass cover than forest cover in 1987, and this difference increased dramatically in 1993 and again in",
+  "2006. There was less grass cover than bare soil in 1987 but more grass cover than bare soil in 1993 and 2006, whereas there",
+  "was more forest cover than bare soil in all three years.",
+  "Grass cover increased from 1987 to 1993 and from 1993 to 2006, whereas forest cover decreased in those periods."
+]

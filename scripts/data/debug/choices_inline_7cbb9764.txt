@@ -1,0 +1,13 @@
+WINDOW
+ID: 7cbb9764 Accomplished printmaker and sculptor Elizabeth Catlett (1915-2012) used her art to explore the Black experience in the United States. In a paper for an art history class, a student claims that Catlett had a particular talent for unifying various artistic traditions and styles in her work. Which quotation from a scholar describing Catlett's work would best support the student's claim? "In Mother and Child, a sculpture of two Black figures, Catlett used an ancient Indigenous sculpting technique and A. combined the visual aesthetic of modern Mexican muralists with that of German arti
+
+TOKENS
+[["A", 515, 518], ["B", 738, 741], ["C", 930, 933], ["D", 1146, 1149]]
+
+CHOICES
+[
+  "combined the visual aesthetic of modern Mexican muralists with that of German artist Kathe Kollwitz.\" \"In her collage New Generation, Catlett overlaid fabric onto the canvas to represent the clothing of a father and his",
+  "toddler, positioned to evoke classic images of a mother and child.\" \"Created in 1968, Catlett's sculpture Black Unity, a stylized fist sculpted from mahogany and measuring two feet across,",
+  "remains an important piece and has received renewed and well-deserved attention in recent years.\" \"One series of Catlett's prints, made by the artist using the linoleum cut method, depicts several notable African",
+  "American women, including Harriet Tubman and Sojourner Truth.\""
+]

@@ -1,0 +1,98 @@
+[
+  {
+    "question_id": "manual-001",
+    "skill_cd": "H.C.",
+    "skill_desc": "Linear equations in two variables",
+    "primary_class_cd": "H",
+    "primary_class_cd_desc": "Algebra",
+    "difficulty": "M",
+    "module": "math",
+    "content": {
+      "keys": [
+        "3/17",
+        "17/3",
+        "-3/17",
+        "-17/3"
+      ],
+      "options": [
+        "3/17",
+        "17/3",
+        "-3/17",
+        "-17/3"
+      ],
+      "question": "Line k is defined by y=−17/3x+5. Line j is perpendicular to line k in the xy-plane. What is the slope of line j?",
+      "rationale": "For perpendicular lines, the product of their slopes equals -1. If line k has slope -17/3, then line j must have slope 3/17 because (-17/3) × (3/17) = -1.",
+      "explanation": "For perpendicular lines, the product of their slopes equals -1. If line k has slope -17/3, then line j must have slope 3/17 because (-17/3) × (3/17) = -1.",
+      "correct_answer": [
+        "3/17"
+      ]
+    },
+    "program": "SAT",
+    "score_band_range_cd": 5,
+    "active": true
+  },
+  {
+    "question_id": "manual-002",
+    "skill_cd": "H.A.",
+    "skill_desc": "Systems of linear equations",
+    "primary_class_cd": "H",
+    "primary_class_cd_desc": "Algebra",
+    "difficulty": "M",
+    "module": "math",
+    "content": {
+      "keys": [
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "options": [
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "question": "If 2x + 3y = 12 and x - y = 2, what is the value of x?",
+      "rationale": "From x - y = 2, we get y = x - 2. Substituting into 2x + 3y = 12: 2x + 3(x - 2) = 12 → 2x + 3x - 6 = 12 → 5x = 18 → x = 4.",
+      "explanation": "From x - y = 2, we get y = x - 2. Substituting into 2x + 3y = 12: 2x + 3(x - 2) = 12 → 2x + 3x - 6 = 12 → 5x = 18 → x = 4.",
+      "correct_answer": [
+        "4"
+      ]
+    },
+    "program": "SAT",
+    "score_band_range_cd": 4,
+    "active": true
+  },
+  {
+    "question_id": "manual-003",
+    "skill_cd": "G.A.",
+    "skill_desc": "Area of circles",
+    "primary_class_cd": "G",
+    "primary_class_cd_desc": "Geometry",
+    "difficulty": "E",
+    "module": "math",
+    "content": {
+      "keys": [
+        "25π",
+        "50π",
+        "75π",
+        "100π"
+      ],
+      "options": [
+        "25π",
+        "50π",
+        "75π",
+        "100π"
+      ],
+      "question": "A circle has a radius of 5 units. What is the area of the circle?",
+      "rationale": "The area of a circle is πr². With r = 5, the area is π(5)² = 25π.",
+      "explanation": "The area of a circle is πr². With r = 5, the area is π(5)² = 25π.",
+      "correct_answer": [
+        "25π"
+      ]
+    },
+    "program": "SAT",
+    "score_band_range_cd": 3,
+    "active": true
+  }
+]

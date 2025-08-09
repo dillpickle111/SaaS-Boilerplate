@@ -1,0 +1,1 @@
+ID: 8c5e6702 A window repair specialist charges for the first two hours of repair plus an hourly fee for each additional hour. The total cost for hours of repair is . Which function gives the total cost, in dollars, for hours of repair, where ? A. B. C. D. 

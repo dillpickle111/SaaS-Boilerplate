@@ -1,0 +1,13 @@
+WINDOW
+ID: 702eb7e3 Economic Policy Uncertainty in the United Kingdom, 2005-2010 (larger values = more uncertainty) 200 150 Uncertainty 100 50 0 005 006 007 008 009 010 2 2 2 2 2 2 Year tax and public spending policy trade policy general economic policy High levels of public uncertainty about which economic policies a country will adopt can make planning difficult for businesses, but measures of such uncertainty have not tended to be very detailed. Recently, however, economist Sandile Hlatshwayo analyzed trends in news reports to derive measures not only for general economic policy uncertainty but al
+
+TOKENS
+[["A", 1099, 1102], ["B", 1152, 1155], ["C", 1382, 1385], ["D", 1552, 1555]]
+
+CHOICES
+[
+  "public spending policy by a large amount in 2009.",
+  "was substantially lower than uncertainty about tax and public spending policy each year from 2005 to 2010. reached its highest level between 2005 and 2010 in the same year that uncertainty about trade policy and tax and public",
+  "spending policy reached their lowest levels. was substantially lower than uncertainty about trade policy in 2005 and substantially higher than uncertainty about trade",
+  "policy in 2010."
+]

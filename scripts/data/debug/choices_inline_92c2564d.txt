@@ -1,0 +1,13 @@
+WINDOW
+ID: 92c2564d Utah is home to Pando, a colony of about 47,000 quaking aspen trees that all share a single root system. Pando is one of the largest single organisms by mass on Earth, but ecologists are worried that its growth is declining in part because of grazing by animals. The ecologists say that strong fences could prevent deer from eating young trees and help Pando start thriving again. According to the text, why are ecologists worried about Pando? A. It isn't growing at the same rate it used to. B. It isn't producing young trees anymore. C. It can't grow into new areas because it is block
+
+TOKENS
+[["A", 457, 460], ["B", 506, 509], ["C", 549, 552], ["D", 614, 617]]
+
+CHOICES
+[
+  "It isn't growing at the same rate it used to.",
+  "It isn't producing young trees anymore.",
+  "It can't grow into new areas because it is blocked by fences.",
+  "Its root system can't support many more new trees."
+]

@@ -1,0 +1,13 @@
+WINDOW
+ID: e677fa6c The following text is adapted from Edgar Allan Poe's 1849 story "Landor's Cottage." During a pedestrian trip last summer, through one or two of the river counties of New York, I found myself, as the day declined, somewhat embarrassed about the road I was pursuing. The land undulated very remarkably; and my path, for the last hour, had wound about and about so confusedly, in its effort to keep in the valleys, that I no longer knew in what direction lay the sweet village of B--, where I had determined to stop for the night. Which choice best states the main idea of the text? A. The 
+
+TOKENS
+[["A", 593, 596], ["B", 662, 665], ["C", 765, 768], ["D", 861, 864]]
+
+CHOICES
+[
+  "The narrator remembers a trip he took and admits to getting lost.",
+  "The narrator recalls fond memories of a journey that he took through some beautiful river counties.",
+  "The narrator describes what he saw during a long trip through a frequently visited location.",
+  "The narrator explains the difficulties he encountered on a trip and how he overcame them."
+]

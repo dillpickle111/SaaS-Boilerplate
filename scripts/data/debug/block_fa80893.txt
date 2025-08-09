@@ -1,0 +1,4 @@
+ID: fa80893a Answer Correct Answer: 17 Rationale The correct answer is . It's given that . Multiplying each side of this equation by yields , or . Subtracting from each side of this equation yields , or . Therefore, the value of is . Question Difficulty: Easy
+
+
+

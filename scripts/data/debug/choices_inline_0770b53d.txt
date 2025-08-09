@@ -1,0 +1,13 @@
+WINDOW
+ID: 0770b53d O Pioneers! is a 1913 novel by Willa Cather. In the novel, Cather portrays Alexandra Bergson as having a deep emotional connection to her natural surroundings: ______ Which quotation from O Pioneers! most effectively illustrates the claim? "She had never known before how much the country meant to her. The chirping of the insects down in the long grass had been like the sweetest music. She had felt as if her heart were hiding down there, somewhere, with the quail and the plover and all the little wild things that crooned or buzzed in the sun. Under the long shaggy ridges, she felt 
+
+TOKENS
+[["A", 611, 614], ["B", 854, 857], ["C", 988, 991], ["D", 1341, 1344]]
+
+CHOICES
+[
+  "stirring.\" \"Alexandra talked to the men about their crops and to the women about their poultry. She spent a whole day with one young farmer who had been away at school, and who was experimenting with a new kind of clover hay. She learned a",
+  "great deal.\" \"Alexandra drove off alone. The rattle of her wagon was lost in the howling of the wind, but her lantern, held firmly",
+  "between her feet, made a moving point of light along the highway, going deeper and deeper into the dark country.\" \"It was Alexandra who read the papers and followed the markets, and who learned by the mistakes of their neighbors. It was Alexandra who could always tell about what it had cost to fatten each steer, and who could guess the weight of a",
+  "hog before it went on the scales closer than John Bergson [her father] himself.\""
+]

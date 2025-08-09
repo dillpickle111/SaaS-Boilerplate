@@ -1,0 +1,1 @@
+ID: 686b7244 A certain apprentice has enrolled in hours of training courses. The equation represents this situation, where is the number of on-site training courses and is the number of online training courses this apprentice has enrolled in. How many more hours does each online training course take than each on-site training course? 

@@ -1,0 +1,1 @@
+ID: 548a4929 The function is defined by . The graph of in the xy-plane has an x-intercept at and a y- intercept at , where and are constants. What is the value of ? A. B. C. D. 

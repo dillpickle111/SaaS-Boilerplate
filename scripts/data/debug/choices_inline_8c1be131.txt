@@ -1,0 +1,13 @@
+WINDOW
+ID: 8c1be131 During the World War II era, some Mexican American women adopted a striking new look called pachuca style. They wore altered men's jackets or zoot suits (wide-legged, long-coated suits) and dramatic makeup, and they combed their hair into high, rounded shapes. Some people criticized pachuca style, saying it was dangerous and women should dress traditionally. But historians see things differently. They see pachuca style as a form of rebellion against the era's rigid social expectations for women. They say that it showed a desire for self-expression and freedom on the part of women 
+
+TOKENS
+[["A", 806, 809], ["B", 934, 937], ["C", 1072, 1075], ["D", 1235, 1238]]
+
+CHOICES
+[
+  "present day. They think that pachuca style was a way for some Mexican American women to express themselves and resist strict",
+  "social expectations. They think that pachuca style was celebrated because it enabled some Mexican American women to show their support",
+  "for the United States during World War II. They think that pachuca style was similar to other fashion trends that different groups of women adopted in the same",
+  "period."
+]

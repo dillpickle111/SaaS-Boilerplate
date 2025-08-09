@@ -1,0 +1,13 @@
+WINDOW
+ID: 3d91c973 Mosasaurs were large marine reptiles that lived in the Late Cretaceous period, approximately 100 million to 66 million years ago. Celina Suarez, Alberto Pérez-Huerta, and T. Lynn Harrell Jr. examined oxygen-18 isotopes in mosasaur tooth enamel in order to calculate likely mosasaur body temperatures and determined that mosasaurs were endothermic-that is, they used internal metabolic processes to maintain a stable body temperature in a variety of ambient temperatures. Suarez, Pérez- Huerta, and Harrell claim that endothermy would have enabled mosasaurs to include relatively cold pol
+
+TOKENS
+[["A", 836, 839], ["B", 1020, 1023], ["C", 1238, 1241], ["D", 1451, 1454]]
+
+CHOICES
+[
+  "temperatures of nonendothermic Late Cretaceous marine reptiles are. Fossils of both mosasaurs and nonendothermic marine reptiles have been found in roughly equal numbers in regions",
+  "known to be near the poles during the Late Cretaceous, though in lower concentrations than elsewhere. Several mosasaur fossils have been found in regions known to be near the poles during the Late Cretaceous, while",
+  "relatively few fossils of nonendothermic marine reptiles have been found in those locations. During the Late Cretaceous, seawater temperatures were likely higher throughout mosasaurs' range, including near the",
+  "poles, than seawater temperatures at those same latitudes are today."
+]

@@ -49,7 +49,7 @@ function QuestionViewerWrapper({
   };
 
   const handleFlagClick = () => {
-    onFlagToggle(question.question_id, !isFlagged);
+    onFlagToggle(question.id, !isFlagged);
   };
 
   const handleStrikeClick = () => {
@@ -174,6 +174,18 @@ function QuestionViewerWrapper({
 
       {/* Question Text */}
       <div className="mb-6 px-1">
+        {/* Display images if available */}
+        {question.images && question.images.length > 0 && (
+          <div className="mb-4">
+            <img
+              src={question.images[0]}
+              alt="Question figure"
+              className="mx-auto max-w-full rounded-lg border"
+              style={{ maxHeight: '300px' }}
+            />
+          </div>
+        )}
+
         <div
           className="font-['Noto_Serif_TC',_serif] text-[18px] font-semibold leading-[27px] tracking-[-0.36px] text-black"
           dangerouslySetInnerHTML={{ __html: question.content.question }}
@@ -382,17 +394,19 @@ function QuestionViewerWrapper({
 
 type Question = {
   id: string;
-  question_id: string;
-  module: string;
+  assessment: string;
+  test: string;
+  domain: string;
+  skill: string;
   difficulty: string;
-  skill_cd: string;
-  skill_desc: string;
-  content: {
-    question: string;
-    options?: string[];
-    correct_answer?: string;
-    explanation?: string;
-  };
+  number: number | null;
+  stem: string;
+  choices: Array<{ label: string; text: string }> | null;
+  answer: string;
+  rationale: string;
+  images: string[] | null;
+  pages: number[] | null;
+  created_at: string;
 };
 
 type QuestionStatus = {
@@ -480,32 +494,33 @@ export function EnhancedQuestionBank() {
     // Apply current filters except the one being counted
     allQuestions.forEach((question) => {
       // Count modules
-      const moduleFilters = filters.modules.filter(m => m !== question.module);
+      const module = question.test === 'Math' ? 'math' : 'reading';
+      const moduleFilters = filters.modules.filter(m => m !== module);
       const difficultyFilters = filters.difficulties.filter(d => d !== question.difficulty);
-      const skillFilters = filters.skills.filter(s => s !== question.skill_cd);
+      const skillFilters = filters.skills.filter(s => s !== question.skill);
 
       if (moduleFilters.length === 0 && difficultyFilters.length === 0 && skillFilters.length === 0) {
-        counts.modules[question.module] = (counts.modules[question.module] || 0) + 1;
+        counts.modules[module] = (counts.modules[module] || 0) + 1;
         counts.difficulties[question.difficulty] = (counts.difficulties[question.difficulty] || 0) + 1;
-        counts.skills[question.skill_cd] = (counts.skills[question.skill_cd] || 0) + 1;
+        counts.skills[question.skill] = (counts.skills[question.skill] || 0) + 1;
       } else {
         // Apply other filters
         let passesFilters = true;
 
-        if (moduleFilters.length > 0 && !moduleFilters.includes(question.module)) {
+        if (moduleFilters.length > 0 && !moduleFilters.includes(module)) {
           passesFilters = false;
         }
         if (difficultyFilters.length > 0 && !difficultyFilters.includes(question.difficulty)) {
           passesFilters = false;
         }
-        if (skillFilters.length > 0 && !skillFilters.includes(question.skill_cd)) {
+        if (skillFilters.length > 0 && !skillFilters.includes(question.skill)) {
           passesFilters = false;
         }
 
         if (passesFilters) {
-          counts.modules[question.module] = (counts.modules[question.module] || 0) + 1;
+          counts.modules[module] = (counts.modules[module] || 0) + 1;
           counts.difficulties[question.difficulty] = (counts.difficulties[question.difficulty] || 0) + 1;
-          counts.skills[question.skill_cd] = (counts.skills[question.skill_cd] || 0) + 1;
+          counts.skills[question.skill] = (counts.skills[question.skill] || 0) + 1;
         }
       }
     });
@@ -518,8 +533,8 @@ export function EnhancedQuestionBank() {
       try {
         setLoading(true);
 
-        // Load data sequentially to debug
-        const allQuestionsData = await getQuestions({ limit: 1000 });
+        // Load data without limit to get actual count
+        const allQuestionsData = await getQuestions();
 
         const questionStats = await getQuestionStats();
 
@@ -552,31 +567,15 @@ export function EnhancedQuestionBank() {
   const currentQuestion = filteredQuestions[currentQuestionIndex];
   const totalQuestions = filteredQuestions.length;
 
-  // Transform question data to match UI expectations
+  // Transform question data to match UI expectations - now using new schema
   const transformedQuestion = currentQuestion
     ? {
         ...currentQuestion,
         content: {
-          ...currentQuestion.content,
-          // Use rationale as question if question is empty
-          question:
-            currentQuestion.content.question
-            || (currentQuestion.content as any).rationale
-            || 'Question content not available',
-          // Handle correct_answer being an array
-          correct_answer: Array.isArray(currentQuestion.content.correct_answer)
-            ? (currentQuestion.content.correct_answer as string[])[0] || ''
-            : currentQuestion.content.correct_answer || '',
-          // Create options if they don't exist (most questions don't have options)
-          options:
-            currentQuestion.content.options && currentQuestion.content.options.length > 0
-              ? currentQuestion.content.options
-              : ['A', 'B', 'C', 'D'],
-          // Use rationale as explanation if explanation is empty
-          explanation:
-            currentQuestion.content.explanation
-            || (currentQuestion.content as any).rationale
-            || '',
+          question: currentQuestion.stem || 'Question content not available',
+          options: currentQuestion.choices?.map(choice => choice.text) || ['A', 'B', 'C', 'D'],
+          correct_answer: currentQuestion.answer || '',
+          explanation: currentQuestion.rationale || '',
         },
       }
     : null;
@@ -656,12 +655,12 @@ export function EnhancedQuestionBank() {
 
     setQuestionStatus(prev => ({
       ...prev,
-      [transformedQuestion.question_id]: {
-        ...prev[transformedQuestion.question_id],
+      [transformedQuestion.id]: {
+        ...prev[transformedQuestion.id],
         status: newStatus,
         selectedAnswer,
         timeSpent: timer,
-        attempts: (prev[transformedQuestion.question_id]?.attempts || 0) + 1,
+        attempts: (prev[transformedQuestion.id]?.attempts || 0) + 1,
       },
     }));
 
@@ -736,7 +735,10 @@ export function EnhancedQuestionBank() {
     let filtered = allQuestions;
 
     if (filters.modules.length > 0) {
-      filtered = filtered.filter(q => filters.modules.includes(q.module));
+      filtered = filtered.filter((q) => {
+        const module = q.test === 'Math' ? 'math' : 'reading';
+        return filters.modules.includes(module);
+      });
     }
 
     if (filters.difficulties.length > 0) {
@@ -744,7 +746,7 @@ export function EnhancedQuestionBank() {
     }
 
     if (filters.skills.length > 0) {
-      filtered = filtered.filter(q => filters.skills.includes(q.skill_cd));
+      filtered = filtered.filter(q => filters.skills.includes(q.skill));
     }
 
     // Note: Version filtering would need to be implemented based on your data structure

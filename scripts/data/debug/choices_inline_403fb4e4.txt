@@ -1,0 +1,13 @@
+WINDOW
+ID: 403fb4e4 Percentage of Ondo State Small-Scale Farmers Who Are Female, by Main Crop Grown 60 55 50 as a percentage of total 45 Female farmers 40 35 30 25 20 15 10 5 0 ndo ndo ndo O l O O tr h a th no entr sou c Ondo State region cereals root crops non-root vegetables Geographer Adebayo Oluwole Eludoyin and his colleagues surveyed small-scale farmers in three locations in Ondo State, Nigeria-which has mountainous terrain in the north, an urbanized center, and coastal terrain in the south-to learn more about their practices, like the types of crops they mainly cultivated. In some regions, fem
+
+TOKENS
+[["A", 989, 992], ["B", 1015, 1018], ["C", 1106, 1109], ["D", 1207, 1210]]
+
+CHOICES
+[
+  "south Ondo were women.",
+  "more women in central Ondo mainly cultivated root crops than mainly cultivated cereals.",
+  "most of the farmers who mainly cultivated non-root vegetables in north and south Ondo were women.",
+  "a relatively equal proportion of women across the three regions of Ondo mainly cultivated cereals."
+]

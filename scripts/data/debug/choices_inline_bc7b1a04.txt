@@ -1,0 +1,13 @@
+WINDOW
+ID: bc7b1a04 Three Studies' Estimated Average Velocity of LMC Researchers Study year Estimated average velocity Murai and Fujimoto 1980 344 km/s Kallivayalil and colleagues 2006 378 km/s Gardiner and colleagues 1994 297 km/s In 2006, Nitya Kallivayalil and colleagues calculated the most accurate estimate yet of the average velocity (in kilometers per second) of the Large Magellanic Cloud (LMC) galaxy. Before the 2006 study, estimates of the average velocity were low enough for the LMC to maintain an orbit around the Milky Way galaxy, but according to an analysis by Gurtina Besla and colleagues
+
+TOKENS
+[["A", 943, 946], ["B", 981, 984], ["C", 1019, 1022], ["D", 1038, 1041]]
+
+CHOICES
+[
+  "above 344 km/s but below 378 km/s.",
+  "above 297 km/s but below 344 km/s.",
+  "above 378 km/s.",
+  "below 297 km/s."
+]

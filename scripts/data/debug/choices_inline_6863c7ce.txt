@@ -1,0 +1,13 @@
+WINDOW
+ID: 6863c7ce The given equation represents the distance , in inches, where represents the number of seconds since an object started moving. Which of the following is the best interpretation of in this context? A. The object moved a total of inches. B. The object moved a total of inches. C. The object is moving at a rate of inches per second. D. The object is moving at a rate of inches per second. 
+
+TOKENS
+[["A", 210, 213], ["B", 249, 252], ["C", 288, 291], ["D", 344, 347]]
+
+CHOICES
+[
+  "The object moved a total of inches.",
+  "The object moved a total of inches.",
+  "The object is moving at a rate of inches per second.",
+  "The object is moving at a rate of inches per second."
+]

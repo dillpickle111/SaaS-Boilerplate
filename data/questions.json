@@ -1,0 +1,62 @@
+{
+  "pdfSet": {
+    "label": "SAT-Math-Set-01",
+    "storage_path": "data/pdfs/SAT-Math-Set-01.pdf",
+    "total_questions": 3,
+    "total_pages": 5,
+    "source_name": "SAT Math Practice Set 1",
+    "source_year": 2024
+  },
+  "questions": [
+    {
+      "question_number": 1,
+      "title": "Algebra Equation",
+      "content": "What is the value of x in the equation 2x + 5 = 13?",
+      "options": ["3", "4", "5", "6"],
+      "correct_answer": "4",
+      "explanation": "Subtract 5 from both sides: 2x = 8. Then divide by 2: x = 4.",
+      "section": "Math",
+      "topic": "Algebra",
+      "subtopic": "Linear Equations",
+      "difficulty": "easy",
+      "pdf_page_from": 1,
+      "pdf_page_to": 1,
+      "question_uid": "SAT-Math-Set-01-Q1"
+    },
+    {
+      "question_number": 2,
+      "title": "Triangle Classification",
+      "content": "If a triangle has angles measuring 30°, 60°, and 90°, what type of triangle is it?",
+      "options": ["Equilateral", "Isosceles", "Right", "Obtuse"],
+      "correct_answer": "Right",
+      "explanation": "A triangle with a 90° angle is a right triangle.",
+      "section": "Math",
+      "topic": "Geometry",
+      "subtopic": "Triangle Properties",
+      "difficulty": "medium",
+      "pdf_page_from": 2,
+      "pdf_page_to": 2,
+      "question_uid": "SAT-Math-Set-01-Q2"
+    },
+    {
+      "question_number": 3,
+      "title": "Quadratic Formula",
+      "content": "Which of the following is the correct form of the quadratic formula?",
+      "options": [
+        "x = (-b ± √(b² - 4ac)) / 2a",
+        "x = (-b ± √(b² + 4ac)) / 2a", 
+        "x = (b ± √(b² - 4ac)) / 2a",
+        "x = (-b ± √(b² - 4ac)) / a"
+      ],
+      "correct_answer": "x = (-b ± √(b² - 4ac)) / 2a",
+      "explanation": "The quadratic formula is x = (-b ± √(b² - 4ac)) / 2a for the equation ax² + bx + c = 0.",
+      "section": "Math",
+      "topic": "Algebra",
+      "subtopic": "Quadratic Equations",
+      "difficulty": "hard",
+      "pdf_page_from": 3,
+      "pdf_page_to": 3,
+      "question_uid": "SAT-Math-Set-01-Q3"
+    }
+  ]
+}

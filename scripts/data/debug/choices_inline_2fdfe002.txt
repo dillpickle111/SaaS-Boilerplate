@@ -1,0 +1,13 @@
+WINDOW
+ID: 2fdfe002 The following text is adapted from Countee Cullen's 1926 poem "Thoughts in a Zoo." They in their cruel traps, and we in ours, Survey each other's rage, and pass the hours Commiserating each the other's woe, To mitigate his own pain's fiery glow. Man could but little proffer in exchange Save that his cages have a larger range. That lion with his lordly, untamed heart Has in some man his human counterpart, Some lofty soul in dreams and visions wrapped, But in the stifling flesh securely trapped. Based on the text, what challenge do humans sometimes experience? A. They cannot effecti
+
+TOKENS
+[["A", 578, 581], ["B", 664, 667], ["C", 746, 749], ["D", 847, 850]]
+
+CHOICES
+[
+  "They cannot effectively tame certain wild animals because of a lack of compassion.",
+  "They cannot focus on setting attainable goals because of a lack of motivation.",
+  "They quickly become frustrated when faced with difficult tasks because of a lack of self-control.",
+  "They have aspirations that cannot be fulfilled because of certain limitations."
+]

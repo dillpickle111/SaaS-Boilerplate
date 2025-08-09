@@ -1,0 +1,13 @@
+WINDOW
+ID: ed314256 The most recent iteration of the immersive theater experience Sleep No More, which premiered in New York City in 2011, transforms its performance space-a five-story warehouse-into a 1930s-era hotel. Audience members, who wander through the labyrinthine venue at their own pace and follow the actors as they play out simultaneous, interweaving narrative loops, confront the impossibility of experiencing the production in its entirety. The play's refusal of narrative coherence thus hinges on the sense of spatial fragmentation that the venue's immense and intricate layout generates. Wha
+
+TOKENS
+[["A", 813, 816], ["B", 983, 986], ["C", 1132, 1135], ["D", 1284, 1287]]
+
+CHOICES
+[
+  "way that venues from earlier productions could not. Audience members likely find the experience of the play disappointing because they generally cannot make their way",
+  "through the entire venue. The production's dependence on a particular performance environment would likely make it difficult to reproduce exactly",
+  "in a different theatrical space. Audience members who navigate the space according to a recommended itinerary will likely have a better grasp of the",
+  "play's narrative than audience members who depart from that itinerary."
+]

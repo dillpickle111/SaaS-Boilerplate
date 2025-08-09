@@ -1,0 +1,13 @@
+WINDOW
+ID: 1f3be847 "Loon Point" is a 1912 poem by Amy Lowell. In the poem, which presents a nighttime scene on a body of water, Lowell describes an element of nature as an active participant in the experience, writing, ______ Which quotation from "Loon Point" most effectively illustrates the claim? A. "Through the water the moon writes her legends / In light, on the smooth, wet sand." B. "Softly the water ripples / Against the canoe's curving side." C. "Or like the snow-white petals / Which drop from an overblown rose." D. "But the moon in her wayward beauty / Is ever and always the same." 
+
+TOKENS
+[["A", 294, 297], ["B", 382, 385], ["C", 448, 451], ["D", 520, 523]]
+
+CHOICES
+[
+  "\"Through the water the moon writes her legends / In light, on the smooth, wet sand.\"",
+  "\"Softly the water ripples / Against the canoe's curving side.\"",
+  "\"Or like the snow-white petals / Which drop from an overblown rose.\"",
+  "\"But the moon in her wayward beauty / Is ever and always the same.\""
+]

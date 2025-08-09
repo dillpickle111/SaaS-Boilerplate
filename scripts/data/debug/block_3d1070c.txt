@@ -1,0 +1,4 @@
+ID: 3d1070c9 Answer Correct Answer: C Rationale Choice C is correct. It's given that the function is defined by . Substituting for in this equation yields , which is equivalent to , or . Therefore, the value of is when . Choice A is incorrect. This is the value of , not . Choice B is incorrect. This is the value of , not . Choice D is incorrect. This is the value of , not . Question Difficulty: Easy
+
+
+

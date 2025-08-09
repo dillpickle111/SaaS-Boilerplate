@@ -1,0 +1,13 @@
+WINDOW
+ID: a68fd3e7 Many of William Shakespeare's tragedies address broad themes that still appeal to today's audiences. For instance, Romeo and Juliet, which is set in the Italy of Shakespeare's time, tackles the themes of parents versus children and love versus hate, and the play continues to be read and produced widely around the world. But understanding Shakespeare's so-called history plays can require a knowledge of several centuries of English history. Consequently, ______ Which choice most logically completes the text? A. many theatergoers and readers today are likely to find Shakespeare's his
+
+TOKENS
+[["A", 525, 528], ["B", 645, 648], ["C", 749, 752], ["D", 837, 840]]
+
+CHOICES
+[
+  "many theatergoers and readers today are likely to find Shakespeare's history plays less engaging than the tragedies.",
+  "some of Shakespeare's tragedies are more relevant to today's audiences than twentieth-century plays.",
+  "Romeo and Juliet is the most thematically accessible of all Shakespeare's tragedies.",
+  "experts in English history tend to prefer Shakespeare's history plays to his other works."
+]

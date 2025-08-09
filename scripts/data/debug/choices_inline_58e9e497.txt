@@ -1,0 +1,13 @@
+WINDOW
+ID: 58e9e497 In the early nineteenth century, some Euro-American farmers in the northeastern United States used agricultural techniques developed by the Haudenosaunee (Iroquois) people centuries earlier, but it seems that few of those farmers had actually seen Haudenosaunee farms firsthand. Barring the possibility of several farmers of the same era independently developing techniques that the Haudenosaunee people had already invented, these facts most strongly suggest that ______ Which choice most logically completes the text? A. those farmers learned the techniques from other people who were 
+
+TOKENS
+[["A", 533, 536], ["B", 767, 770], ["C", 804, 807], ["D", 1015, 1018]]
+
+CHOICES
+[
+  "those farmers learned the techniques from other people who were more directly influenced by Haudenosaunee practices. the crops typically cultivated by Euro-American farmers in the northeastern United States were not well suited to",
+  "Haudenosaunee farming techniques.",
+  "Haudenosaunee farming techniques were widely used in regions outside the northeastern United States. Euro-American farmers only began to recognize the benefits of Haudenosaunee farming techniques late in the",
+  "nineteenth century."
+]

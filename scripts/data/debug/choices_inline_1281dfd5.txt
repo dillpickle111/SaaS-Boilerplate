@@ -1,0 +1,13 @@
+WINDOW
+ID: 1281dfd5 Number of Lizard Species by Average Percent of Maximal Speed Used When Pursuing Prey or Escaping Predators 9 Number of lizard species 8 7 6 5 4 3 2 1 0 -39 -49 -59 -69 -79 -89 100 30 40 50 60 70 80 90- Percent of maximal speed escaping pursuing It may seem that the optimal strategy for an animal pursuing prey or escaping predators is to move at maximal speed, but the energy expense of exploiting full speed capacity can disfavor such a strategy even in escape contexts, as evidenced by the fact that ______ Which choice most effectively uses data from the graph to complete the text? 
+
+TOKENS
+[["A", 713, 716], ["B", 731, 734], ["C", 956, 959], ["D", 994, 997]]
+
+CHOICES
+[
+  "pursuing prey.",
+  "multiple lizard species move at an average of less than 90% of their maximal speed while escaping predation. more lizard species use, on average, 90%-100% of their maximal speed while escaping predation than use any other",
+  "percentage of their maximal speed.",
+  "at least 4 lizard species use, on average, less than 100% of their maximal speed while pursuing prey."
+]

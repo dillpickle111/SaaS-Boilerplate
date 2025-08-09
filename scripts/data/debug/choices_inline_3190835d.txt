@@ -1,0 +1,13 @@
+WINDOW
+ID: 3190835d Some businesses believe that when employees are interrupted while doing their work, they experience a decrease in energy and productivity. However, a team led by Harshad Puranik, who studies management, has found that interruptions by colleagues can have a social component that increases employees' sense of belonging, resulting in greater job satisfaction that benefits employees and employers. Therefore, businesses should recognize that ______ Which choice most logically completes the text? A. the interpersonal benefits of some interruptions in the workplace may offset the perceiv
+
+TOKENS
+[["A", 509, 512], ["B", 621, 624], ["C", 741, 744], ["D", 849, 852]]
+
+CHOICES
+[
+  "the interpersonal benefits of some interruptions in the workplace may offset the perceived negative effects.",
+  "in order to maximize productivity, employers should be willing to interrupt employees frequently throughout the day.",
+  "most employees avoid interrupting colleagues because they don't appreciate being interrupted themselves.",
+  "in order to cultivate an ideal workplace environment, interruptions of work should be discouraged."
+]

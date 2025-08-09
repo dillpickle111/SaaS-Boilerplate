@@ -1,0 +1,13 @@
+WINDOW
+ID: 94c54577 While attending school in New York City in the 1980s, Okwui Enwezor encountered few works by African artists in exhibitions, despite New York's reputation as one of the best places to view contemporary art from around the world. According to an arts journalist, later in his career as a renowned curator and art historian, Enwezor sought to remedy this deficiency, not by focusing solely on modern African artists, but by showing how their work fits into the larger context of global modern art and art history. Which finding, if true, would most directly support the journalist's claim?
+
+TOKENS
+[["A", 839, 842], ["B", 1075, 1078], ["C", 1481, 1484], ["D", 1726, 1729]]
+
+CHOICES
+[
+  "history. In the exhibition Postwar: Art Between the Pacific and the Atlantic, 1945-1965, Enwezor and cocurator Katy Siegel brought works by African artists such as Malangatana Ngwenya together with pieces by major figures from other",
+  "countries, like US artist Andy Warhol and Mexico's David Siqueiros. Enwezor's work as curator of the 2001 exhibition The Short Century: Independence and Liberation Movements in Africa, 1945-1994 showed how African movements for independence from European colonial powers following the Second World War profoundly influenced work by African artists of the period, such as Kamala Ibrahim Ishaq and Thomas",
+  "Mukarobgwa. Enwezor organized the exhibition In/sight: African Photographers, 1940 to the Present not to emphasize a particular aesthetic trend but to demonstrate the broad range of ways in which African artists have approached the medium of",
+  "photography."
+]

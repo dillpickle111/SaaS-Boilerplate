@@ -1,0 +1,4 @@
+ID: cb8f449f Answer Correct Answer: D Rationale Choice D is correct. Adding the corresponding sides of the two equations eliminates y and yields , as shown. If (x, y) is a solution to the system, then (x, y) satisfies both equations in the system and any equation derived from them. Therefore, . Choices A, B, and C are incorrect and may be the result of errors when solving the system. Question Difficulty: Medium
+
+
+

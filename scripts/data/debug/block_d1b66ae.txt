@@ -1,0 +1,4 @@
+ID: d1b66ae6 Answer Rationale The correct answer is . One method for solving the system of equations for y is to add corresponding sides of the two equations. Adding the left-hand sides gives , or 4y. Adding the right-hand sides yields . It follows that . Finally, dividing both sides of by 4 yields or . Note that 3/2 and 1.5 are examples of ways to enter a correct answer. Question Difficulty: Hard
+
+
+

@@ -1,0 +1,4 @@
+ID: bd9eb2b5 Answer Correct Answer: B Rationale Choice B is correct. Substituting for in the given function yields . Dividing each side of this equation by yields . Therefore, when the value of is . Choice A is incorrect. This is the value of for which , not . Choice C is incorrect. This is the value of for which , not . Choice D is incorrect. This is the value of for which , not . Question Difficulty: Easy
+
+
+

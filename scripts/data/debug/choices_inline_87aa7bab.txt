@@ -1,0 +1,13 @@
+WINDOW
+ID: 87aa7bab A common assumption among art historians is that the invention of photography in the mid-nineteenth century displaced the painted portrait in the public consciousness. The diminishing popularity of the portrait miniature, which coincided with the rise of photography, seems to support this claim. However, photography's impact on the portrait miniature may be overstated. Although records from art exhibitions in the Netherlands from 1820 to 1892 show a decrease in the number of both full-sized and miniature portraits submitted, this trend was established before the invention of photo
+
+TOKENS
+[["A", 735, 738], ["B", 968, 971], ["C", 978, 981], ["D", 1084, 1087]]
+
+CHOICES
+[
+  "Factors other than the rise of photography may be more directly responsible for the portrait miniature's decline. Although portrait miniatures became less common than photographs, they were widely regarded as having more artistic",
+  "merit.",
+  "The popularity of the portrait miniature likely persisted for longer than art historians have assumed.",
+  "As demand for portrait miniatures decreased, portrait artists likely shifted their creative focus to photography."
+]

@@ -2,27 +2,19 @@ import { supabase } from './supabase';
 
 export interface Question {
   id: string;
-  question_id: string;
-  external_id: string | null;
-  skill_cd: string;
-  skill_desc: string;
-  primary_class_cd: string;
-  primary_class_cd_desc: string;
-  difficulty: 'E' | 'M' | 'H';
-  module: 'math' | 'reading' | 'writing';
-  content: {
-    keys: string[];
-    rationale: string;
-    question: string;
-    options?: string[];
-    correct_answer?: string;
-    explanation?: string;
-  };
-  program: string;
-  score_band_range_cd: number;
-  active: boolean;
+  assessment: string;
+  test: string;
+  domain: string;
+  skill: string;
+  difficulty: string;
+  number: number | null;
+  stem: string;
+  choices: Array<{ label: string; text: string }> | null;
+  answer: string;
+  rationale: string;
+  images: string[] | null;
+  pages: number[] | null;
   created_at: string;
-  updated_at: string;
 }
 
 export interface QuestionFilters {
@@ -46,11 +38,17 @@ export interface QuestionStats {
 export async function getQuestions(filters: QuestionFilters = {}) {
   let query = supabase
     .from('questions')
-    .select('*')
+    .select('id, assessment, test, domain, skill, difficulty, number, stem, choices, answer, rationale, images, pages, created_at')
     .eq('active', true);
 
   if (filters.module) {
-    query = query.eq('module', filters.module);
+    // Map old module names to new test names
+    const testMap = {
+      'math': 'Math',
+      'reading': 'Reading and Writing',
+      'writing': 'Reading and Writing'
+    };
+    query = query.eq('test', testMap[filters.module] || filters.module);
   }
 
   if (filters.difficulty) {
@@ -58,7 +56,7 @@ export async function getQuestions(filters: QuestionFilters = {}) {
   }
 
   if (filters.skill_cd) {
-    query = query.eq('skill_cd', filters.skill_cd);
+    query = query.eq('skill', filters.skill_cd);
   }
 
   if (filters.limit) {
@@ -68,6 +66,9 @@ export async function getQuestions(filters: QuestionFilters = {}) {
   if (filters.offset) {
     query = query.range(filters.offset, filters.offset + (filters.limit || 10) - 1);
   }
+
+  // Order by id for consistent results
+  query = query.order('id', { ascending: true });
 
   const { data, error } = await query;
 
@@ -134,8 +135,7 @@ export async function getRandomQuestions(
 export async function getQuestionStats(): Promise<QuestionStats> {
   const { data, error } = await supabase
     .from('questions')
-    .select('module, difficulty, skill_cd')
-    .eq('active', true);
+    .select('test, difficulty, skill');
 
   if (error) {
     console.error('Error fetching question stats:', error);
@@ -150,14 +150,17 @@ export async function getQuestionStats(): Promise<QuestionStats> {
   };
 
   data.forEach(question => {
+    // Map test back to module for compatibility
+    const module = question.test === 'Math' ? 'math' : 'reading';
+    
     // Count by module
-    stats.byModule[question.module] = (stats.byModule[question.module] || 0) + 1;
+    stats.byModule[module] = (stats.byModule[module] || 0) + 1;
     
     // Count by difficulty
     stats.byDifficulty[question.difficulty] = (stats.byDifficulty[question.difficulty] || 0) + 1;
     
     // Count by skill
-    stats.bySkill[question.skill_cd] = (stats.bySkill[question.skill_cd] || 0) + 1;
+    stats.bySkill[question.skill] = (stats.bySkill[question.skill] || 0) + 1;
   });
 
   return stats;
@@ -169,11 +172,16 @@ export async function getQuestionStats(): Promise<QuestionStats> {
 export async function getAvailableSkills(module?: 'math' | 'reading' | 'writing') {
   let query = supabase
     .from('questions')
-    .select('skill_cd, skill_desc')
-    .eq('active', true);
+    .select('skill, domain');
 
   if (module) {
-    query = query.eq('module', module);
+    // Map old module names to new test names
+    const testMap = {
+      'math': 'Math',
+      'reading': 'Reading and Writing',
+      'writing': 'Reading and Writing'
+    };
+    query = query.eq('test', testMap[module] || module);
   }
 
   const { data, error } = await query;
@@ -186,8 +194,8 @@ export async function getAvailableSkills(module?: 'math' | 'reading' | 'writing'
   // Get unique skills
   const uniqueSkills = new Map();
   data.forEach(question => {
-    if (!uniqueSkills.has(question.skill_cd)) {
-      uniqueSkills.set(question.skill_cd, question.skill_desc);
+    if (!uniqueSkills.has(question.skill)) {
+      uniqueSkills.set(question.skill, question.domain || question.skill);
     }
   });
 

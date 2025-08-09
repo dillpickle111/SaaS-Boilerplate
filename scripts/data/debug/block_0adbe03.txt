@@ -1,0 +1,4 @@
+ID: 0adbe034 Answer Correct Answer: C Rationale Choice C is correct. Dividing all terms in the given equation by yields , or . Therefore, the value of is . Choice A is incorrect. This is the value of , not . Choice B is incorrect and may result from conceptual or calculation errors. Choice D is incorrect and may result from conceptual or calculation errors. Question Difficulty: Easy
+
+
+

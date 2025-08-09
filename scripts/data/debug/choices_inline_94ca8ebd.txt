@@ -1,0 +1,13 @@
+WINDOW
+ID: 94ca8ebd A student is examining a long, challenging poem that was initially published in a quarterly journal without explanatory notes, then later republished in a stand-alone volume containing only that poem and accompanying explanatory notes written by the poet. The student asserts that the explanatory notes were included in the republication primarily as a marketing device to help sell the stand-alone volume. Which statement, if true, would most directly support the student's claim? The text of the poem as published in the quarterly journal is not identical to the text of the poem publi
+
+TOKENS
+[["A", 619, 622], ["B", 747, 750], ["C", 888, 891], ["D", 1081, 1084]]
+
+CHOICES
+[
+  "alone volume. Many critics believe that the poet's explanatory notes remove certain ambiguities of the poem and make it less",
+  "interesting as a result. The publishers of the stand-alone volume requested the explanatory notes from the poet in order to make the book",
+  "attractive to readers who already had a copy of the poem in a journal issue. Correspondence between the poet and the publisher reveals that the poet's explanatory notes went through several",
+  "drafts."
+]

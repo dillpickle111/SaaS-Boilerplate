@@ -1,0 +1,13 @@
+WINDOW
+ID: 3091f805 Ochre sea stars live in tidal pools along the shoreline of the Pacific Ocean. At night, they move to higher shore levels in search of prey. But scientists Corey Garza and Carlos Robles noticed that ochre sea stars stayed at lower levels at night after heavy rains. Garza and Robles hypothesized that a layer of fresh water formed by rainfall was a barrier to the sea stars. To test their hypothesis, the scientists did an experiment. They placed some sea stars in a climbable tank of seawater and other sea stars in a similar tank of seawater with a layer of fresh water on top. Then, th
+
+TOKENS
+[["A", 876, 879], ["B", 1063, 1066], ["C", 1220, 1223], ["D", 1384, 1387]]
+
+CHOICES
+[
+  "bottom of the tank more than sea stars in the other tank did. Sea stars in the tank with only seawater climbed to the top of the tank, but sea stars in the other tank stopped climbing",
+  "just below the layer of fresh water. Both groups of sea stars climbed to the tops of the tanks, but sea stars in the tank with only seawater climbed more",
+  "slowly than sea stars in the other tank did. Sea stars in the tank with only seawater mostly stayed near the bottom of the tank, but sea stars in the other tank",
+  "climbed into the layer of fresh water."
+]

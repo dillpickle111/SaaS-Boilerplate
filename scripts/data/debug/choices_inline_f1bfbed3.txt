@@ -1,0 +1,13 @@
+WINDOW
+ID: f1bfbed3 Marta Coll and colleagues' 2010 Mediterranean Sea biodiversity census reported approximately 17,000 species, nearly double the number reported in Carlo Bianchi and Carla Morri's 2000 census-a difference only partly attributable to the description of new invertebrate species in the interim. Another factor is that the morphological variability of microorganisms is poorly understood compared to that of vertebrates, invertebrates, plants, and algae, creating uncertainty about how to evaluate microorganisms as species. Researchers' decisions on such matters therefore can be highly cons
+
+TOKENS
+[["A", 892, 895], ["B", 1103, 1106], ["C", 1291, 1294], ["D", 1466, 1469]]
+
+CHOICES
+[
+  "invertebrate species that had not been described at the time of Bianchi and Morri's census. some differences observed in microorganisms may have been treated as variations within species by Bianchi and Morri",
+  "but treated as indicative of distinct species by Coll and colleagues. Bianchi and Morri may have been less sensitive to the degree of morphological variation displayed within a typical",
+  "species of microorganism than Coll and colleagues were. the absence of clarity regarding how to differentiate among species of microorganisms may have resulted in Coll and",
+  "colleagues underestimating the number of microorganism species."
+]

@@ -1,0 +1,13 @@
+WINDOW
+ID: d748c3fd In her 2021 article "Throwaway History: Towards a Historiography of Ephemera," scholar Anne Garner discusses John Johnson (1882-1956), a devoted collector of items intended to be discarded, including bus tickets and campaign pamphlets. Johnson recognized that scholarly institutions considered his expansive collection of ephemera to be worthless -indeed, it wasn't until 1968, after Johnson's death, that Oxford University's Bodleian Library acquired the collection, having grasped the items' potential value to historians and other researchers. Hence, the example of Johnson serves to 
+
+TOKENS
+[["A", 772, 775], ["B", 911, 914], ["C", 1046, 1049], ["D", 1172, 1175]]
+
+CHOICES
+[
+  "access to ephemera. represent the challenge of incorporating examples of ephemera into the collections of libraries and other scholarly",
+  "institutions. lend support to arguments by historians and other researchers who continue to assert that ephemera holds no value for",
+  "scholars. illustrate both the relatively low scholarly regard in which ephemera was once held and the later recognition of",
+  "ephemera's possible utility."
+]

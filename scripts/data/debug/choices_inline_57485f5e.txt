@@ -1,0 +1,13 @@
+WINDOW
+ID: 57485f5e The following text is adapted from Johanna Spyri's 1881 novel Heidi (translated by Elisabeth Stork in 1915). Eight-year-old Heidi and her friend's grandmother are looking at some illustrated books. Heidi had come and was looking with wondering eyes at the splendid pictures in the large books, that Grandmama was showing her. Suddenly she screamed aloud, for there on the picture she saw a peaceful flock grazing on a green pasture. In the middle a shepherd was standing, leaning on his crook. The setting sun was shedding a golden light over everything. With glowing eyes Heidi devoured
+
+TOKENS
+[["A", 664, 667], ["B", 754, 757], ["C", 841, 844], ["D", 1068, 1071]]
+
+CHOICES
+[
+  "Heidi is upset until she sees a serene image of a pasture in one of Grandmama's books.",
+  "Heidi is delighted and fascinated by an image she sees in one of Grandmama's books.",
+  "Heidi is initially frightened by an image in one of Grandmama's books but quickly comes to appreciate its beauty. Heidi is inspecting an image in one of Grandmama's books because she has never seen a shepherd with his sheep",
+  "before."
+]

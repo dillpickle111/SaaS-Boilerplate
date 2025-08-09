@@ -1,0 +1,13 @@
+WINDOW
+ID: 22e4d633 Although many transposons, DNA sequences that move within an organism's genome through shuffling or duplication, have become corrupted and inactive over time, those from the long interspersed nuclear elements (LINE) family appear to remain active in the genomes of some species. In humans, they are functionally important within the hippocampus, a brain structure that supports complex cognitive processes. When the results of molecular analysis of two species of octopus-an animal known for its intelligence-were announced in 2022, the confirmation of a LINE transposon in Octopus vulga
+
+TOKENS
+[["A", 955, 958], ["B", 994, 997], ["C", 1229, 1232], ["D", 1367, 1370]]
+
+CHOICES
+[
+  "similarly to the human hippocampus.",
+  "The human genome contains multiple transposons from the LINE family that are all primarily active in the hippocampus. A consistent number of copies of LINE transposons is present across the genomes of most octopus species, with few",
+  "known corruptions. O. vulgaris and O. bimaculoides have smaller brains than humans do relative to body size, but their genomes contain",
+  "sequences from a wider variety of transposon families."
+]

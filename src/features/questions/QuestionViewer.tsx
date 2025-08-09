@@ -1,6 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+import { supabase } from '@/libs/supabase';
 
 // Custom Bookmark Icon
 function BookmarkIcon({ isFlagged = false, onClick }: { isFlagged?: boolean; onClick?: () => void }) {
@@ -126,8 +128,6 @@ function QuestionText({ question }: { question: string }) {
     </div>
   );
 }
-
-
 
 // Option circle component from Figma Make
 function OptionCircle({ letter, isSelected = false }: { letter: string; isSelected?: boolean }) {
@@ -433,34 +433,13 @@ type Question = {
   lastSolved?: string;
   timeSpent?: string;
   section?: string;
-};
-
-const mockQuestions: Record<string, Question> = {
-  1: {
-    id: '1',
-    frameNumber: '3015254',
-    type: 'multiple-choice',
-    question: 'A cargo helicopter delivers only 100-pound packages and 120-pound packages. For each delivery trip, the helicopter must carry at least 10 packages, and the total weight of the packages can be at most 1,100 pounds. What is the maximum number of 120-pound packages that the helicopter can carry per trip?',
-    options: ['2', '4', '5', '6'],
-    correctAnswer: '5',
-    explanation: 'Let x be the number of 120-pound packages and y be the number of 100-pound packages. We have: x + y ≥ 10 and 120x + 100y ≤ 1,100. Substituting y = 10 - x into the second inequality: 120x + 100(10 - x) ≤ 1,100. Simplifying: 120x + 1,000 - 100x ≤ 1,100. Therefore: 20x ≤ 100, so x ≤ 5. However, we also need x + y ≥ 10, so if x = 5, then y = 5, giving us 120(5) + 100(5) = 600 + 500 = 1,100. But if x = 6, then y = 4, giving us 120(6) + 100(4) = 720 + 400 = 1,120 > 1,100. So the maximum is 5.',
-    category: 'Math',
-    difficulty: 'Hard',
-    lastSolved: '3 days ago in 1 minute',
-    section: 'Algebra',
-  },
-  2: {
-    id: '2',
-    frameNumber: '3015255',
-    type: 'fill-in-blank',
-    question: 'Line k is defined by the equation y = -17/3x + 5. Line j is perpendicular to line k in the xy-plane. What is the slope of line j?',
-    correctAnswer: '3/17',
-    explanation: 'For perpendicular lines, the product of their slopes equals -1. If line k has slope m₁ = -17/3, then line j has slope m₂ where m₁ × m₂ = -1. Therefore: (-17/3) × m₂ = -1. Solving for m₂: m₂ = -1 ÷ (-17/3) = -1 × (-3/17) = 3/17.',
-    category: 'Math',
-    difficulty: 'Medium',
-    lastSolved: '3 days ago in 1 minute',
-    section: 'Geometry',
-  },
+  // Add support for Supabase data structure
+  content?: {
+    question: string;
+    options?: string[];
+    correct_answer?: string;
+    explanation?: string;
+  };
 };
 
 export function QuestionViewer({
@@ -479,14 +458,184 @@ export function QuestionViewer({
   const [isLoading, setIsLoading] = useState(false);
   const [struckOutAnswers, setStruckOutAnswers] = useState<string[]>([]);
 
-  const question = mockQuestions[questionId];
+  const [question, setQuestion] = useState<Question | null>(null);
+
+  // Function to extract actual question text from mixed content
+  const extractQuestionText = (mixedContent: string): string => {
+    if (!mixedContent) {
+      return 'Question content not available';
+    }
+
+    // Look for the actual question text embedded in the explanation
+    const questionIdPattern = /Question ID [a-f0-9-]+/i;
+    const questionIdMatch = mixedContent.match(questionIdPattern);
+
+    if (questionIdMatch) {
+      const questionIdIndex = questionIdMatch.index!;
+      const afterQuestionId = mixedContent.substring(questionIdIndex);
+
+      // Look for the actual question content - try multiple patterns
+      const questionPatterns = [
+        /(Fish whose DNA[^?]*\?)/i, // Specific pattern for this question
+        /(Which quotation[^?]*\?)/i, // Which questions
+        /(What would[^?]*\?)/i, // What would questions
+        /(Based on[^?]*\?)/i, // Based on questions
+        /([A-Z][^?]*\?)/, // Capital letter followed by text ending with ?
+      ];
+
+      for (const pattern of questionPatterns) {
+        const questionMatch = afterQuestionId.match(pattern);
+        if (questionMatch && questionMatch[1]) {
+          const extracted = questionMatch[1].trim();
+          if (extracted.length > 20) {
+            return extracted;
+          }
+        }
+      }
+
+      // If no specific pattern matches, try to find the first substantial sentence
+      const sentences = afterQuestionId.split(/[.!?]+/).filter(s => s.trim().length > 30);
+      if (sentences.length > 0) {
+        const firstSentence = sentences[0]?.trim() || '';
+        if (firstSentence.length > 20) {
+          return firstSentence;
+        }
+      }
+    }
+
+    // Fallback: Look for "Which" questions (common SAT pattern)
+    const whichMatch = mixedContent.match(/Which (.+?)(?=Choice|Answer|Rationale|Question Difficulty|$)/i);
+    if (whichMatch && whichMatch[1]) {
+      const extracted = whichMatch[1].trim();
+      if (extracted.length > 20) {
+        return extracted;
+      }
+    }
+
+    // Fallback: Look for "What" questions
+    const whatMatch = mixedContent.match(/What (.+?)(?=Choice|Answer|Rationale|Question Difficulty|$)/i);
+    if (whatMatch && whatMatch[1]) {
+      const extracted = whatMatch[1].trim();
+      if (extracted.length > 20) {
+        return extracted;
+      }
+    }
+
+    // Fallback: Look for "Based on" questions
+    const basedOnMatch = mixedContent.match(/Based on (.+?)(?=Choice|Answer|Rationale|Question Difficulty|$)/i);
+    if (basedOnMatch && basedOnMatch[1]) {
+      const extracted = basedOnMatch[1].trim();
+      if (extracted.length > 20) {
+        return extracted;
+      }
+    }
+
+    // Final fallback: return the first 200 characters if nothing else works
+    return mixedContent.length > 200
+      ? `${mixedContent.substring(0, 200)}...`
+      : mixedContent || 'Question content not available';
+  };
+
+  // Function to extract answer choices for the current question
+  const extractAnswerChoices = (mixedContent: string): string[] => {
+    if (!mixedContent) {
+      return ['A', 'B', 'C', 'D'];
+    }
+
+    // First, try to get options from the current question's content
+    if (question && question.content && question.content.options) {
+      // Filter options to get only the first 4-5 that look like answer choices
+      const allOptions = question.content.options;
+      const answerChoices = allOptions
+        .filter(option => option && option.length > 5 && option.length < 300) // Filter out very short or very long options
+        .slice(0, 5); // Limit to 5 choices max
+
+      if (answerChoices.length >= 4) {
+        return answerChoices;
+      }
+    }
+
+    // Fallback: Look for quoted answer choices in the question text
+    const questionIdPattern = /Question ID [a-f0-9-]+/i;
+    const questionIdMatch = mixedContent.match(questionIdPattern);
+
+    if (questionIdMatch) {
+      const questionIdIndex = questionIdMatch.index!;
+      const afterQuestionId = mixedContent.substring(questionIdIndex);
+
+      // Look for the next question ID to find the end of current question
+      const nextQuestionMatch = afterQuestionId.substring(1).match(/Question ID [a-f0-9-]+/i);
+      const endIndex = nextQuestionMatch
+        ? questionIdIndex + 1 + nextQuestionMatch.index!
+        : mixedContent.length;
+
+      // Extract content for current question only
+      const currentQuestionContent = mixedContent.substring(questionIdIndex, endIndex);
+
+      // Look for quoted answer choices (common SAT format)
+      const quotedChoices = currentQuestionContent.match(/"([^"]+)"/g);
+      if (quotedChoices && quotedChoices.length >= 4) {
+        // Clean up the quoted choices and filter out very short ones
+        const cleanedChoices = quotedChoices
+          .map(choice => choice.replace(/"/g, '').trim())
+          .filter(choice => choice.length > 10) // Filter out very short choices
+          .slice(0, 5); // Limit to 5 choices max
+
+        if (cleanedChoices.length >= 4) {
+          return cleanedChoices;
+        }
+      }
+
+      // Fallback: Look for A, B, C, D patterns
+      const choicePatterns = [
+        /([A-D])\.\s*([^\n]+)/g,
+        /([A-D])\s+([^\n]+)/g,
+        /([A-D])\s*\)\s*([^\n]+)/g,
+      ];
+
+      for (const pattern of choicePatterns) {
+        const matches = Array.from(currentQuestionContent.matchAll(pattern));
+        if (matches.length >= 4) {
+          const choices = matches
+            .slice(0, 5) // Limit to 5 choices max
+            .map(match => match[2]?.trim() || '')
+            .filter(choice => choice.length > 0);
+
+          if (choices.length >= 4) {
+            return choices;
+          }
+        }
+      }
+    }
+
+    // Default fallback
+    return ['A', 'B', 'C', 'D'];
+  };
+
+  useEffect(() => {
+    const fetchQuestion = async () => {
+      const { data, error } = await supabase
+        .from('questions')
+        .select('*')
+        .eq('question_id', questionId)
+        .single();
+
+      if (error) {
+        console.error('Error fetching question:', error);
+        return;
+      }
+      setQuestion(data);
+    };
+
+    fetchQuestion();
+  }, [questionId]);
 
   if (!question) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
-          <h2 className="mb-2 text-2xl font-bold">Question Not Found</h2>
-          <p className="text-gray-600">The requested question could not be found.</p>
+          <h2 className="mb-2 text-2xl font-bold">Loading Question...</h2>
+          <p className="text-gray-600">Please wait while we load the question.</p>
         </div>
       </div>
     );
@@ -537,14 +686,23 @@ export function QuestionViewer({
     }
   };
 
+  // Get the actual question data - support both mock and Supabase structures
+  // Extract actual question text from mixed content
+  const questionText = extractQuestionText(question.content?.question || question.question || '');
+  const questionOptions = extractAnswerChoices(question.content?.question || question.question || '');
+  const correctAnswer = question.content?.correct_answer || question.correctAnswer;
+  const explanation = question.content?.explanation || question.explanation;
+
   // Convert options to the format expected by the Figma Make component
-  const options = question.options?.map((option, index) => ({
+  // Safety check: limit to 5 options maximum
+  const limitedOptions = questionOptions.slice(0, 5);
+  const options = limitedOptions.map((option, index) => ({
     letter: String.fromCharCode(65 + index),
     text: option,
-  })) || [];
+  }));
 
-  const correctAnswerLetter = question.options && question.options.includes(question.correctAnswer || '')
-    ? String.fromCharCode(65 + question.options.indexOf(question.correctAnswer || ''))
+  const correctAnswerLetter = limitedOptions.includes(correctAnswer || '')
+    ? String.fromCharCode(65 + limitedOptions.indexOf(correctAnswer || ''))
     : undefined;
 
   return (
@@ -560,7 +718,7 @@ export function QuestionViewer({
           onTimerClick={handleTimerClick}
         />
 
-        <QuestionText question={question.question} />
+        <QuestionText question={questionText} />
 
         <AnswerOptions
           options={options}
@@ -589,11 +747,11 @@ export function QuestionViewer({
         />
 
         {/* Explanation section */}
-        {showExplanation && question.explanation && (
+        {showExplanation && explanation && (
           <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-4">
             <h3 className="mb-2 font-semibold text-blue-900">Explanation</h3>
             <p className="leading-relaxed text-blue-800">
-              {question.explanation}
+              {explanation}
             </p>
           </div>
         )}

@@ -1,0 +1,13 @@
+WINDOW
+ID: 11c68ded A contraction of "you all," the pronoun "y'all" has long been used as a plural version of "you" in the South and in Black communities around the US. In recent decades, most other English-speaking communities in the US have begun to use "y'all." What explains its rise in popularity? Many varieties of English have no pronoun that specifically addresses more than one person and instead must use "you" to address both one person and more than one. But "y'all" always refers to two or more people. As a result, it conveys the speaker's meaning more precisely than "you" can. Which question
+
+TOKENS
+[["A", 648, 651], ["B", 742, 745], ["C", 808, 811], ["D", 891, 894]]
+
+CHOICES
+[
+  "How many other plural versions of the pronoun \"you\" are there in English, besides \"y'all\"?",
+  "Why has the pronoun \"y'all\" become more widely used in the US?",
+  "When was the first recorded use of the pronoun \"y'all\" in the English language?",
+  "Is \"y'all\" commonly used in English-speaking regions of the world besides the US?"
+]

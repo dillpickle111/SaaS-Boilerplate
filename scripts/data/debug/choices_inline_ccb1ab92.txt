@@ -1,0 +1,13 @@
+WINDOW
+ID: ccb1ab92 Fur Seal REM Sleep on Land after an Extended Period in Water baseline was not statistically REM sleep as % of baseline 180 (mean difference from 160 140 significant) 120 100 80 60 40 20 0 Day 1 Day 2 Sleep on land Seal B Seal A Seal C Research suggests that REM sleep in animals is homeostatically regulated: animals compensate for periods of REM sleep deprivation by increasing subsequent REM sleep. When on land, fur seals get enough REM sleep, but during the weeks they're in the water, they get almost none. In a study of fur seals' sleep habits, researchers recorded the REM sleep (
+
+TOKENS
+[["A", 895, 898], ["B", 1021, 1024], ["C", 1108, 1111], ["D", 1227, 1230]]
+
+CHOICES
+[
+  "didn't show significantly less REM sleep during the second day after returning to land than they did during the first day.",
+  "showed no significant differences from one another in baseline levels of REM sleep.",
+  "didn't consistently demonstrate a significant increase in REM sleep after their period of deprivation in the water.",
+  "showed no significant difference between REM sleep after returning to land and REM sleep while in the water."
+]

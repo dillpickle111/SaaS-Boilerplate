@@ -1,0 +1,13 @@
+WINDOW
+ID: 3543e6e2 The following text is from Jane Austen's 1811 novel Sense and Sensibility. Elinor lives with her younger sisters and her mother, Mrs. Dashwood. Elinor, this eldest daughter, whose advice was so effectual, possessed a strength of understanding, and coolness of judgment, which qualified her, though only nineteen, to be the counsellor of her mother, and enabled her frequently to counteract, to the advantage of them all, that eagerness of mind in Mrs. Dashwood which must generally have led to imprudence. She had an excellent heart;-her disposition was affectionate, and her feelings we
+
+TOKENS
+[["A", 810, 813], ["B", 879, 882], ["C", 944, 947], ["D", 993, 996]]
+
+CHOICES
+[
+  "Elinor often argues with her mother but fails to change her mind.",
+  "Elinor can be overly sensitive with regard to family matters.",
+  "Elinor thinks her mother is a bad role model.",
+  "Elinor is remarkably mature for her age."
+]

@@ -1,0 +1,13 @@
+WINDOW
+ID: 71904085 Linguist Deborah Tannen has cautioned against framing contentious issues in terms of two highly competitive perspectives, such as pro versus con. According to Tannen, this debate-driven approach can strip issues of their complexity and, when used in front of an audience, can be less informative than the presentation of multiple perspectives in a noncompetitive format. To test Tannen's hypothesis, students conducted a study in which they showed participants one of three different versions of local news commentary about the same issue. Each version featured a debate between two comm
+
+TOKENS
+[["A", 908, 911], ["B", 1053, 1056], ["C", 1181, 1184], ["D", 1349, 1352]]
+
+CHOICES
+[
+  "commentators in the panel. On average, participants perceived commentators in the panel as more knowledgeable about the issue than the single",
+  "commentator. On average, participants who watched the panel correctly answered more questions about the issue than those who",
+  "watched the debate or the single commentator did. On average, participants who watched the single commentator correctly answered more questions about the issue than",
+  "those who watched the debate did."
+]

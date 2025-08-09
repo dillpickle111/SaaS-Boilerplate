@@ -1,0 +1,13 @@
+WINDOW
+ID: 7a1877be Nucleobase Concentrations from Murchison Meteorite and Soil Samples in Parts per Billion Nucleobase Murchison meteorite sample 1 Murchison meteorite sample 2 Murchison soil sample Isoguanine 0.5 0.04 not detected Purine 0.2 0.02 not detected Xanthine 39 3 1 Adenine 15 1 40 Hypoxanthine 24 1 2 Employing high-performance liquid chromatography-a process that uses pressurized water to separate material into its component molecules-astrochemist Yashiro Oba and colleagues analyzed two samples of the Murchison meteorite that landed in Australia as well as soil from the landing zone of th
+
+TOKENS
+[["A", 1049, 1052], ["B", 1142, 1145], ["C", 1237, 1240], ["D", 1343, 1346]]
+
+CHOICES
+[
+  "Isoguanine and purine were detected in both meteorite samples but not in the soil sample.",
+  "Adenine and xanthine were detected in both of the meteorite samples and in the soil sample.",
+  "Hypoxanthine and purine were detected in both the Murchison meteorite sample 2 and in the soil sample.",
+  "Isoguanine and hypoxanthine were detected in the Murchison meteorite sample 1 but not in sample 2."
+]

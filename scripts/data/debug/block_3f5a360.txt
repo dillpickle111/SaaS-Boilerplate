@@ -1,0 +1,5 @@
+ID: 3f5a3602 Answer Correct Answer: D
+
+
+
+Rationale Choice D is correct. A line in the xy-plane that passes through the points and has slope , where , and can be defined by an equation of the form . One of the lines shown in the graph passes through the points and . Substituting for , for , for , and for in the equation yields , or . Substituting for , for and for in the equation yields , which is equivalent to . Adding to both sides of this equation yields . Multiplying both sides of this equation by yields . Therefore, an equation of this line is . Similarly, the other line shown in the graph

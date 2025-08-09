@@ -1,0 +1,13 @@
+WINDOW
+ID: 04cbeca3 In 1534 CE, King Henry VIII of England split with the Catholic Church and declared himself head of the Church of England, in part because Pope Clement VII refused to annul his marriage to Catherine of Aragon. Two years later, Henry VIII introduced a policy titled the Dissolution of the Monasteries that by 1540 had resulted in the closure of all Catholic monasteries in England and the confiscation of their estates. Some historians assert that the enactment of the policy was primarily motivated by perceived financial opportunities. Which quotation from a scholarly article best suppo
+
+TOKENS
+[["A", 779, 782], ["B", 1111, 1114], ["C", 1374, 1377], ["D", 1644, 1647]]
+
+CHOICES
+[
+  "by 1690, the proportion of the adult male population who were monks was less than 1 percent.\" \"A contemporary description of the Dissolution of the Monasteries, Michael Sherbrook's Falle of the Religious Howses, recounts witness testimony that monks were allowed to keep the contents of their cells and that the monastery timber",
+  "was purchased by local yeomen.\" \"In 1535, the year before enacting the Dissolution of the Monasteries, Henry commissioned a survey of the value of church holdings in England-the work, performed by sheriffs, bishops, and magistrates, began that January and was",
+  "swiftly completed by the summer.\" \"The October 1536 revolt known as the Pilgrimage of Grace had several economic motives: high food prices due to a poor harvest the prior year; the Dissolution of the Monasteries, which closed reliable sources of food and shelter for",
+  "many; and rents and taxes throughout Northern England that were not merely high but predatory.\""
+]

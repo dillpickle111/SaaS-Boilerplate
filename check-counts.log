@@ -1,0 +1,27 @@
+
+> prepify@1.0.0 check:counts
+> tsx scripts/check-counts.ts
+
+[dotenv@17.2.1] injecting env (5) from .env.local -- tip: ⚙️  override existing env vars with { override: true }
+🔍 Checking database counts and integrity...
+
+📊 Total Counts:
+   📚 PDF Sets: 0
+   ❓ Questions: 0
+
+📋 Per-Set Question Counts:
+   ✅ SAT-Math-Set-01: 3
+   ✅ SAT-Math-Set-02: 25
+
+🔍 Duplicate Checks:
+   ✅ No duplicate question_uid found
+   ✅ No duplicate (pdf_set_id, question_number) found
+
+🔗 Data Integrity:
+   ✅ All questions have valid pdf_set_id
+
+📝 Data Quality:
+   ✅ All questions have content
+   ✅ All questions have correct_answer
+
+🎉 Count check complete!

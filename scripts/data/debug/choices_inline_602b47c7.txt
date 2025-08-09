@@ -1,0 +1,13 @@
+WINDOW
+ID: 602b47c7 Biologists have predicted that birds' feather structures vary with habitat temperature, but this hadn't been tested in mountain environments. Ornithologist Sahas Barve studied feathers from 249 songbird species inhabiting different elevations-and thus experiencing different temperatures-in the Himalaya Mountains. He found that feathers of high-elevation species not only have a greater proportion of warming downy sections to flat and smooth sections than do feathers of low-elevation species, but high-elevation species' feathers also tend to be longer, providing a thicker layer of i
+
+TOKENS
+[["A", 780, 783], ["B", 986, 989], ["C", 1132, 1135], ["D", 1303, 1306]]
+
+CHOICES
+[
+  "temperature than do the feathers of other species, contradicting previous predictions. Barve found an association between habitat temperature and feather structure among Himalayan songbirds, lending new",
+  "support to a general prediction. Barve discovered that songbirds have adapted to their environment by growing feathers without flat and smooth",
+  "sections, complicating an earlier hypothesis. The results of Barve's study suggest that the ability of birds to withstand cold temperatures is determined more strongly",
+  "by feather length than feather structure, challenging an established belief."
+]
